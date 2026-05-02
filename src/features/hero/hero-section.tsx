@@ -9,10 +9,10 @@ export function HeroSection() {
     return (
         <section
             id="hero"
-            className="relative w-full min-h-[100dvh] lg:h-[100dvh] lg:min-h-[700px] flex items-center justify-center overflow-hidden pt-24 pb-12 lg:py-0"
+            className="relative w-full min-h-[100dvh] lg:h-[100dvh] lg:min-h-[700px] flex items-center justify-center overflow-hidden pt-8 md:pt-24 pb-12 lg:py-0"
         >
 
-            <div className="mx-auto w-full max-w-7xl px-6 lg:px-8 relative z-10 flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:items-center lg:h-full">
+            <div className="mx-auto w-full max-w-7xl px-6 lg:px-8 relative z-10 flex flex-col lg:grid lg:grid-cols-2 gap-2 md:gap-8 lg:items-center lg:h-full">
 
                 {/* ── Left Content ── */}
                 <div className="flex flex-col justify-center w-full order-2 lg:order-1 flex-1 lg:h-full z-20">
@@ -87,9 +87,8 @@ export function HeroSection() {
                 </div>
 
                 {/* ── Right Image ── */}
-                <div className="relative w-full min-h-[300px] h-[40vh] sm:h-[45vh] lg:h-full flex items-end justify-center order-1 lg:order-2 mt-8 lg:mt-0">
+                <div className="relative w-full min-h-[300px] h-[40vh] sm:h-[45vh] lg:h-[90vh] md:pt-4 flex items-center justify-center order-1 lg:order-2">
                     {/* Abstract Circle behind Image */}
-                    <div className="absolute z-20 top-[45%] lg:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[350px] lg:w-[450px] aspect-square rounded-full bg-gradient-to-tr from-green-300/30 to-emerald-100/40 border border-white/60 backdrop-blur-2xl shadow-xl">
 
                     <Image
                         src="/assests/images/profile_image.png"
@@ -97,9 +96,9 @@ export function HeroSection() {
                         width={600}
                         height={800}
                         priority
-                        className="relative z-10 object-contain object-center drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)] h-[100%] w-auto lg:h-[85%] rounded-md"
+                        className="relative z-10 object-fit object-center drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)] h-[100%] w-auto lg:h-[85%] rounded-md"
                     />
-                    </div>
+
 
                     {/* Floating Glassmorphic Tag (Desktop Only) */}
                     <div className="hidden lg:flex absolute top-1/4 lg:-left-6 z-20 cursor-default">
