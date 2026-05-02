@@ -40,8 +40,7 @@ html {
 
 body {
   min-height: 100vh;
-  background:
-    linear-gradient(135deg, #f5f3f0 0%, #f0ebe4 50%, #faf8f6 100%);
+  background: #f8faf9;
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }

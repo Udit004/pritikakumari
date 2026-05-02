@@ -9,13 +9,8 @@ export function HeroSection() {
     return (
         <section
             id="hero"
-            className="relative w-full h-[100dvh] min-h-[700px] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-green-50/50"
+            className="relative w-full h-[100dvh] min-h-[700px] flex items-center justify-center overflow-hidden"
         >
-            {/* Ambient Background Glows - static */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="absolute top-[-10%] right-[-5%] w-[50vw] h-[50vw] rounded-full bg-green-200/40 blur-[120px] mix-blend-multiply" />
-                <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-emerald-200/30 blur-[120px] mix-blend-multiply" />
-            </div>
 
             <div className="mx-auto w-full max-w-7xl px-6 lg:px-8 relative z-10 flex flex-col lg:grid lg:grid-cols-2 gap-8 items-center h-full pt-16 sm:pt-20 lg:pt-0">
 
