@@ -7,6 +7,7 @@ import { UserRound, Menu, X } from "lucide-react";
 
 export function Header() {
     const [activeSection, setActiveSection] = useState("hero");
+    const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const navLinks = useMemo(
@@ -23,147 +24,146 @@ export function Header() {
     );
 
     useEffect(() => {
+        const handleScroll = () => setIsScrolled(window.scrollY > 20);
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
-                const visibleEntry = entries
-                    .filter((entry) => entry.isIntersecting)
-                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-                if (visibleEntry?.target.id) {
-                    setActiveSection(visibleEntry.target.id);
-                }
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
+                        setActiveSection(entry.target.id);
+                    }
+                });
             },
             {
                 root: null,
-                threshold: [0.2, 0.35, 0.5, 0.65, 0.8],
-                rootMargin: "-18% 0px -62% 0px",
+                threshold: [0.2, 0.5, 0.8],
+                rootMargin: "-20% 0px -40% 0px",
             }
         );
 
         navLinks.forEach((link) => {
             const element = document.getElementById(link.id);
-            if (element) {
-                observer.observe(element);
-            }
+            if (element) observer.observe(element);
         });
 
         return () => observer.disconnect();
     }, [navLinks]);
 
     return (
-        <header className="fixed inset-x-0 top-0 z-50 border-b border-border/70 bg-white/90 backdrop-blur-xl shadow-[0_1px_0_rgba(17,24,39,0.04)]">
-            <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-                {/* Logo */}
-                <Link href="#" className="flex items-center gap-3">
-                    <Image src="/assests/images/logo.png" alt="Logo" width={40} height={40} />
+        <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 pt-2`}>
+            <div className={`mx-auto max-w-7xl px-4 sm:px-6 transition-all duration-300`}>
+                <div className={`flex items-center justify-between rounded-full border transition-all duration-500 ease-in-out ${isScrolled ? 'bg-white/80 backdrop-blur-lg border-slate-200/60 shadow-lg shadow-slate-200/20 px-4 py-2 sm:px-6' : 'bg-transparent border-transparent px-2 sm:px-4 py-2'}`}>
 
-                    <div>
-                        <p className="text-sm font-bold text-foreground">Pritika Kumari</p>
-                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-green-800">HR Professional</p>
-                    </div>
-                </Link>
+                    {/* Logo */}
+                    <Link href="#hero" className="flex items-center gap-3 group">
+                        <div className="relative overflow-hidden rounded-full transition-transform duration-300 group-hover:scale-105 bg-white shadow-sm border border-slate-100">
+                            <Image src="/assests/images/logo.png" alt="Logo" width={40} height={40} className="object-cover" />
+                        </div>
+                        <div className="hidden sm:block">
+                            <p className="text-sm font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Pritika Kumari</p>
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-600">HR Professional</p>
+                        </div>
+                    </Link>
 
-                {/* ── Desktop Navigation ── */}
-                <nav
-                    className="hidden lg:flex items-center gap-1"
-                    aria-label="Primary navigation"
-                >
-                    {navLinks.map((link) => {
-                        const isActive = activeSection === link.id;
-                        return (
-                            <Link
-                                key={link.id}
-                                href={link.href}
-                                aria-current={isActive ? "page" : undefined}
-                                className={`
-                                    relative px-4 py-2 text-sm font-medium transition-colors duration-150
-                                    ${isActive
-                                        ? "text-gray-900"
-                                        : "text-gray-500 hover:text-gray-900"
-                                    }
-                                `}
-                            >
-                                {link.label}
-
-                                {/* Green underline indicator – matches the image exactly */}
-                                <span
-                                    className={`
-                                        absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full bg-green-500
-                                        transition-all duration-200
-                                        ${isActive ? "w-2/3 opacity-100" : "w-0 opacity-0"}
-                                    `}
-                                    aria-hidden="true"
-                                />
-                            </Link>
-                        );
-                    })}
-                </nav>
-
-                {/* Mobile Menu Button */}
-                <button
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    className="lg:hidden inline-flex items-center justify-center rounded-lg p-2.5 text-gray-900 hover:bg-gray-100 transition"
-                    aria-label="Toggle mobile menu"
-                    aria-expanded={isMobileMenuOpen}
-                >
-                    {isMobileMenuOpen ? (
-                        <X className="h-6 w-6" aria-hidden="true" />
-                    ) : (
-                        <Menu className="h-6 w-6" aria-hidden="true" />
-                    )}
-                </button>
-
-                {/* CTA Button – Desktop */}
-                <Link
-                    href="#contact"
-                    className="hidden lg:inline-flex items-center gap-2 rounded-lg bg-black px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-zinc-900 hover:shadow-lg hover:scale-105"
-                >
-                    <UserRound className="h-4 w-4 text-white" aria-hidden="true" />
-                    <span className="text-white">Let&apos;s Connect</span>
-                </Link>
-            </div>
-
-
-            {/* Mobile Menu */}
-            {isMobileMenuOpen && (
-                <nav
-                    className="fixed right-0 top-18.25 z-40 h-[calc(100vh-73px)] w-72 border-l border-border/70 bg-white shadow-md lg:hidden"
-                    aria-label="Mobile navigation"
-                >
-                    <div className="flex flex-col gap-1 px-4 py-4">
+                    {/* Desktop Navigation */}
+                    <nav className={`hidden lg:flex items-center rounded-full px-2 py-1.5 transition-all duration-500 ${isScrolled ? 'bg-slate-50/80 backdrop-blur-sm border border-slate-200/60 shadow-sm' : 'bg-white/50 backdrop-blur-sm border border-slate-200 shadow-sm'}`} aria-label="Primary navigation">
                         {navLinks.map((link) => {
                             const isActive = activeSection === link.id;
                             return (
                                 <Link
                                     key={link.id}
                                     href={link.href}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    aria-current={isActive ? "page" : undefined}
                                     className={`
-                                    relative px-4 py-3 text-sm font-medium transition-colors duration-150 rounded-lg
-                                    ${isActive
-                                            ? "text-gray-900 bg-gray-100"
-                                            : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                                        relative px-4 py-2 text-[13px] font-semibold transition-all duration-300 rounded-full
+                                        ${isActive
+                                            ? "text-emerald-800 bg-emerald-100/60 shadow-sm"
+                                            : "text-slate-500 hover:text-slate-900 hover:bg-slate-100/50"
                                         }
-                                `}
+                                    `}
                                 >
                                     {link.label}
                                 </Link>
                             );
                         })}
+                    </nav>
 
-                        {/* Mobile CTA Button */}
+                    {/* Desktop CTA & Mobile Toggle */}
+                    <div className="flex items-center gap-2 lg:gap-0">
                         <Link
                             href="#contact"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-black px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-zinc-900"
+                            className="hidden lg:inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-xs font-bold tracking-wide text-white transition-all hover:bg-slate-800 hover:shadow-md hover:-translate-y-0.5"
                         >
-                            <UserRound className="h-4 w-4 text-white" aria-hidden="true" />
-                            <span className="text-white">Let&apos;s Connect</span>
+                            <UserRound className="h-3.5 w-3.5 text-emerald-400" aria-hidden="true" />
+                            <span className="text-white">Connect</span>
                         </Link>
+
+                        <button
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            className={`lg:hidden inline-flex items-center justify-center rounded-full p-2.5 transition-colors ${isMobileMenuOpen ? 'bg-slate-100 text-slate-900' : 'text-slate-700 bg-white/50 backdrop-blur-md shadow-sm border border-slate-200 hover:bg-white'}`}
+                            aria-label="Toggle mobile menu"
+                        >
+                            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                        </button>
                     </div>
-                </nav>
-            )}
+                </div>
+            </div>
+
+            {/* Mobile Menu Overlay */}
+            <div
+                className={`fixed inset-0 z-40 bg-slate-900/20 backdrop-blur-sm transition-all duration-300 lg:hidden ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+            />
+
+            {/* Mobile Menu Drawer */}
+            <nav
+                className={`fixed right-0 top-0 z-50 h-[100dvh] w-[280px] bg-white shadow-2xl transition-transform duration-300 ease-out lg:hidden flex flex-col ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                aria-label="Mobile navigation"
+            >
+                <div className="flex flex-shrink-0 items-center justify-between px-6 py-5 border-b border-slate-100">
+                    <p className="text-sm font-bold tracking-wide text-slate-900 uppercase">Menu</p>
+                    <button onClick={() => setIsMobileMenuOpen(false)} className="rounded-full p-2 -mr-2 text-slate-500 hover:bg-slate-100 transition-colors">
+                        <X className="h-5 w-5" />
+                    </button>
+                </div>
+
+                <div className="flex flex-col gap-1.5 p-6 overflow-y-auto">
+                    {navLinks.map((link) => {
+                        const isActive = activeSection === link.id;
+                        return (
+                            <Link
+                                key={link.id}
+                                href={link.href}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className={`
+                                px-4 py-3.5 text-sm font-semibold transition-all duration-200 rounded-xl
+                                ${isActive
+                                        ? "text-emerald-800 bg-emerald-50 border border-emerald-100/50"
+                                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-transparent"
+                                    }
+                            `}
+                            >
+                                {link.label}
+                            </Link>
+                        );
+                    })}
+                </div>
+
+                <div className="mt-auto p-6 border-t border-slate-100 bg-slate-50">
+                    <Link
+                        href="#contact"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3.5 text-sm font-bold transition hover:bg-slate-800 hover:shadow-md"
+                        style={{ color: '#ffffff' }}
+                    >
+                        <UserRound className="h-4 w-4 text-emerald-400" />
+                        <span style={{ color: '#ffffff' }} className="text-green-700">Let&apos;s Connect</span>
+                    </Link>
+                </div>
+            </nav>
         </header>
     );
 }

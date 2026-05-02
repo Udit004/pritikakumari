@@ -55,9 +55,9 @@ export function HeroSection() {
                             href="#contact"
                             className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-slate-900 px-7 py-3 text-sm font-semibold text-white transition-all hover:bg-slate-800 hover:shadow-lg hover:shadow-slate-900/20 hover:-translate-y-0.5"
                         >
-                            <FileText className="h-4 w-4" />
-                            <span>{heroData.cta.primary}</span>
-                            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                            <FileText className="text-white h-4 w-4" />
+                            <span className="text-white">{heroData.cta.primary}</span>
+                            <ArrowRight className="h-4 w-4 text-white transition-transform group-hover:translate-x-1" />
                         </Link>
 
                         <Link
