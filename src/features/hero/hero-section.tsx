@@ -92,12 +92,12 @@ export function HeroSection() {
                     <div className="absolute top-[45%] lg:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[350px] lg:w-[450px] aspect-square rounded-full bg-gradient-to-tr from-green-300/30 to-emerald-100/40 border border-white/60 backdrop-blur-2xl shadow-xl" />
 
                     <Image
-                        src="/assests/images/hero_Image2.png"
+                        src="/assests/images/profile_image.png"
                         alt={`${heroData.name} - Profile`}
                         width={600}
                         height={800}
                         priority
-                        className="relative z-10 object-contain object-bottom drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)] h-[100%] w-auto lg:h-[85%]"
+                        className="relative z-10 object-contain object-center drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)] h-[100%] w-auto lg:h-[85%] rounded-md"
                     />
 
                     {/* Floating Glassmorphic Tag (Desktop Only) */}

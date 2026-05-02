@@ -1,36 +1,14 @@
 export const skillsData = {
-  title: "Key Skills",
-  skillGroups: [
-    {
-      title: "People & Operations",
-      skills: [
-        "People Management",
-        "Employee Engagement",
-        "HRMS Administration",
-        "Payroll Management",
-      ],
-    },
-    {
-      title: "Process & Compliance",
-      skills: [
-        "HR Documentation",
-        "Compliance Management",
-        "Process Optimization",
-        "Quality Assurance",
-      ],
-    },
-    {
-      title: "Analytics & Tools",
-      skills: ["Excel", "Power BI", "SQL", "Python"],
-    },
-    {
-      title: "Systems & Platforms",
-      skills: [
-        "Zoho Payroll",
-        "HRMS Platforms",
-        "Digital HR Tools",
-        "Data Management",
-      ],
-    },
+  title: "Skills & Expertise",
+  skillsList: [
+    { name: "HR Operations", level: 5, icon: "Users" },
+    { name: "HRMS Administration", level: 5, icon: "Monitor" },
+    { name: "Employee Engagement", level: 4, icon: "Users" },
+    { name: "Payroll Coordination", level: 4, icon: "FileText" },
+    { name: "Compliance Management", level: 4, icon: "ShieldCheck" },
+    { name: "HR Documentation", level: 5, icon: "Folder" },
+    { name: "Employee Lifecycle Management", level: 5, icon: "UserCog" },
+    { name: "Data Analysis (Excel, Power BI, SQL, Python)", level: 4, icon: "BarChart" },
+    { name: "Communication & Stakeholder Management", level: 5, icon: "MessageSquare" },
   ],
 };
