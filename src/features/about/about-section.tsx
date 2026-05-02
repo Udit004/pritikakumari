@@ -6,7 +6,7 @@ export function AboutSection() {
   const paragraphs = aboutData.summary.split("\n\n");
   
   return (
-    <section id="about" className="h-full rounded-2xl bg-white p-8 shadow-sm border border-border relative overflow-hidden flex flex-col">
+    <section id="about" className="h-full p-8 relative overflow-hidden flex flex-col">
       <div className="mb-6 space-y-4 relative z-10">
         <div className="inline-flex items-center gap-2 rounded-md bg-accent-primary/10 px-3 py-1">
             <Users className="h-4 w-4 text-accent-primary" />

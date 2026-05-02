@@ -2,7 +2,7 @@ import { educationData } from "./data";
 
 export function EducationSection() {
   return (
-    <section id="education" className="scroll-mt-20 bg-surface-secondary py-16 sm:py-24">
+    <section id="education" className="scroll-mt-20 py-16 sm:py-24">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 space-y-4">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-accent-primary">

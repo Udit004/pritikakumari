@@ -9,13 +9,13 @@ export function HeroSection() {
     return (
         <section
             id="hero"
-            className="relative w-full h-[100dvh] min-h-[700px] flex items-center justify-center overflow-hidden"
+            className="relative w-full min-h-[100dvh] lg:h-[100dvh] lg:min-h-[700px] flex items-center justify-center overflow-hidden pt-24 pb-12 lg:py-0"
         >
 
-            <div className="mx-auto w-full max-w-7xl px-6 lg:px-8 relative z-10 flex flex-col lg:grid lg:grid-cols-2 gap-8 items-center h-full pt-16 sm:pt-20 lg:pt-0">
+            <div className="mx-auto w-full max-w-7xl px-6 lg:px-8 relative z-10 flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:items-center lg:h-full">
 
                 {/* ── Left Content ── */}
-                <div className="flex flex-col justify-center w-full max-lg:pt-8 order-2 lg:order-1 flex-1 lg:h-full pb-8 lg:pb-0 z-20">
+                <div className="flex flex-col justify-center w-full order-2 lg:order-1 flex-1 lg:h-full z-20">
 
                     {/* Badge */}
                     <div className="group inline-flex w-fit items-center gap-2 rounded-full border border-green-200/80 bg-green-50/50 backdrop-blur-md mt-4 px-4 py-1.5 shadow-sm transition-all hover:bg-green-100/50">
@@ -45,10 +45,10 @@ export function HeroSection() {
                     </p>
 
                     {/* CTA Buttons */}
-                    <div className="mt-8 flex flex-wrap gap-4 items-center">
+                    <div className="mt-8 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center w-full max-w-sm sm:max-w-none">
                         <Link
                             href="#contact"
-                            className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-slate-900 px-7 py-3 text-sm font-semibold text-white transition-all hover:bg-slate-800 hover:shadow-lg hover:shadow-slate-900/20 hover:-translate-y-0.5"
+                            className="group relative inline-flex w-full sm:w-auto items-center justify-center gap-2 overflow-hidden rounded-full bg-slate-900 px-7 py-3 text-sm font-semibold text-white transition-all hover:bg-slate-800 hover:shadow-lg hover:shadow-slate-900/20 hover:-translate-y-0.5"
                         >
                             <FileText className="text-white h-4 w-4" />
                             <span className="text-white">{heroData.cta.primary}</span>
@@ -59,7 +59,7 @@ export function HeroSection() {
                             href={heroData.contact.linkedin}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group inline-flex items-center justify-center gap-2 rounded-full border-2 border-slate-200 bg-white/50 backdrop-blur-sm px-7 py-3 text-sm font-semibold text-slate-700 transition-all hover:border-emerald-500 hover:bg-white hover:text-emerald-600"
+                            className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border-2 border-slate-200 bg-white/50 backdrop-blur-sm px-7 py-3 text-sm font-semibold text-slate-700 transition-all hover:border-emerald-500 hover:bg-white hover:text-emerald-600"
                         >
                             <ExternalLink className="h-4 w-4" />
                             <span>{heroData.cta.secondary}</span>
@@ -67,19 +67,19 @@ export function HeroSection() {
                     </div>
 
                     {/* Stats */}
-                    <div className="mt-10 lg:mt-12 grid grid-cols-3 gap-2 lg:gap-6 border-t border-slate-200/80 pt-6">
+                    <div className="mt-10 lg:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-slate-200/80 pt-6">
                         {heroData.stats.map((stat, idx) => {
                             const Icons = [Briefcase, Users, BarChart2];
                             const Icon = Icons[idx] || Briefcase;
                             return (
-                                <div key={idx} className="flex flex-col gap-1.5">
-                                    <div className="flex items-center gap-2">
-                                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100/80 text-emerald-600 shrink-0">
-                                            <Icon className="h-4 w-4" />
+                                <div key={idx} className="flex flex-col gap-2">
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100/80 text-emerald-600 shrink-0">
+                                            <Icon className="h-5 w-5" />
                                         </div>
-                                        <span className="text-lg lg:text-2xl font-bold text-slate-900">{stat.value}</span>
+                                        <span className="text-xl lg:text-2xl font-bold text-slate-900 leading-tight">{stat.value}</span>
                                     </div>
-                                    <span className="text-[10px] lg:text-xs font-bold text-slate-500 uppercase tracking-widest leading-tight">{stat.label}</span>
+                                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest leading-tight">{stat.label}</span>
                                 </div>
                             );
                         })}
@@ -87,9 +87,9 @@ export function HeroSection() {
                 </div>
 
                 {/* ── Right Image ── */}
-                <div className="relative w-full h-[40vh] sm:h-[45vh] lg:h-full flex items-end justify-center order-1 lg:order-2">
+                <div className="relative w-full min-h-[300px] h-[40vh] sm:h-[45vh] lg:h-full flex items-end justify-center order-1 lg:order-2 mt-8 lg:mt-0">
                     {/* Abstract Circle behind Image */}
-                    <div className="absolute top-[45%] lg:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[350px] lg:w-[450px] aspect-square rounded-full bg-gradient-to-tr from-green-300/30 to-emerald-100/40 border border-white/60 backdrop-blur-2xl shadow-xl" />
+                    <div className="absolute z-20 top-[45%] lg:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[350px] lg:w-[450px] aspect-square rounded-full bg-gradient-to-tr from-green-300/30 to-emerald-100/40 border border-white/60 backdrop-blur-2xl shadow-xl">
 
                     <Image
                         src="/assests/images/profile_image.png"
@@ -99,6 +99,7 @@ export function HeroSection() {
                         priority
                         className="relative z-10 object-contain object-center drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)] h-[100%] w-auto lg:h-[85%] rounded-md"
                     />
+                    </div>
 
                     {/* Floating Glassmorphic Tag (Desktop Only) */}
                     <div className="hidden lg:flex absolute top-1/4 lg:-left-6 z-20 cursor-default">
