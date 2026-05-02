@@ -13,8 +13,28 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pritika | Portfolio",
-  description: "A clean, light-themed portfolio starter built with Next.js.",
+  title: "Pritika Kumari | HR Operations Specialist | HR Generalist | HR Analyst",
+  description: "MBA-qualified HR Operations professional with expertise in employee lifecycle management, HRMS administration, payroll coordination, and data-driven HR insights. Specialized in HR processes, compliance, and technology-driven environments.",
+  keywords: [
+    "HR Operations",
+    "HR Generalist",
+    "HR Analyst",
+    "Employee Lifecycle Management",
+    "HRMS Administration",
+    "Payroll Coordination",
+    "HR Professional",
+    "Data-Driven HR",
+    "Compliance",
+    "Employee Engagement",
+    "People Management",
+  ],
+  authors: [{ name: "Pritika Kumari" }],
+  openGraph: {
+    title: "Pritika Kumari | HR Operations Specialist",
+    description:
+      "Explore the portfolio of Pritika Kumari, an experienced HR Operations professional specializing in employee lifecycle management and HRMS administration.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
