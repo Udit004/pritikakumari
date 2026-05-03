@@ -1,6 +1,10 @@
 export const heroData = {
   name: "Pritika Kumari",
-  title: "HR Operations Specialist | HR Generalist | HR Analyst",
+  titleRotations: [
+    "HR Operations Specialist",
+    "HR Generalist",
+    "HR Analyst",
+  ],
   subtitle:
     "Driving efficient HR operations through structured processes, employee lifecycle management, and data-driven insights.",
   description:

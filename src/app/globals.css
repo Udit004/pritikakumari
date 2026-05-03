@@ -69,17 +69,18 @@ a {
   padding: 1.5px;
   background: conic-gradient(
     from 0deg,
-    rgba(45, 90, 108, 0.02) 0deg,
-    rgba(45, 90, 108, 0.04) 126deg,
-    rgba(45, 90, 108, 0.08) 158deg,
-    rgba(45, 90, 108, 0.98) 172deg,
-    rgba(45, 90, 108, 0.18) 180deg,
-    rgba(45, 90, 108, 0.06) 192deg,
-    rgba(45, 90, 108, 0.02) 360deg
+    rgba(15, 23, 42, 0.22) 0deg,
+    rgba(21, 128, 61, 0.42) 118deg,
+    rgba(21, 128, 61, 0.82) 152deg,
+    rgba(15, 23, 42, 1) 172deg,
+    rgba(21, 128, 61, 0.9) 184deg,
+    rgba(21, 128, 61, 0.48) 208deg,
+    rgba(15, 23, 42, 0.22) 360deg
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
-  box-shadow: 0 0 22px rgba(45, 90, 108, 0.12);
+  box-shadow: 0 0 28px rgba(15, 23, 42, 0.22), 0 0 16px rgba(21, 128, 61, 0.16);
   animation: about-ring-rotate 7s linear infinite;
 }
