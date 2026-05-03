@@ -83,12 +83,12 @@ export function AboutSection() {
             <div className="about-ring-track absolute inset-0 rounded-[32px]" />
             <div className="absolute inset-[1.5px] overflow-hidden rounded-[30px] ">
               <Image
-                src="/assests/images/hero_Image2.png"
+                src="/assests/images/about/image.png"
                 alt="About"
                 fill
                 priority
                 sizes="(min-width: 1024px) 440px, (min-width: 640px) 420px, 86vw"
-                className="object-contain object-center p-3 rounded-full"
+                className="object-cover object-center p-3 rounded-full"
               />
             </div>
           </div>
