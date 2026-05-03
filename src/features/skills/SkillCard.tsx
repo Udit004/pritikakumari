@@ -34,12 +34,11 @@ function SkillCard({ name, icon, level, index = 0 }: Props) {
       transition={{
         duration: 0.5,
         delay: index * 0.07,
-        ease: [0.22, 1, 0.36, 1],
       }}
       whileHover={{
         y: -4,
         boxShadow: "0 12px 32px rgba(16,185,129,0.14), 0 4px 12px rgba(0,0,0,0.06)",
-        transition: { duration: 0.22, ease: "easeOut" },
+        transition: { duration: 0.22 },
       }}
     >
       {/* Top emerald accent line — appears on hover */}
@@ -105,7 +104,6 @@ function SkillCard({ name, icon, level, index = 0 }: Props) {
               transition={{
                 duration: 0.4,
                 delay: index * 0.07 + i * 0.055 + 0.25,
-                ease: "easeOut",
               }}
             />
           ))}
@@ -122,7 +120,7 @@ function SkillCard({ name, icon, level, index = 0 }: Props) {
         }}
         initial={{ x: "-100%" }}
         whileHover={{ x: "120%" }}
-        transition={{ duration: 0.6, ease: "easeInOut" }}
+        transition={{ duration: 0.6 }}
       />
     </motion.div>
   );

@@ -4,12 +4,10 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Send } from "lucide-react";
 import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
 
 interface ContactFormProps {
-  itemVariants: {
-    hidden: { opacity: number; y: number };
-    visible: { opacity: number; y: number; transition: { duration: number; ease: string } };
-  };
+  itemVariants: Variants;
 }
 
 export function ContactForm({ itemVariants }: ContactFormProps) {

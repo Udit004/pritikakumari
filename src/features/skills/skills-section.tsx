@@ -118,7 +118,7 @@ export function SkillsSection() {
               initial={{ scaleX: 0, originX: "0%" }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.55, delay: 0.32, ease: "easeOut" }}
+              transition={{ duration: 0.55, delay: 0.32 }}
             />
             <motion.div
               className="h-[3px] w-5 rounded-full"
@@ -126,7 +126,7 @@ export function SkillsSection() {
               initial={{ scaleX: 0, originX: "0%" }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.5, ease: "easeOut" }}
+              transition={{ duration: 0.4, delay: 0.5 }}
             />
           </motion.div>
 

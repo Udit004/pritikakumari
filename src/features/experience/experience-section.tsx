@@ -21,7 +21,7 @@ export function ExperienceSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
+      transition: { duration: 0.5 },
     },
   };
 
@@ -30,7 +30,7 @@ export function ExperienceSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
+      transition: { duration: 0.5 },
     },
     hover: {
       y: -4,
@@ -42,7 +42,7 @@ export function ExperienceSection() {
     hidden: { scale: 0 },
     visible: {
       scale: 1,
-      transition: { duration: 0.4, ease: "backOut" },
+      transition: { duration: 0.4 },
     },
   };
 

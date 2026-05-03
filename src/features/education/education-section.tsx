@@ -21,7 +21,7 @@ export function EducationSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
+      transition: { duration: 0.5 },
     },
   };
 
@@ -30,7 +30,7 @@ export function EducationSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
+      transition: { duration: 0.5 },
     },
     hover: {
       y: -4,

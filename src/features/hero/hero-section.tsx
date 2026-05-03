@@ -177,7 +177,7 @@ export function HeroSection() {
                         className="flex flex-col justify-center w-full order-2 lg:order-1 flex-1 lg:h-full z-20"
                         initial={{ opacity: 0, y: 18 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.75, ease: "easeOut" }}
+                        transition={{ duration: 0.75 }}
                     >
                         {leftPanel}
                     </motion.div>
@@ -193,7 +193,7 @@ export function HeroSection() {
                         className="relative w-full min-h-[300px] h-[40vh] sm:h-[45vh] lg:h-[80vh] md:pt-4 flex items-center justify-center order-1 lg:order-2"
                         initial={{ opacity: 0, y: 22, scale: 0.98 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                        transition={{ duration: 0.85, ease: "easeOut", delay: 0.1 }}
+                        transition={{ duration: 0.85, delay: 0.1 }}
                     >
                         {rightPanel}
                     </motion.div>
