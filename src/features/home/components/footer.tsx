@@ -38,7 +38,7 @@ export function Footer() {
             <ul className="mt-3 space-y-2">
               <li>
                 <a
-                  href="https://www.linkedin.com/in/pritika-kumaria68192376"
+                  href="https://www.linkedin.com/in/pritika-kumari-a68192376"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-muted transition hover:text-foreground"

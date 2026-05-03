@@ -19,7 +19,7 @@ export const heroData = {
   location: "Noida, Uttar Pradesh, India",
   contact: {
     email: "pritikakumaree96@gmail.com",
-    linkedin: "https://www.linkedin.com/in/pritika-kumaria68192376",
+    linkedin: "https://www.linkedin.com/in/pritika-kumari-a68192376",
   },
   stats: [
     {

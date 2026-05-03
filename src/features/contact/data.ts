@@ -9,8 +9,8 @@ export const contactData = {
     },
     {
       type: "Phone",
-      value: "+91 00000 00000",
-      link: "tel:+910000000000",
+      value: "+91 9341894916",
+      link: "tel:+919341894916",
       icon: "Phone",
     },
     {
@@ -21,7 +21,7 @@ export const contactData = {
     },
     {
       type: "LinkedIn",
-      value: "www.linkedin.com/in/pritika-kumari-a68192376",
+      value: "https://www.linkedin.com/in/pritika-kumari-a68192376",
       link: "https://www.linkedin.com/in/pritika-kumari-a68192376",
       icon: "Linkedin",
     },
