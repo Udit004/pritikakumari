@@ -1,10 +1,8 @@
 export const aboutData = {
   title: "About Me",
-  summary: `MBA-qualified HR Operations professional with hands-on experience supporting core HR processes across the employee lifecycle in a technology-driven organizational environment. Actively involved in onboarding and exit formalities, HRMS administration, payroll input coordination, attendance management, and accurate employee data maintenance.
+  summary: `MBA-qualified HR Operations professional with expertise in end-to-end employee lifecycle management, HRMS administration, and payroll coordination. I bring a detail-oriented approach and hands-on experience in onboarding, exit formalities, and compliance management.
 
-Strong exposure to HR documentation, compliance records, employee query handling, and internal stakeholder coordination while working within structured HR processes and digital HR tools. Known for a detail-oriented approach and consistency in operational execution.
-
-Currently building capabilities in HR analytics and data-driven HR reporting using Excel, Power BI, SQL, and Python to improve data accuracy, reporting efficiency, and operational decision-making.`,
+Currently building HR analytics capabilities using Power BI, SQL, and Python to drive data-informed HR decisions and operational excellence.`,
   expertise: [
     {
       category: "Core HR Operations",

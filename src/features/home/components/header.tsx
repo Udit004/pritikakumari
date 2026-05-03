@@ -14,8 +14,8 @@ export function Header() {
         () => [
             { label: "Home", href: "#hero", id: "hero" },
             { label: "About", href: "#about", id: "about" },
-            { label: "Experience", href: "#experience", id: "experience" },
             { label: "Skills", href: "#skills", id: "skills" },
+            { label: "Experience", href: "#experience", id: "experience" },
             { label: "Projects", href: "#projects", id: "projects" },
             { label: "Education", href: "#education", id: "education" },
             { label: "Contact", href: "#contact", id: "contact" },

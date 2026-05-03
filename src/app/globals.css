@@ -54,3 +54,32 @@ a {
   background: rgba(45, 90, 108, 0.18);
   color: var(--foreground);
 }
+
+@keyframes about-ring-rotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.about-ring-track {
+  padding: 1.5px;
+  background: conic-gradient(
+    from 0deg,
+    rgba(45, 90, 108, 0.02) 0deg,
+    rgba(45, 90, 108, 0.04) 126deg,
+    rgba(45, 90, 108, 0.08) 158deg,
+    rgba(45, 90, 108, 0.98) 172deg,
+    rgba(45, 90, 108, 0.18) 180deg,
+    rgba(45, 90, 108, 0.06) 192deg,
+    rgba(45, 90, 108, 0.02) 360deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  box-shadow: 0 0 22px rgba(45, 90, 108, 0.12);
+  animation: about-ring-rotate 7s linear infinite;
+}

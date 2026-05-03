@@ -89,7 +89,7 @@ export function HeroSection() {
                 </div>
 
                 {/* ── Right Image ── */}
-                <div className="relative w-full min-h-[300px] h-[40vh] sm:h-[45vh] lg:h-[90vh] md:pt-4 flex items-center justify-center order-1 lg:order-2">
+                <div className="relative w-full min-h-[300px] h-[40vh] sm:h-[45vh] lg:h-[80vh] md:pt-4 flex items-center justify-center order-1 lg:order-2">
                     {/* Abstract Circle behind Image */}
 
                     <Image
