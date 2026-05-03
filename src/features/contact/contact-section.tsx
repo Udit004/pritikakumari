@@ -15,7 +15,8 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="h-full p-8">
+    <section id="contact" className="relative w-full overflow-hidden py-24 sm:py-28 scroll-mt-24">
+      <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
       <div className="mb-8 space-y-4">
         <div className="inline-flex items-center gap-2 rounded-md bg-accent-primary/10 px-3 py-1">
             <Mail className="h-4 w-4 text-accent-primary" />
@@ -45,7 +46,7 @@ export function ContactSection() {
                     href={contact.link}
                     target={contact.icon === "Linkedin" ? "_blank" : undefined}
                     rel={contact.icon === "Linkedin" ? "noopener noreferrer" : undefined}
-                    className="text-sm text-muted hover:text-accent-primary transition-colors truncate max-w-[250px] sm:max-w-none"
+                    className="text-sm text-muted hover:text-accent-primary transition-colors truncate max-w-62.5 sm:max-w-none"
                   >
                     {contact.value}
                   </a>
@@ -91,6 +92,7 @@ export function ContactSection() {
             </button>
           </form>
         </div>
+      </div>
       </div>
     </section>
   );

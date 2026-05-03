@@ -12,7 +12,8 @@ export function ProjectsSection() {
   };
 
   return (
-    <section id="projects" className="h-full p-8">
+    <section id="projects" className="relative w-full overflow-hidden py-24 sm:py-28 scroll-mt-24">
+      <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
       <div className="mb-8 space-y-4">
         <div className="inline-flex items-center gap-2 rounded-md bg-accent-primary/10 px-3 py-1">
             <Briefcase className="h-4 w-4 text-accent-primary" />
@@ -37,7 +38,7 @@ export function ProjectsSection() {
             <h3 className="mb-2 font-semibold text-foreground">
               {project.title}
             </h3>
-            <p className="mb-6 text-sm leading-relaxed text-muted flex-grow">
+            <p className="mb-6 text-sm leading-relaxed text-muted grow">
               {project.description}
             </p>
             <div className="flex flex-wrap gap-2 mt-auto">
@@ -52,6 +53,7 @@ export function ProjectsSection() {
             </div>
           </div>
         ))}
+      </div>
       </div>
     </section>
   );
