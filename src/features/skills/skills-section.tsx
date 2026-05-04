@@ -32,7 +32,6 @@ export function SkillsSection() {
     <section
       id="skills"
       className="relative w-full overflow-hidden py-24 sm:py-28 scroll-mt-24"
-      style={{ background: "#f8fdfb" }}
     >
       {/* ── Dot grid — matches hero section pattern ── */}
       <div

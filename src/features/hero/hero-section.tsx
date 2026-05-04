@@ -5,7 +5,6 @@ import Link from "next/link";
 import { heroData } from "./data";
 import { FileText, Briefcase, Users, BarChart2, ExternalLink, ArrowRight } from "lucide-react";
 import Image from "next/image";
-import { HeroCanvas } from "./hero-canvas";
 import { motion } from "framer-motion";
 
 export function HeroSection() {
@@ -167,8 +166,6 @@ export function HeroSection() {
             id="hero"
             className="group/hero relative w-full min-h-[100dvh] lg:h-[100dvh] lg:min-h-[700px] flex items-center justify-center overflow-hidden pt-24 pb-12 lg:py-0"
         >
-            <HeroCanvas />
-
             <div className="mx-auto w-full max-w-7xl px-6 lg:px-8 relative z-10 flex flex-col lg:grid lg:grid-cols-2 gap-2 md:gap-8 lg:items-center lg:h-full">
 
                 {/* ── Left Content ── */}
