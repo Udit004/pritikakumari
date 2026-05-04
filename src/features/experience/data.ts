@@ -9,6 +9,7 @@ export const experienceData = {
       durationText: "6 Months",
       logoColor: "bg-slate-900 text-yellow-500",
       logoText: "SC",
+      logoImage: "/assests/images/experience/sengarImage.png",
       responsibilities: [
         "Supporting end-to-end HR operations including onboarding, documentation, HRMS updates, and exit formalities.",
         "Managing employee records in Zoho Payroll / HRMS, payroll inputs, attendance tracking and monthly data validation.",
@@ -17,12 +18,13 @@ export const experienceData = {
     },
     {
       id: 2,
-      company: "HIREZY HR SOLUTIONS",
+      company: "Sengar Consultancy",
       position: "Human Resources Associate",
       date: "May 2025 \u2013 Dec 2025",
       durationText: "8 Months",
       logoColor: "bg-purple-600 text-white",
       logoText: "H",
+      logoImage: "/assests/images/experience/sengarImage.png",
       responsibilities: [
         "Managed HR system access, official email creation and onboarding on digital platforms.",
         "Supported internal HR communication, cross-team coordination and smooth HR operations.",
@@ -36,6 +38,7 @@ export const experienceData = {
       durationText: "3 Months",
       logoColor: "bg-green-500 text-white",
       logoText: "hz",
+      logoImage: "/assests/images/experience/hirezyImage.png",
       responsibilities: [
         "Assisted in HR documentation, data management and employee support activities.",
         "Gained hands-on exposure to HR operations and compliance processes.",

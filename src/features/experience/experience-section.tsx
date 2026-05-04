@@ -3,6 +3,7 @@
 import { experienceData } from "./data";
 import { Briefcase } from "lucide-react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export function ExperienceSection() {
   const containerVariants = {
@@ -121,14 +122,14 @@ export function ExperienceSection() {
                         >
                           {/* Accent bar */}
                           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-emerald-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                          
+
                           {/* Arrow pointer */}
                           <div className="absolute -right-3.5 top-6 w-3 h-3 bg-white border-r border-b border-emerald-200/30 rotate-45" />
-                          
+
                           <div className="p-5">
                             <div className="flex items-start gap-3 mb-3">
                               <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${exp.logoColor} font-bold text-sm shrink-0`}>
-                                {exp.logoText}
+                                <Image src={exp.logoImage} alt={`${exp.company} Logo`} width={44} height={44} />
                               </div>
                               <div className="flex-1">
                                 <h3 className="text-sm font-bold text-slate-900 leading-snug">
@@ -139,9 +140,9 @@ export function ExperienceSection() {
                                 </p>
                               </div>
                             </div>
-                            
+
                             <div className="h-px bg-emerald-200/20 my-3.5" />
-                            
+
                             <ul className="space-y-2.5">
                               {exp.responsibilities.map((resp, respIdx) => (
                                 <li key={respIdx} className="flex gap-2.5 text-xs text-gray-600 leading-relaxed">
@@ -187,14 +188,14 @@ export function ExperienceSection() {
                         >
                           {/* Accent bar */}
                           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-emerald-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                          
+
                           {/* Arrow pointer */}
                           <div className="absolute -left-3.5 top-6 w-3 h-3 bg-white border-l border-t border-emerald-200/30 rotate-45" />
-                          
+
                           <div className="p-5">
                             <div className="flex items-start gap-3 mb-3">
                               <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${exp.logoColor} font-bold text-sm shrink-0`}>
-                                {exp.logoText}
+                                <Image src={exp.logoImage} alt={`${exp.company} Logo`} width={44} height={44} />
                               </div>
                               <div className="flex-1">
                                 <h3 className="text-sm font-bold text-slate-900 leading-snug">
@@ -205,9 +206,9 @@ export function ExperienceSection() {
                                 </p>
                               </div>
                             </div>
-                            
+
                             <div className="h-px bg-emerald-200/20 my-3.5" />
-                            
+
                             <ul className="space-y-2.5">
                               {exp.responsibilities.map((resp, respIdx) => (
                                 <li key={respIdx} className="flex gap-2.5 text-xs text-gray-600 leading-relaxed">
@@ -248,11 +249,11 @@ export function ExperienceSection() {
                       >
                         {/* Accent bar */}
                         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-emerald-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        
+
                         <div className="p-5">
                           <div className="flex items-start gap-3 mb-3">
                             <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${exp.logoColor} font-bold text-sm shrink-0`}>
-                              {exp.logoText}
+                              <Image src={exp.logoImage} alt={`${exp.company} Logo`} width={44} height={44} />
                             </div>
                             <div className="flex-1">
                               <h3 className="text-sm font-bold text-slate-900 leading-snug">
@@ -270,9 +271,9 @@ export function ExperienceSection() {
                               {exp.durationText}
                             </span>
                           </div>
-                          
+
                           <div className="h-px bg-emerald-200/20 my-3.5" />
-                          
+
                           <ul className="space-y-2.5">
                             {exp.responsibilities.map((resp, respIdx) => (
                               <li key={respIdx} className="flex gap-2.5 text-xs text-gray-600 leading-relaxed">
