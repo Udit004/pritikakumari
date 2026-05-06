@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { aboutData } from "./data";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
-import { Briefcase, Users, BarChart2, TrendingUp } from "lucide-react";
+import { BarChart2 } from "lucide-react";
 // import { AboutCanvas } from "./about-canvas";
 
 /* ─────────────────────────────────────────────────────────────
@@ -26,21 +26,6 @@ const fadeUp = {
 };
 
 /* ─────────────────────────────────────────────────────────────
-   Stat row icon mapping — same as hero's stat row pattern
-───────────────────────────────────────────────────────────── */
-const STAT_ICONS = [Briefcase, Users, BarChart2];
-
-/* ─────────────────────────────────────────────────────────────
-   Decorative orbit dots around the circular image
-───────────────────────────────────────────────────────── */
-const ORBIT_DOTS = [
-    { top: "3%",  left: "50%", size: 9, color: "#10b981", delay: 0.80 },
-    { top: "50%", left: "99%", size: 7, color: "#84cc16", delay: 0.95 },
-    { top: "93%", left: "40%", size: 8, color: "#34d399", delay: 0.88 },
-    { top: "52%", left: "0%",  size: 6, color: "#6ee7b7", delay: 1.05 },
-];
-
-/* ─────────────────────────────────────────────────────────────
    Component
 ───────────────────────────────────────────────────────── */
 export function AboutSection() {
@@ -53,7 +38,7 @@ export function AboutSection() {
         <section
             id="about"
             ref={sectionRef}
-            className="group/about relative w-full min-h-[100dvh] lg:h-[100dvh] lg:min-h-[700px] flex items-center justify-center overflow-hidden pt-24 pb-12 lg:py-0"
+            className="group/about relative w-full min-h-dvh lg:h-dvh lg:min-h-175 flex items-center justify-center overflow-hidden pt-24 pb-12 lg:py-0"
         >
             {/* ── CSS keyframes (scoped with prefix) ── */}
             <style>{`
@@ -216,7 +201,8 @@ export function AboutSection() {
                                 src="/assests/images/about/image.png"
                                 alt={`${aboutData.title} profile`}
                                 fill
-                                priority
+                                loading="lazy"
+                                
                                 sizes="(min-width: 1024px) 375px, (min-width: 640px) 33vw, 230px"
                                 className="object-cover object-top"
                             />

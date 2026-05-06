@@ -48,7 +48,7 @@ export function ExperienceSection() {
   };
 
   return (
-    <section id="experience" className="relative w-full overflow-hidden py-20 md:py-28 scroll-mt-24">
+    <section id="experience" className="relative w-full overflow-hidden py-20 md:py-28">
       {/* Background decorations */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Top-left glow */}

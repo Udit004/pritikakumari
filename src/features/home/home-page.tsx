@@ -1,15 +1,36 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { HeroCanvas } from "@/features/home/home-canvas";
 import { HeroSection } from "@/features/hero/hero-section";
 import { AboutSection } from "@/features/about";
-import { SkillsSection } from "@/features/skills";
-import { ExperienceSection } from "@/features/experience";
-import { ProjectsSection } from "@/features/projects";
-import { EducationSection } from "@/features/education";
-import { ContactSection } from "@/features/contact";
 import { Header } from "./components/header";
 import { Footer } from "./components/footer";
+
+const SkillsSection = dynamic(
+  () => import("@/features/skills").then((mod) => mod.SkillsSection),
+  { ssr: false, loading: () => null }
+);
+
+const ExperienceSection = dynamic(
+  () => import("@/features/experience").then((mod) => mod.ExperienceSection),
+  { ssr: false, loading: () => null }
+);
+
+const ProjectsSection = dynamic(
+  () => import("@/features/projects").then((mod) => mod.ProjectsSection),
+  { ssr: false, loading: () => null }
+);
+
+const EducationSection = dynamic(
+  () => import("@/features/education").then((mod) => mod.EducationSection),
+  { ssr: false, loading: () => null }
+);
+
+const ContactSection = dynamic(
+  () => import("@/features/contact").then((mod) => mod.ContactSection),
+  { ssr: false, loading: () => null }
+);
 
 export function HomePage() {
   return (
