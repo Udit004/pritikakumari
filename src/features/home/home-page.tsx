@@ -1,11 +1,16 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { HeroCanvas } from "@/features/home/home-canvas";
+import { useEffect, useState } from "react";
 import { HeroSection } from "@/features/hero/hero-section";
 import { AboutSection } from "@/features/about";
 import { Header } from "./components/header";
 import { Footer } from "./components/footer";
+
+const HeroCanvas = dynamic(
+  () => import("@/features/home/home-canvas").then((mod) => mod.HeroCanvas),
+  { ssr: false, loading: () => null }
+);
 
 const SkillsSection = dynamic(
   () => import("@/features/skills").then((mod) => mod.SkillsSection),
@@ -33,6 +38,30 @@ const ContactSection = dynamic(
 );
 
 export function HomePage() {
+  const [showCanvas, setShowCanvas] = useState(false);
+
+  useEffect(() => {
+    let timeoutId: number | undefined;
+    let idleCallbackId: number | undefined;
+
+    const enableCanvas = () => setShowCanvas(true);
+
+    if ("requestIdleCallback" in window) {
+      idleCallbackId = window.requestIdleCallback(enableCanvas, { timeout: 1200 });
+    } else {
+      timeoutId = window.setTimeout(enableCanvas, 180);
+    }
+
+    return () => {
+      if (idleCallbackId !== undefined && "cancelIdleCallback" in window) {
+        window.cancelIdleCallback(idleCallbackId);
+      }
+      if (timeoutId !== undefined) {
+        window.clearTimeout(timeoutId);
+      }
+    };
+  }, []);
+
   return (
     <main className="relative overflow-hidden bg-surface-secondary">
       {/* ── Global Ambient Background ── */}
@@ -46,7 +75,7 @@ export function HomePage() {
       </div>
 
       <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
-        <HeroCanvas />
+        {showCanvas ? <HeroCanvas /> : null}
       </div>
 
       <Header />

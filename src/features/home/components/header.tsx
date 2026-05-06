@@ -30,27 +30,61 @@ export function Header() {
     }, []);
 
     useEffect(() => {
+        const observedIds = new Set<string>();
+
         const observer = new IntersectionObserver(
             (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
-                        setActiveSection(entry.target.id);
-                    }
-                });
+                const visibleSections = entries
+                    .filter((entry) => entry.isIntersecting)
+                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+                if (visibleSections.length > 0) {
+                    setActiveSection(visibleSections[0].target.id);
+                }
             },
             {
                 root: null,
-                threshold: [0.2, 0.5, 0.8],
-                rootMargin: "-20% 0px -40% 0px",
+                threshold: [0.15, 0.35, 0.6],
+                rootMargin: "-18% 0px -45% 0px",
             }
         );
 
-        navLinks.forEach((link) => {
-            const element = document.getElementById(link.id);
-            if (element) observer.observe(element);
+        const observeSections = () => {
+            navLinks.forEach((link) => {
+                const element = document.getElementById(link.id);
+                if (element && !observedIds.has(link.id)) {
+                    observer.observe(element);
+                    observedIds.add(link.id);
+                }
+            });
+        };
+
+        observeSections();
+
+        const mutationObserver = new MutationObserver(() => {
+            observeSections();
         });
 
-        return () => observer.disconnect();
+        mutationObserver.observe(document.body, {
+            childList: true,
+            subtree: true,
+        });
+
+        const syncFromHash = () => {
+            const hash = window.location.hash.replace("#", "");
+            if (hash && navLinks.some((link) => link.id === hash)) {
+                setActiveSection(hash);
+            }
+        };
+
+        window.addEventListener("hashchange", syncFromHash);
+        syncFromHash();
+
+        return () => {
+            window.removeEventListener("hashchange", syncFromHash);
+            mutationObserver.disconnect();
+            observer.disconnect();
+        };
     }, [navLinks]);
 
     return (
@@ -59,7 +93,7 @@ export function Header() {
                 <div className={`flex items-center justify-between rounded-full border transition-all duration-500 ease-in-out ${isScrolled ? 'bg-white/80 backdrop-blur-lg border-slate-200/60 shadow-lg shadow-slate-200/20 px-4 py-2 sm:px-6' : 'bg-transparent border-transparent px-2 sm:px-4 py-2'}`}>
 
                     {/* Logo */}
-                    <Link href="#hero" className="flex items-center gap-3 group">
+                    <Link href="#hero" onClick={() => setActiveSection("hero")} className="flex items-center gap-3 group">
                         <div className="relative overflow-hidden rounded-full transition-transform duration-300 group-hover:scale-105 bg-white shadow-sm border border-slate-100">
                             <Image src="/assests/images/logo.png" alt="Logo" width={40} height={40} className="object-cover" />
                         </div>
@@ -77,10 +111,11 @@ export function Header() {
                                 <Link
                                     key={link.id}
                                     href={link.href}
+                                    onClick={() => setActiveSection(link.id)}
                                     className={`
                                         relative px-4 py-2 text-[13px] font-semibold transition-all duration-300 rounded-full
                                         ${isActive
-                                            ? "text-emerald-800 bg-emerald-100/60 shadow-sm"
+                                            ? "text-white bg-emerald-100/40 shadow-sm"
                                             : "text-slate-500 hover:text-slate-900 hover:bg-slate-100/50"
                                         }
                                     `}
@@ -95,6 +130,7 @@ export function Header() {
                     <div className="flex items-center gap-2 lg:gap-0">
                         <Link
                             href="#contact"
+                            onClick={() => setActiveSection("contact")}
                             className="hidden lg:inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-xs font-bold tracking-wide text-white transition-all hover:bg-slate-800 hover:shadow-md hover:-translate-y-0.5"
                         >
                             <UserRound className="h-3.5 w-3.5 text-emerald-400" aria-hidden="true" />
@@ -120,10 +156,10 @@ export function Header() {
 
             {/* Mobile Menu Drawer */}
             <nav
-                className={`fixed right-0 top-0 z-50 h-[100dvh] w-[280px] bg-white shadow-2xl transition-transform duration-300 ease-out lg:hidden flex flex-col ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                className={`fixed right-0 top-0 z-50 h-dvh w-70 bg-white shadow-2xl transition-transform duration-300 ease-out lg:hidden flex flex-col ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
                 aria-label="Mobile navigation"
             >
-                <div className="flex flex-shrink-0 items-center justify-between px-6 py-5 border-b border-slate-100">
+                <div className="flex shrink-0 items-center justify-between px-6 py-5 border-b border-slate-100">
                     <p className="text-sm font-bold tracking-wide text-slate-900 uppercase">Menu</p>
                     <button onClick={() => setIsMobileMenuOpen(false)} className="rounded-full p-2 -mr-2 text-slate-500 hover:bg-slate-100 transition-colors">
                         <X className="h-5 w-5" />
@@ -137,7 +173,10 @@ export function Header() {
                             <Link
                                 key={link.id}
                                 href={link.href}
-                                onClick={() => setIsMobileMenuOpen(false)}
+                                onClick={() => {
+                                    setActiveSection(link.id);
+                                    setIsMobileMenuOpen(false);
+                                }}
                                 className={`
                                 px-4 py-3.5 text-sm font-semibold transition-all duration-200 rounded-xl
                                 ${isActive
@@ -155,7 +194,10 @@ export function Header() {
                 <div className="mt-auto p-6 border-t border-slate-100 bg-slate-50">
                     <Link
                         href="#contact"
-                        onClick={() => setIsMobileMenuOpen(false)}
+                        onClick={() => {
+                            setActiveSection("contact");
+                            setIsMobileMenuOpen(false);
+                        }}
                         className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3.5 text-sm font-bold transition hover:bg-slate-800 hover:shadow-md"
                         style={{ color: '#ffffff' }}
                     >
