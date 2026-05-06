@@ -41,15 +41,15 @@ export function HomePage() {
   const [showCanvas, setShowCanvas] = useState(false);
 
   useEffect(() => {
-    let timeoutId: number | undefined;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
     let idleCallbackId: number | undefined;
 
     const enableCanvas = () => setShowCanvas(true);
 
-    if ("requestIdleCallback" in window) {
+    if (typeof window.requestIdleCallback === "function") {
       idleCallbackId = window.requestIdleCallback(enableCanvas, { timeout: 1200 });
     } else {
-      timeoutId = window.setTimeout(enableCanvas, 180);
+      timeoutId = setTimeout(enableCanvas, 180);
     }
 
     return () => {
@@ -57,7 +57,7 @@ export function HomePage() {
         window.cancelIdleCallback(idleCallbackId);
       }
       if (timeoutId !== undefined) {
-        window.clearTimeout(timeoutId);
+        clearTimeout(timeoutId);
       }
     };
   }, []);
