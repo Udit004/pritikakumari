@@ -69,7 +69,9 @@ export function ContactSection() {
               Contact
             </p>
           </div>
-          <h2 className="text-4xl font-bold tracking-tight" style={{ color: "#064e3b" }}>
+          <h2 className="text-4xl font-bold tracking-tight text-black" 
+          // style={{ color: "#064e3b" }}
+          >
             {contactData.title}
           </h2>
           <div className="flex items-center gap-2">
@@ -97,8 +99,8 @@ export function ContactSection() {
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-emerald-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15 border border-emerald-500/25">
-                    {getIcon(contact.icon)}
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-black border border-emerald-500/25">
+                    <span className="text-emerald-500">{getIcon(contact.icon)}</span>
                   </div>
                   <div className="flex-1 min-w-0">
                     <span className="text-sm font-bold text-slate-900">

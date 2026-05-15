@@ -141,10 +141,10 @@ export function ContactForm({ itemVariants }: ContactFormProps) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 px-6 py-3 text-sm font-semibold text-white transition hover:shadow-lg hover:from-emerald-700 hover:to-emerald-600 disabled:cursor-not-allowed disabled:opacity-70 cursor-pointer"
+          className="w-full flex items-center justify-center gap-2 rounded-xl bg-black px-6 py-3 text-sm font-semibold text-white transition hover:shadow-lg hover:from-emerald-700 hover:to-emerald-600 disabled:cursor-not-allowed disabled:opacity-70 cursor-pointer"
         >
-          {isSubmitting ? "Sending..." : "Send Message"}
-          <Send className="h-4 w-4" />
+          <span className="text-green-500">{isSubmitting ? "Sending..." : "Send Message"}</span>
+          <Send className="h-4 w-4 text-green-500" />
         </button>
       </form>
     </motion.div>

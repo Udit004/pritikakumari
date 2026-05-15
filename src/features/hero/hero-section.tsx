@@ -96,9 +96,9 @@ export function HeroSection() {
                     href="#contact"
                     className="group relative inline-flex w-full sm:w-auto items-center justify-center gap-2 overflow-hidden rounded-full bg-slate-900 px-7 py-3 text-sm font-semibold text-white transition-all hover:bg-slate-800 hover:shadow-lg hover:shadow-slate-900/20 hover:-translate-y-0.5"
                 >
-                    <FileText className="text-white h-4 w-4" />
-                    <span className="text-white">{heroData.cta.primary}</span>
-                    <ArrowRight className="h-4 w-4 text-white transition-transform group-hover:translate-x-1" />
+                    <FileText className="text-green-500 h-4 w-4" />
+                    <span className="text-green-500">{heroData.cta.primary}</span>
+                    <ArrowRight className="h-4 w-4 text-green-500 transition-transform group-hover:translate-x-1" />
                 </Link>
 
                 <Link
@@ -107,8 +107,8 @@ export function HeroSection() {
                     rel="noopener noreferrer"
                     className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border-2 border-slate-200 bg-white/50 backdrop-blur-sm px-7 py-3 text-sm font-semibold text-slate-700 transition-all hover:border-emerald-500 hover:bg-white hover:text-emerald-600"
                 >
-                    <ExternalLink className="h-4 w-4" />
-                    <span>{heroData.cta.secondary}</span>
+                    <ExternalLink className="h-4 w-4 transition-colors group-hover:text-green-500" />
+                    {heroData.cta.secondary}
                 </Link>
             </div>
 
@@ -151,8 +151,8 @@ export function HeroSection() {
             {/* Floating Glassmorphic Tag (Desktop Only) */}
             <div className="hidden lg:flex absolute top-1/4 lg:-left-6 z-20 cursor-default">
                 <div className="flex items-center gap-3 rounded-2xl bg-white/70 backdrop-blur-md border border-white/50 shadow-xl p-3 pr-5">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
-                        <BarChart2 className="h-5 w-5" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white">
+                        <BarChart2 className="h-5 w-5 text-emerald-600" />
                     </div>
                     <div>
                         <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider tabular-nums">Expertise</p>

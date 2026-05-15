@@ -97,7 +97,7 @@ export function AboutSection() {
                     {/* Heading — same scale & gradient as hero h1 */}
                     <motion.div variants={fadeUp} className="mt-4">
                         <h2 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-950 drop-shadow-sm">
-                            <span className="text-4xl font-bold tracking-tight" style={{ color: "#064e3b" }}>
+                            <span className="text-4xl font-bold tracking-tight" style={{ color: "#fffff" }}>
                                 Who I Am
                             </span>
                         </h2>

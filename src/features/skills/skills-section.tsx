@@ -17,14 +17,14 @@ import SkillCard from "./SkillCard";
 import React from "react";
 
 const iconMap: Record<string, React.ReactNode> = {
-  Users: <Users className="h-5 w-5 text-emerald-600" />,
-  Monitor: <Monitor className="h-5 w-5 text-emerald-600" />,
-  FileText: <FileText className="h-5 w-5 text-emerald-600" />,
-  ShieldCheck: <ShieldCheck className="h-5 w-5 text-emerald-600" />,
-  Folder: <Folder className="h-5 w-5 text-emerald-600" />,
-  UserCog: <UserCog className="h-5 w-5 text-emerald-600" />,
-  BarChart: <BarChart className="h-5 w-5 text-emerald-600" />,
-  MessageSquare: <MessageSquare className="h-5 w-5 text-emerald-600" />,
+  Users: <Users className="h-5 w-5 text-emerald-400" />,
+  Monitor: <Monitor className="h-5 w-5 text-emerald-400" />,
+  FileText: <FileText className="h-5 w-5 text-emerald-400" />,
+  ShieldCheck: <ShieldCheck className="h-5 w-5 text-emerald-400" />,
+  Folder: <Folder className="h-5 w-5 text-emerald-400" />,
+  UserCog: <UserCog className="h-5 w-5 text-emerald-400" />,
+  BarChart: <BarChart className="h-5 w-5 text-emerald-400" />,
+  MessageSquare: <MessageSquare className="h-5 w-5" />,
 };
 
 export function SkillsSection() {
@@ -94,7 +94,7 @@ export function SkillsSection() {
           {/* Heading — matches the bold emerald-green hero heading style */}
           <motion.h2
             className="text-4xl sm:text-5xl font-bold tracking-tight"
-            style={{ color: "#064e3b" }}
+            style={{ color: "#fffff" }}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -151,7 +151,7 @@ export function SkillsSection() {
               name={skill.name}
               icon={
                 iconMap[skill.icon] ?? (
-                  <Users className="h-5 w-5 text-emerald-600" />
+                  <Users className="h-5 w-5 text-black" />
                 )
               }
               level={skill.level}

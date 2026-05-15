@@ -80,7 +80,7 @@ export function ProjectsSection() {
               Projects
             </p>
           </div>
-          <h2 className="text-4xl font-bold tracking-tight" style={{ color: "#064e3b" }}>
+          <h2 className="text-4xl font-bold tracking-tight" style={{ color: "#fffff" }}>
             {projectsData.title}
           </h2>
           <div className="flex items-center gap-2">
@@ -109,7 +109,7 @@ export function ProjectsSection() {
               
               <div className="p-6">
                 {/* Icon */}
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/15 border border-emerald-200/30">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-black border border-emerald-200/30">
                   {getIcon(project.icon)}
                 </div>
 

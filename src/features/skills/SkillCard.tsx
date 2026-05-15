@@ -57,11 +57,12 @@ function SkillCard({ name, icon, level, index = 0 }: Props) {
         {/* Icon + level badge row */}
         <div className="flex items-start justify-between">
           <div
-            className="flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300 group-hover:scale-105"
-            style={{
-              background: "linear-gradient(135deg, #ecfdf5, #d1fae5)",
-              border: "1px solid rgba(16,185,129,0.2)",
-            }}
+            className="flex h-12 w-12 items-center justify-center rounded-xl bg-black transition-all duration-300 group-hover:scale-105"
+            // style={{
+            //   background: "linear-gradient(135deg, #ecfdf5, #d1fae5)",
+            //   border: "1px solid rgba(16,185,129,0.2)",
+            //   color: "#000000",
+            // }}
           >
             {icon}
           </div>

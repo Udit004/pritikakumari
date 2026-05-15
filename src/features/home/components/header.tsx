@@ -115,12 +115,12 @@ export function Header() {
                                     className={`
                                         relative px-4 py-2 text-[13px] font-semibold transition-all duration-300 rounded-full
                                         ${isActive
-                                            ? "text-white bg-emerald-100/40 shadow-sm"
+                                            ? "text-emerald-400 bg-black shadow-sm"
                                             : "text-slate-500 hover:text-slate-900 hover:bg-slate-100/50"
                                         }
                                     `}
                                 >
-                                    {link.label}
+                                    <span className={`${isActive ? "text-emerald-400":"text-black"}`}>{link.label}</span>
                                 </Link>
                             );
                         })}
@@ -134,7 +134,7 @@ export function Header() {
                             className="hidden lg:inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-xs font-bold tracking-wide text-white transition-all hover:bg-slate-800 hover:shadow-md hover:-translate-y-0.5"
                         >
                             <UserRound className="h-3.5 w-3.5 text-emerald-400" aria-hidden="true" />
-                            <span className="text-white">Connect</span>
+                            <span className="text-emerald-400">Connect</span>
                         </Link>
 
                         <button

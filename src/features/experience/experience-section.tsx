@@ -80,7 +80,7 @@ export function ExperienceSection() {
               Experience
             </p>
           </div>
-          <h2 className="text-4xl font-bold tracking-tight" style={{ color: "#064e3b" }}>
+          <h2 className="text-4xl font-bold tracking-tight" style={{ color: "#fffff" }}>
             {experienceData.title}
           </h2>
           <div className="flex items-center gap-2">

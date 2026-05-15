@@ -71,7 +71,9 @@ export function EducationSection() {
               Learning
             </p>
           </div>
-          <h2 className="text-4xl font-bold tracking-tight" style={{ color: "#064e3b" }}>
+          <h2 className="text-4xl font-bold tracking-tight text-black" 
+          // style={{ color: "#064e3b" }}
+          >
             {educationData.title}
           </h2>
           <div className="flex items-center gap-2">
