@@ -61,7 +61,7 @@ export function HeroSection() {
     const leftPanel = (
         <>
             {/* Badge */}
-            <div className="group inline-flex w-fit items-center gap-2 rounded-full border border-green-200/80 bg-green-50/50 backdrop-blur-md mt-4 px-4 py-1.5 shadow-sm transition-all hover:bg-green-100/50">
+            <div className="group inline-flex w-fit items-center gap-2 rounded-full border border-green-200/80 bg-green-50/50 backdrop-blur-md mt-2 px-4 py-1.5 shadow-sm transition-all hover:bg-green-100/50">
                 <span className="relative flex h-2.5 w-2.5">
                     <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                 </span>
@@ -135,72 +135,65 @@ export function HeroSection() {
 
     const rightPanel = (
         <>
-            {/* Abstract Circle behind Image */}
-
             <Image
                 src="/assests/images/hero/profile_image.png"
                 alt={`${heroData.name} - Profile`}
-                width={600}
-                height={800}
+                width={800}
+                height={900}
                 priority
-
                 sizes="(min-width: 1024px) 40vw, (min-width: 640px) 55vw, 90vw"
-                className="relative z-10 object-cover object-center drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)] h-full w-auto lg:h-[85%] rounded-md"
+                className="relative z-10 object-contain object-center drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)] h-full w-full rounded-4xl"
             />
-
-            {/* Floating Glassmorphic Tag (Desktop Only) */}
-            <div className="hidden lg:flex absolute top-1/4 lg:-left-6 z-20 cursor-default">
-                <div className="flex items-center gap-3 rounded-2xl bg-white/70 backdrop-blur-md border border-white/50 shadow-xl p-3 pr-5">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white">
-                        <BarChart2 className="h-5 w-5 text-emerald-600" />
-                    </div>
-                    <div>
-                        <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider tabular-nums">Expertise</p>
-                        <p className="text-sm font-extrabold text-slate-900">HR Analytics</p>
-                    </div>
-                </div>
-            </div>
         </>
     );
 
     return (
         <section
             id="hero"
-            className="group/hero relative w-full min-h-dvh lg:h-dvh lg:min-h-175 flex items-center justify-center overflow-hidden pt-24 pb-12 lg:py-0"
+            className="group/hero relative w-full min-h-dvh lg:h-dvh lg:min-h-175 flex items-center justify-center overflow-hidden pt-12 pb-12 lg:pt-24 lg:py-0"
         >
-            <div className="mx-auto w-full max-w-7xl px-6 lg:px-8 relative z-10 flex flex-col lg:grid lg:grid-cols-2 gap-2 md:gap-8 lg:items-center lg:h-full">
+            <div className="mx-auto w-full max-w-7xl px-6 lg:px-8 relative z-10 lg:min-h-full">
+                <div className="relative flex min-h-[calc(100vh-6rem)] flex-col justify-center gap-10 lg:gap-0">
+                    <div className="absolute inset-y-6 right-0 -z-10 hidden w-[72vw] rounded-[3rem] bg-[radial-gradient(circle_at_18%_24%,rgba(167,243,208,0.38),transparent_34%),radial-gradient(circle_at_82%_28%,rgba(186,230,253,0.42),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.75),rgba(240,249,255,0.38))] blur-3xl lg:block" />
 
-                {/* ── Left Content ── */}
-                {isMounted ? (
-                    <motion.div
-                        className="flex flex-col justify-center w-full order-2 lg:order-1 flex-1 lg:h-full z-20"
-                        initial={{ opacity: 0, y: 18 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.75 }}
-                    >
-                        {leftPanel}
-                    </motion.div>
-                ) : (
-                    <div className="flex flex-col justify-center w-full order-2 lg:order-1 flex-1 lg:h-full z-20">
-                        {leftPanel}
-                    </div>
-                )}
+                    {isMounted ? (
+                        <motion.div
+                            className="pointer-events-none relative z-10 w-full lg:absolute lg:-right-8 lg:top-1/2 lg:w-[76%] lg:-translate-y-1/2"
+                            initial={{ opacity: 0, y: 22, scale: 0.98 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 0.85, delay: 0.1 }}
+                        >
+                            <div className="relative ml-30 h-[40vh] w-full max-w-170 sm:h-[46vh] lg:h-[82vh] lg:max-w-200">
+                                <div className="absolute -left-6 top-10 hidden h-28 w-28 rounded-full bg-emerald-300/30 blur-3xl lg:block" />
+                                <div className="absolute -right-8 bottom-12 hidden h-36 w-36 rounded-full bg-sky-300/30 blur-3xl lg:block" />
+                                {rightPanel}
+                            </div>
+                        </motion.div>
+                    ) : (
+                        <div className="pointer-events-none relative z-10 w-full lg:absolute lg:-right-4 lg:top-1/2 lg:w-[76%] lg:-translate-y-1/2">
+                            <div className="relative ml-auto h-[40vh] w-full max-w-170 sm:h-[46vh] lg:h-[82vh] lg:max-w-none">
+                                <div className="absolute -left-6 top-10 hidden h-28 w-28 rounded-full bg-emerald-300/30 blur-3xl lg:block" />
+                                <div className="absolute -right-8 bottom-12 hidden h-36 w-36 rounded-full bg-sky-300/30 blur-3xl lg:block" />
+                                {rightPanel}
+                            </div>
+                        </div>
+                    )}
 
-                {/* ── Right Image ── */}
-                {isMounted ? (
-                    <motion.div
-                        className="relative w-full min-h-75 h-[40vh] sm:h-[45vh] lg:h-[80vh] md:pt-4 flex items-center justify-center order-1 lg:order-2"
-                        initial={{ opacity: 0, y: 22, scale: 0.98 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        transition={{ duration: 0.85, delay: 0.1 }}
-                    >
-                        {rightPanel}
-                    </motion.div>
-                ) : (
-                    <div className="relative w-full min-h-75 h-[40vh] sm:h-[45vh] lg:h-[80vh] md:pt-4 flex items-center justify-center order-1 lg:order-2">
-                        {rightPanel}
-                    </div>
-                )}
+                    {isMounted ? (
+                        <motion.div
+                            className="relative z-20 w-full max-w-2xl bg-transparent p-0 sm:max-w-3xl lg:max-w-[54%] lg:pr-10"
+                            initial={{ opacity: 0, y: 18 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.75 }}
+                        >
+                            {leftPanel}
+                        </motion.div>
+                    ) : (
+                        <div className="relative z-20 w-full max-w-2xl bg-transparent p-0 sm:max-w-3xl lg:max-w-[54%] lg:pr-10">
+                            {leftPanel}
+                        </div>
+                    )}
+                </div>
             </div>
         </section>
     );
