@@ -93,7 +93,7 @@ export function HeroSection() {
             {/* CTA Buttons */}
             <div className="mt-8 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center w-full max-w-sm sm:max-w-none">
                 <Link
-                    href="#contact"
+                    href="#resume"
                     className="group relative inline-flex w-full sm:w-auto items-center justify-center gap-2 overflow-hidden rounded-full bg-slate-900 px-7 py-3 text-sm font-semibold text-white transition-all hover:bg-slate-800 hover:shadow-lg hover:shadow-slate-900/20 hover:-translate-y-0.5"
                 >
                     <FileText className="text-green-500 h-4 w-4" />

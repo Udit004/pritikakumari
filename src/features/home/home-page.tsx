@@ -32,6 +32,11 @@ const EducationSection = dynamic(
   { ssr: false, loading: () => null }
 );
 
+const ResumeSection = dynamic(
+  () => import("@/features/resume").then((mod) => mod.ResumeSection),
+  { ssr: false, loading: () => null }
+);
+
 const ContactSection = dynamic(
   () => import("@/features/contact").then((mod) => mod.ContactSection),
   { ssr: false, loading: () => null }
@@ -86,6 +91,7 @@ export function HomePage() {
       <ExperienceSection />
       <ProjectsSection />
       <EducationSection />
+      <ResumeSection />
       <ContactSection />
 
       <Footer />
