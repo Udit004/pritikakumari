@@ -1,7 +1,6 @@
 "use client";
 
 import { experienceData } from "./data";
-import { Briefcase } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
@@ -34,8 +33,10 @@ export function ExperienceSection() {
       transition: { duration: 0.5 },
     },
     hover: {
-      y: -4,
-      transition: { duration: 0.22 },
+      y: -8,
+      rotateX: -5,
+      rotateY: 5,
+      transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] as const },
     },
   };
 
@@ -84,7 +85,7 @@ export function ExperienceSection() {
             {experienceData.title}
           </h2>
           <div className="flex items-center gap-2">
-            <div className="w-12 h-1 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-300" />
+            <div className="w-12 h-1 rounded-full bg-linear-to-r from-emerald-500 to-emerald-300" />
             <div className="w-5 h-1 rounded-full bg-emerald-200" />
           </div>
         </motion.div>
@@ -98,7 +99,7 @@ export function ExperienceSection() {
           viewport={{ once: true, margin: "-100px" }}
         >
           {/* Center vertical line */}
-          <div className="absolute left-1/2 top-12 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-emerald-500/40 to-transparent -translate-x-1/2 hidden lg:block" />
+          <div className="absolute left-1/2 top-12 bottom-0 w-0.5 bg-linear-to-b from-transparent via-emerald-500/40 to-transparent -translate-x-1/2 hidden lg:block" />
 
           <div className="space-y-12 lg:space-y-16">
             {experienceData.experiences.map((exp, idx) => {
@@ -116,12 +117,20 @@ export function ExperienceSection() {
                     <div className="flex-1 flex justify-end pr-16">
                       {isLeft ? (
                         <motion.div
-                          className="relative w-full max-w-lg bg-white rounded-2xl border border-emerald-200/30 shadow-sm overflow-hidden group"
+                          className="relative w-full max-w-lg rounded-2xl overflow-hidden group"
+                          style={{
+                            background: "linear-gradient(180deg, #ffffff 0%, #f4faf6 100%)",
+                            border: "1px solid rgba(16, 185, 129, 0.14)",
+                            boxShadow:
+                              "0 16px 30px rgba(15, 23, 42, 0.08), 0 4px 10px rgba(16, 185, 129, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+                            transformStyle: "preserve-3d",
+                            transformPerspective: 1200,
+                          }}
                           variants={cardVariants}
                           whileHover="hover"
                         >
                           {/* Accent bar */}
-                          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-emerald-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-emerald-500 to-emerald-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                           {/* Arrow pointer */}
                           <div className="absolute -right-3.5 top-6 w-3 h-3 bg-white border-r border-b border-emerald-200/30 rotate-45" />
@@ -146,7 +155,7 @@ export function ExperienceSection() {
                             <ul className="space-y-2.5">
                               {exp.responsibilities.map((resp, respIdx) => (
                                 <li key={respIdx} className="flex gap-2.5 text-xs text-gray-600 leading-relaxed">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0" />
+                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
                                   <span>{resp}</span>
                                 </li>
                               ))}
@@ -170,7 +179,7 @@ export function ExperienceSection() {
 
                     {/* CENTER DOT */}
                     <motion.div
-                      className="relative flex items-center justify-center flex-shrink-0 z-20"
+                      className="relative flex items-center justify-center shrink-0 z-20"
                       variants={dotVariants}
                     >
                       <div className="w-6 h-6 rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/40">
@@ -182,12 +191,20 @@ export function ExperienceSection() {
                     <div className="flex-1 pl-16">
                       {!isLeft ? (
                         <motion.div
-                          className="relative w-full max-w-lg bg-white rounded-2xl border border-emerald-200/30 shadow-sm overflow-hidden group"
+                          className="relative w-full max-w-lg rounded-2xl overflow-hidden group"
+                          style={{
+                            background: "linear-gradient(180deg, #ffffff 0%, #f4faf6 100%)",
+                            border: "1px solid rgba(16, 185, 129, 0.14)",
+                            boxShadow:
+                              "0 16px 30px rgba(15, 23, 42, 0.08), 0 4px 10px rgba(16, 185, 129, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+                            transformStyle: "preserve-3d",
+                            transformPerspective: 1200,
+                          }}
                           variants={cardVariants}
                           whileHover="hover"
                         >
                           {/* Accent bar */}
-                          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-emerald-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-emerald-500 to-emerald-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                           {/* Arrow pointer */}
                           <div className="absolute -left-3.5 top-6 w-3 h-3 bg-white border-l border-t border-emerald-200/30 rotate-45" />
@@ -212,7 +229,7 @@ export function ExperienceSection() {
                             <ul className="space-y-2.5">
                               {exp.responsibilities.map((resp, respIdx) => (
                                 <li key={respIdx} className="flex gap-2.5 text-xs text-gray-600 leading-relaxed">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0" />
+                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
                                   <span>{resp}</span>
                                 </li>
                               ))}
@@ -239,16 +256,24 @@ export function ExperienceSection() {
                   <div className="lg:hidden">
                     <div className="relative pl-8 flex">
                       <motion.div
-                        className="h-3 w-3 rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/40 absolute -left-1.5 top-5 z-10 flex-shrink-0"
+                        className="h-3 w-3 rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/40 absolute -left-1.5 top-5 z-10 shrink-0"
                         variants={dotVariants}
                       />
                       <motion.div
-                        className="flex-1 relative bg-white rounded-2xl border border-emerald-200/30 shadow-sm overflow-hidden group"
+                        className="flex-1 relative rounded-2xl overflow-hidden group"
+                        style={{
+                          background: "linear-gradient(180deg, #ffffff 0%, #f4faf6 100%)",
+                          border: "1px solid rgba(16, 185, 129, 0.14)",
+                          boxShadow:
+                            "0 16px 30px rgba(15, 23, 42, 0.08), 0 4px 10px rgba(16, 185, 129, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+                          transformStyle: "preserve-3d",
+                          transformPerspective: 1200,
+                        }}
                         variants={cardVariants}
                         whileHover="hover"
                       >
                         {/* Accent bar */}
-                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-emerald-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-emerald-500 to-emerald-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                         <div className="p-5">
                           <div className="flex items-start gap-3 mb-3">
@@ -277,7 +302,7 @@ export function ExperienceSection() {
                           <ul className="space-y-2.5">
                             {exp.responsibilities.map((resp, respIdx) => (
                               <li key={respIdx} className="flex gap-2.5 text-xs text-gray-600 leading-relaxed">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0" />
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
                                 <span>{resp}</span>
                               </li>
                             ))}

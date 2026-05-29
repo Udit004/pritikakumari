@@ -64,7 +64,11 @@ export function ResumeSection() {
         </motion.div>
 
         <motion.div
-          className="mx-auto max-w-5xl overflow-hidden rounded-[1.75rem] border border-slate-200/70 bg-white shadow-sm"
+          className="mx-auto max-w-5xl overflow-hidden rounded-[1.75rem] border border-emerald-300/60 bg-white shadow-sm"
+          style={{
+            boxShadow:
+              "0 18px 40px rgba(15, 23, 42, 0.08), 0 4px 14px rgba(16, 185, 129, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.85)",
+          }}
           variants={itemVariants}
           initial="hidden"
           whileInView="visible"
@@ -84,7 +88,7 @@ export function ResumeSection() {
             <button
               type="button"
               onClick={() => setIsFullscreenOpen(true)}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:border-emerald-300 hover:text-emerald-700"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:border-emerald-300 hover:text-emerald-700 cursor-pointer"
             >
               <Expand className="h-4 w-4" />
               Full screen
@@ -105,7 +109,7 @@ export function ResumeSection() {
               <a
                 href={resumePdfHref}
                 download
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-slate-800"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-slate-800 cursor-pointer"
               >
                 <Download className="h-4 w-4 text-emerald-400" />
                 <span className="text-emerald-400">Download</span>
@@ -114,7 +118,7 @@ export function ResumeSection() {
                 href={resumePdfHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-emerald-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition-all hover:-translate-y-0.5 hover:border-emerald-300"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-emerald-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition-all hover:-translate-y-0.5 hover:border-emerald-300 cursor-pointer"
               >
                 <Eye className="h-4 w-4 text-emerald-600" />
                 Full page
@@ -135,7 +139,7 @@ export function ResumeSection() {
               <button
                 type="button"
                 onClick={() => setIsFullscreenOpen(false)}
-                className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white p-2 text-slate-700 transition hover:border-emerald-300 hover:text-emerald-700"
+                className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white p-2 text-slate-700 transition hover:border-emerald-300 hover:text-emerald-700 cursor-pointer"
                 aria-label="Close full screen preview"
               >
                 <X className="h-4 w-4" />
