@@ -24,7 +24,7 @@ const iconMap: Record<string, React.ReactNode> = {
   Folder: <Folder className="h-5 w-5 text-emerald-400" />,
   UserCog: <UserCog className="h-5 w-5 text-emerald-400" />,
   BarChart: <BarChart className="h-5 w-5 text-emerald-400" />,
-  MessageSquare: <MessageSquare className="h-5 w-5" />,
+  MessageSquare: <MessageSquare className="h-5 w-5 text-emerald-400" />,
 };
 
 export function SkillsSection() {
