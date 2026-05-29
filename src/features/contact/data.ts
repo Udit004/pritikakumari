@@ -8,12 +8,6 @@ export const contactData = {
       icon: "Mail",
     },
     {
-      type: "Phone",
-      value: "+91 9341894916",
-      link: "tel:+919341894916",
-      icon: "Phone",
-    },
-    {
       type: "Location",
       value: "Noida, Uttar Pradesh, India",
       link: null,
