@@ -135,15 +135,16 @@ export function HeroSection() {
 
     const rightPanel = (
         <>
-            <Image
-                src="/assests/images/hero/profile_image.png"
-                alt={`${heroData.name} - Profile`}
-                width={800}
-                height={900}
-                priority
-                sizes="(min-width: 1024px) 40vw, (min-width: 640px) 55vw, 90vw"
-                className="relative z-10 object-contain object-center drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)] h-full w-full rounded-4xl"
-            />
+            <div className="relative z-10 h-full w-full overflow-hidden rounded-4xl border border-white/50 bg-white/30 shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
+                <Image
+                    src="/assests/images/hero/profile_image.png"
+                    alt={`${heroData.name} - Profile`}
+                    priority
+                    sizes="(min-width: 1024px) 40vw, (min-width: 640px) 55vw, 90vw"
+                    fill
+                    className="object-cover object-center"
+                />
+            </div>
         </>
     );
 

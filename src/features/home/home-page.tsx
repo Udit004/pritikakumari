@@ -42,6 +42,11 @@ const ContactSection = dynamic(
   { ssr: false, loading: () => null }
 );
 
+const AiChatSection = dynamic(
+  () => import("@/features/aiChat").then((mod) => mod.AiChatSection),
+  { ssr: false, loading: () => null }
+);
+
 export function HomePage() {
   const [showCanvas, setShowCanvas] = useState(false);
 
@@ -93,6 +98,7 @@ export function HomePage() {
       <EducationSection />
       <ResumeSection />
       <ContactSection />
+      <AiChatSection />
 
       <Footer />
     </main>
