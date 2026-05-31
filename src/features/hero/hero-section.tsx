@@ -151,7 +151,7 @@ export function HeroSection() {
     return (
         <section
             id="hero"
-            className="group/hero relative w-full min-h-dvh lg:h-dvh lg:min-h-175 flex items-center justify-center overflow-hidden pt-12 pb-12 lg:pt-24 lg:py-0"
+            className="group/hero relative w-full min-h-dvh lg:h-dvh lg:min-h-175 flex items-center justify-center overflow-hidden pt-16 pb-8 lg:pt-24 lg:py-0"
         >
             <div className="mx-auto w-full max-w-7xl px-6 lg:px-8 relative z-10 lg:min-h-full">
                 <div className="relative flex min-h-[calc(100vh-6rem)] flex-col justify-center gap-10 lg:gap-0">
@@ -164,7 +164,7 @@ export function HeroSection() {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             transition={{ duration: 0.85, delay: 0.1 }}
                         >
-                            <div className="relative ml-30 h-[40vh] w-full max-w-170 sm:h-[46vh] lg:h-[82vh] lg:max-w-200">
+                            <div className="relative mx-auto h-[40vh] w-full max-w-170 sm:h-[46vh] lg:ml-30 lg:mr-0 lg:h-[82vh] lg:max-w-200">
                                 <div className="absolute -left-6 top-10 hidden h-28 w-28 rounded-full bg-emerald-300/30 blur-3xl lg:block" />
                                 <div className="absolute -right-8 bottom-12 hidden h-36 w-36 rounded-full bg-sky-300/30 blur-3xl lg:block" />
                                 {rightPanel}

@@ -107,20 +107,26 @@ async function readSseStream(response: Response, handlers: StreamHandlers, signa
   }
 }
 
+function resolveStreamUrl(rawUrl: string) {
+  if (rawUrl.includes("/api/aiChat/stream")) {
+    return rawUrl;
+  }
+
+  return `${rawUrl.replace(/\/$/, "")}/api/aiChat/stream`;
+}
+
 export async function streamAiChatReply(
   payload: AiChatRequestPayload,
   handlers: StreamHandlers,
   signal?: AbortSignal,
 ) {
-  const apiBaseUrl = process.env.NEXT_PUBLIC_AI_CHAT_API_URL;
+  const configuredUrl = process.env.NEXT_PUBLIC_AI_CHAT_API_URL?.trim() ?? "";
 
-  if (!apiBaseUrl) {
-    throw new Error("Set NEXT_PUBLIC_AI_CHAT_API_URL to your backend host or full SSE URL.");
+  if (!configuredUrl) {
+    throw new Error("Set NEXT_PUBLIC_AI_CHAT_API_URL to your host URL or full AI chat SSE endpoint URL.");
   }
 
-  const streamUrl = apiBaseUrl.includes("/api/v1/pritika-portfolio/chat/stream")
-    ? apiBaseUrl
-    : `${apiBaseUrl.replace(/\/$/, "")}/api/v1/pritika-portfolio/chat/stream`;
+  const streamUrl = resolveStreamUrl(configuredUrl);
 
   const response = await fetch(streamUrl, {
     method: "POST",
