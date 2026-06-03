@@ -105,7 +105,7 @@ export function HeroSection() {
                     href={heroData.contact.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border-2 border-slate-200 bg-white/50 backdrop-blur-sm px-7 py-3 text-sm font-semibold text-slate-700 transition-all hover:border-emerald-500 hover:bg-white hover:text-emerald-600"
+                    className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border-2 border-black bg-white/50 backdrop-blur-sm px-7 py-3 text-sm font-semibold text-slate-700 transition-all hover:border-emerald-500 hover:bg-white hover:text-emerald-600"
                 >
                     <ExternalLink className="h-4 w-4 transition-colors group-hover:text-green-500" />
                     {heroData.cta.secondary}

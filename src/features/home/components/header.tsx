@@ -19,7 +19,7 @@ export function Header() {
             { label: "Projects", href: "#projects", id: "projects" },
             { label: "Education", href: "#education", id: "education" },
             { label: "Resume", href: "#resume", id: "resume" },
-            { label: "Contact", href: "#contact", id: "contact" },
+            // { label: "Contact", href: "#contact", id: "contact" },
         ],
         []
     );
