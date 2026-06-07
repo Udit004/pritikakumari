@@ -27,6 +27,7 @@ export const metadata: Metadata = {
     "Pritika Kumari is an MBA-qualified HR Operations Specialist with expertise in HRMS administration, employee lifecycle management, payroll coordination, compliance management, recruitment support, HR analytics, and people operations.",
 
   keywords: [
+    "Pritika",
     "Pritika Kumari",
     "Pritika Tiwari",
     "HR Executive",
@@ -72,10 +73,10 @@ export const metadata: Metadata = {
 
   openGraph: {
     title:
-      "Pritika Kumari | HR Operations Specialist | HR Generalist",
+      "Pritika Kumari (Pritika Tiwari) | HR Operations Specialist | HR Generalist",
 
     description:
-      "MBA-qualified HR professional specializing in employee lifecycle management, HRMS administration, payroll coordination, HR analytics, and compliance.",
+      "Pritika Kumari, also known as Pritika Tiwari, is an MBA-qualified HR professional specializing in employee lifecycle management, HRMS administration, payroll coordination, HR analytics, and compliance.",
 
     url: "https://pritikakumari.vercel.app",
 
@@ -97,9 +98,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Pritika Kumari | HR Operations Specialist",
+    title: "Pritika Kumari (Pritika Tiwari) | HR Operations Specialist",
     description:
-      "HR Operations Specialist with expertise in HRMS, payroll, compliance, and employee lifecycle management.",
+      "Pritika Kumari, also known as Pritika Tiwari, is an HR Operations Specialist with expertise in HRMS, payroll, compliance, and employee lifecycle management.",
     images: ["/og-image.png"],
   },
 
@@ -132,7 +133,7 @@ export default function RootLayout({
 
               name: "Pritika Kumari",
 
-              alternateName: "Pritika Tiwari",
+              alternateName: ["Pritika", "Pritika Tiwari"],
 
               url: "https://pritikakumari.vercel.app",
 
