@@ -94,7 +94,7 @@ export default function CertificateList() {
           <button
             key={category}
             onClick={() => setActiveCategory(category)}
-            className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all ${
+            className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all cursor-pointer ${
               activeCategory === category
                 ? "bg-black text-white shadow-md"
                 : "text-gray-600 hover:text-black hover:bg-gray-50"
@@ -169,14 +169,14 @@ export default function CertificateList() {
       </div>
 
       {/* View More Button */}
-      <div className="mt-4 md:mt-12 flex justify-center px-4 sm:px-6">
+      {/* <div className="mt-4 md:mt-12 flex justify-center px-4 sm:px-6">
         <button className="w-full md:w-auto px-6 py-3.5 rounded-full bg-white border border-emerald-600/30 text-sm font-bold text-gray-900 hover:bg-emerald-50/50 flex items-center justify-center gap-2 shadow-sm transition-all hover:shadow-md">
           View More Certificates
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-      </div>
+      </div> */}
 
       {/* Detail Modal */}
       <AnimatePresence>
