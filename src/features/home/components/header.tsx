@@ -17,6 +17,7 @@ export function Header() {
             { label: "Skills", href: "#skills", id: "skills" },
             { label: "Experience", href: "#experience", id: "experience" },
             { label: "Projects", href: "#projects", id: "projects" },
+            { label: "Certificates", href: "#certificates", id: "certificates" },
             { label: "Education", href: "#education", id: "education" },
             { label: "Resume", href: "#resume", id: "resume" },
             // { label: "Contact", href: "#contact", id: "contact" },

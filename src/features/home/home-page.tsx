@@ -26,6 +26,10 @@ const ProjectsSection = dynamic(
   () => import("@/features/projects").then((mod) => mod.ProjectsSection),
   { ssr: false, loading: () => null }
 );
+const CertificationsSection = dynamic(
+  () => import("@/features/certifications/components/certifications-section").then((mod) => mod.CertificationsSection),
+  { ssr: false, loading: () => null }
+);
 
 const EducationSection = dynamic(
   () => import("@/features/education").then((mod) => mod.EducationSection),
@@ -95,6 +99,7 @@ export function HomePage() {
       <SkillsSection />
       <ExperienceSection />
       <ProjectsSection />
+      <CertificationsSection />
       <EducationSection />
       <ResumeSection />
       <ContactSection />
