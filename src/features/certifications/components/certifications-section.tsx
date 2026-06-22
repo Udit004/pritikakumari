@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Header from './Header'
-import CertificateList from './CertificateList'
+import SingleCertificate from './SingleCertificate'
 
 export function CertificationsSection() {
   return (
@@ -10,7 +10,7 @@ export function CertificationsSection() {
       className="py-6 relative"
     >
         <Header/>
-        <CertificateList />
+        <SingleCertificate />
     </section>
   )
 }

@@ -5,7 +5,6 @@ import {
   X, 
   ChevronLeft, 
   ChevronRight, 
-  Download, 
   ExternalLink, 
   BadgeCheck 
 } from "lucide-react";
@@ -137,10 +136,7 @@ export default function DetailCertificate({ certificate, onClose }: Props) {
 
           {/* Actions */}
           <div className="mt-auto flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-100/60">
-            <button className="flex-1 flex items-center justify-center gap-2.5 bg-[#0f172a] hover:bg-[#1e293b] text-white py-3.5 px-6 rounded-full text-sm font-bold transition-all shadow-lg shadow-slate-900/20 hover:shadow-xl hover:shadow-slate-900/30 hover:-translate-y-0.5 active:translate-y-0 active:scale-95 cursor-pointer whitespace-nowrap">
-              <Download size={18} className="text-emerald-400" />
-              Download Certificate
-            </button>
+
             <button className="flex-1 flex items-center justify-center gap-2.5 bg-white hover:bg-gray-50 text-gray-900 border border-gray-200 py-3.5 px-6 rounded-full text-sm font-bold transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95 cursor-pointer whitespace-nowrap">
               Verify Credential
               <ExternalLink size={18} className="text-gray-500" />
