@@ -6,10 +6,14 @@ import { heroData } from "./data";
 import { FileText, Briefcase, Users, BarChart2, ExternalLink, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useSectionTracking } from "@/hooks/useSectionTracking";
+import { trackEvent } from "@/lib/analytics";
 
 export function HeroSection() {
     const [typedTitle, setTypedTitle] = useState("");
     const [isMounted, setIsMounted] = useState(false);
+
+    useSectionTracking("hero");
 
     useEffect(() => {
         const titles = heroData.titleRotations;
@@ -94,6 +98,7 @@ export function HeroSection() {
             <div className="mt-8 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center w-full max-w-sm sm:max-w-none">
                 <Link
                     href="#resume"
+                    onClick={() => trackEvent("click_view_resume", { section: "hero" })}
                     className="group relative inline-flex w-full sm:w-auto items-center justify-center gap-2 overflow-hidden rounded-full bg-slate-900 px-7 py-3 text-sm font-semibold text-white transition-all hover:bg-slate-800 hover:shadow-lg hover:shadow-slate-900/20 hover:-translate-y-0.5"
                 >
                     <FileText className="text-green-500 h-4 w-4" />
@@ -105,6 +110,7 @@ export function HeroSection() {
                     href={heroData.contact.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackEvent("click_linkedin", { section: "hero" })}
                     className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border-2 border-black bg-white/50 backdrop-blur-sm px-7 py-3 text-sm font-semibold text-slate-700 transition-all hover:border-emerald-500 hover:bg-white hover:text-emerald-600"
                 >
                     <ExternalLink className="h-4 w-4 transition-colors group-hover:text-green-500" />

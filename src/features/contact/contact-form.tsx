@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { Send } from "lucide-react";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { trackEvent } from "@/lib/analytics";
 
 interface ContactFormProps {
   itemVariants: Variants;
@@ -39,11 +40,13 @@ export function ContactForm({ itemVariants }: ContactFormProps) {
         const result = (await response.json().catch(() => ({}))) as { message?: string };
 
         if (!response.ok) {
+          trackEvent("submit_contact_form", { success: false, error: result.message || "Unknown error" });
           throw new Error(
             result.message || "Something went wrong while sending the message.",
           );
         }
 
+        trackEvent("submit_contact_form", { success: true });
         return result.message || "Your message has been sent successfully.";
       });
 

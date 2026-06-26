@@ -3,8 +3,12 @@
 import { projectsData } from "./data";
 import { Briefcase, Database, Code, Users } from "lucide-react";
 import { motion } from "framer-motion";
+import { useSectionTracking } from "@/hooks/useSectionTracking";
 
-export function ProjectsSection() {
+  export function ProjectsSection() {
+
+    useSectionTracking("projects");
+
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case "Users": return <Users className="h-6 w-6 text-emerald-600" />;

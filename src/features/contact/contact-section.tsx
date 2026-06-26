@@ -4,8 +4,13 @@ import { contactData } from "./data";
 import { Mail, Phone, MapPin, Link as LinkIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import { ContactForm } from "./contact-form";
+import { useSectionTracking } from "@/hooks/useSectionTracking";
+import { trackEvent } from "@/lib/analytics";
 
 export function ContactSection() {
+
+  useSectionTracking("contact");
+
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case "Mail": return <Mail className="h-5 w-5 text-emerald-600" />;
@@ -111,6 +116,7 @@ export function ContactSection() {
                         href={contact.link}
                         target={contact.icon === "Linkedin" ? "_blank" : undefined}
                         rel={contact.icon === "Linkedin" ? "noopener noreferrer" : undefined}
+                        onClick={() => trackEvent("click_contact_link", { type: contact.type, section: "contact" })}
                         className="text-sm text-gray-600 hover:text-emerald-600 transition-colors truncate block mt-1"
                       >
                         {contact.value}

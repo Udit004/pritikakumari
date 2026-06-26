@@ -2,8 +2,12 @@
 
 import { educationData } from "./data";
 import { motion } from "framer-motion";
+import { useSectionTracking } from "@/hooks/useSectionTracking";
 
 export function EducationSection() {
+
+  useSectionTracking("education");
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

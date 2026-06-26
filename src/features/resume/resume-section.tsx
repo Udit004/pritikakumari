@@ -3,11 +3,15 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Download, Eye, Expand, FileText, X } from "lucide-react";
+import { useSectionTracking } from "@/hooks/useSectionTracking";
+import { trackEvent } from "@/lib/analytics";
 
 const resumePdfHref = "/assests/resume/Pritika%20Kumari_HR%20Analytics_%20Resume.pdf";
 
 export function ResumeSection() {
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
+
+  useSectionTracking("resume");
 
   const itemVariants = {
     hidden: { opacity: 0, y: 18 },
@@ -87,7 +91,10 @@ export function ResumeSection() {
 
             <button
               type="button"
-              onClick={() => setIsFullscreenOpen(true)}
+              onClick={() => {
+                setIsFullscreenOpen(true);
+                trackEvent("view_resume_fullscreen", { section: "resume" });
+              }}
               className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:border-emerald-300 hover:text-emerald-700 cursor-pointer"
             >
               <Expand className="h-4 w-4" />
@@ -109,6 +116,7 @@ export function ResumeSection() {
               <a
                 href={resumePdfHref}
                 download
+                onClick={() => trackEvent("download_resume", { section: "resume" })}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-slate-800 cursor-pointer"
               >
                 <Download className="h-4 w-4 text-emerald-400" />
@@ -118,6 +126,7 @@ export function ResumeSection() {
                 href={resumePdfHref}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackEvent("view_resume_fullpage", { section: "resume" })}
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-emerald-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition-all hover:-translate-y-0.5 hover:border-emerald-300 cursor-pointer"
               >
                 <Eye className="h-4 w-4 text-emerald-600" />

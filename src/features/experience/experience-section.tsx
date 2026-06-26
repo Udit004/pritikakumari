@@ -3,8 +3,12 @@
 import { experienceData } from "./data";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useSectionTracking } from "@/hooks/useSectionTracking";
 
 export function ExperienceSection() {
+
+  useSectionTracking("experience");
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

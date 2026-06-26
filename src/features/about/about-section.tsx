@@ -5,6 +5,7 @@ import { aboutData } from "./data";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { BarChart2 } from "lucide-react";
+import { useSectionTracking } from "@/hooks/useSectionTracking";
 // import { AboutCanvas } from "./about-canvas";
 
 /* ─────────────────────────────────────────────────────────────
@@ -33,6 +34,8 @@ export function AboutSection() {
     const isInView   = useInView(sectionRef, { once: true, margin: "-80px" });
 
     const paragraphs = aboutData.summary.split("\n\n");
+
+    useSectionTracking("about");
 
     return (
         <section

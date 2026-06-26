@@ -15,6 +15,7 @@ import {
 import { motion } from "framer-motion";
 import SkillCard from "./SkillCard";
 import React from "react";
+import { useSectionTracking } from "@/hooks/useSectionTracking";
 
 const iconMap: Record<string, React.ReactNode> = {
   Users: <Users className="h-5 w-5 text-emerald-400" />,
@@ -28,6 +29,9 @@ const iconMap: Record<string, React.ReactNode> = {
 };
 
 export function SkillsSection() {
+
+  useSectionTracking("skills");
+  
   return (
     <section
       id="skills"
