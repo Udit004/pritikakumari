@@ -4,9 +4,13 @@ import { projectsData } from "./data";
 import { Briefcase, Database, Code, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSectionTracking } from "@/hooks/useSectionTracking";
+import { ProjectHeader } from "./ProjectHeader";
+import { ProjectFooter } from "./ProjectFooter";
+import { useState } from "react";
+import { Analysis1 } from "./project1/Analysis1";
 
   export function ProjectsSection() {
-
+    const [selectedProject, setSelectedProject] = useState<number | null>(null);
     useSectionTracking("projects");
 
   const getIcon = (iconName: string) => {
@@ -75,27 +79,7 @@ import { useSectionTracking } from "@/hooks/useSectionTracking";
 
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <motion.div
-          className="mb-16 space-y-4"
-          variants={itemVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/15 px-4 py-1.5 border border-emerald-500/25">
-            <div className="w-2 h-2 rounded-full bg-emerald-500" />
-            <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">
-              Projects
-            </p>
-          </div>
-          <h2 className="text-4xl font-bold tracking-tight" style={{ color: "#fffff" }}>
-            {projectsData.title}
-          </h2>
-          <div className="flex items-center gap-2">
-            <div className="w-12 h-1 rounded-full bg-linear-to-r from-emerald-500 to-emerald-300" />
-            <div className="w-5 h-1 rounded-full bg-emerald-200" />
-          </div>
-        </motion.div>
+        <ProjectHeader />
 
         {/* Projects Grid */}
         <motion.div
@@ -105,10 +89,13 @@ import { useSectionTracking } from "@/hooks/useSectionTracking";
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {projectsData.projects.map((project) => (
+          {projectsData.projects.map((project, index) => (
             <motion.div
               key={project.id}
-              className="relative rounded-2xl overflow-hidden group"
+              onClick={() => {
+                if (index === 0) setSelectedProject(1);
+              }}
+              className="relative rounded-2xl overflow-hidden group cursor-pointer"
               style={{
                 background: "linear-gradient(180deg, #ffffff 0%, #f4faf6 100%)",
                 border: "1px solid rgba(16, 185, 129, 0.14)",
@@ -168,7 +155,15 @@ import { useSectionTracking } from "@/hooks/useSectionTracking";
             </motion.div>
           ))}
         </motion.div>
+
+        {/* Footer */}
+        <ProjectFooter />
       </div>
+
+      <Analysis1 
+        isOpen={selectedProject === 1} 
+        onClose={() => setSelectedProject(null)} 
+      />
     </section>
   );
 }
