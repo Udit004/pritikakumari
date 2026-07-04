@@ -1,6 +1,8 @@
 import nodemailer from "nodemailer";
+import { cookies } from "next/headers";
 
 import { contactData } from "@/features/contact/data";
+import { createClient } from "@/lib/supabase";
 
 export const runtime = "nodejs";
 
@@ -69,6 +71,17 @@ export async function POST(request: Request) {
       { message: "Please fill in all required fields." },
       { status: 400 },
     );
+  }
+
+  const cookieStore = await cookies();
+  const supabase = createClient(cookieStore);
+
+  const { error: supabaseError } = await supabase
+    .from("contacts")
+    .insert([{ name, email, subject, message }]);
+
+  if (supabaseError) {
+    console.error("Supabase insert error:", supabaseError);
   }
 
   const smtpHost = process.env.SMTP_HOST;
