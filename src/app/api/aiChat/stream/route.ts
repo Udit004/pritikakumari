@@ -1,5 +1,8 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { cookies } from "next/headers";
+
+import { createClient } from "@/lib/supabase";
 
 export const runtime = "nodejs";
 
@@ -145,6 +148,9 @@ async function* parseGeminiSse(response: Response, signal: AbortSignal) {
 export async function POST(request: Request) {
   const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
 
+  const cookieStore = await cookies();
+  const supabase = createClient(cookieStore);
+
   if (!apiKey) {
     return Response.json(
       {
@@ -245,6 +251,15 @@ export async function POST(request: Request) {
         const message = error instanceof Error ? error.message : "Streaming failed.";
         controller.enqueue(toSseData({ type: "error", message }));
       } finally {
+        if (fullText) {
+          const { error: supabaseError } = await supabase
+            .from("ai_chats")
+            .insert([{ user_message: latestMessage, ai_response: fullText }]);
+          if (supabaseError) {
+            console.error("Supabase insert error (ai_chats):", supabaseError);
+          }
+        }
+
         controller.close();
       }
     },
