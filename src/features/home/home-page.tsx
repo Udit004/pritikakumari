@@ -88,9 +88,9 @@ export function HomePage() {
         {/* <div className="absolute bottom-[-10%] left-[-10%] w-[45vw] h-[45vw] rounded-full bg-emerald-200/25 blur-[130px] mix-blend-multiply" /> */}
       </div>
 
-      <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
+      {/* <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
         {showCanvas ? <HeroCanvas /> : null}
-      </div>
+      </div> */}
 
       <Header />
       <HeroSection />

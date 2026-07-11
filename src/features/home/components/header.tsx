@@ -2,13 +2,53 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { UserRound, Menu, X } from "lucide-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { motion } from "framer-motion";
 
 export function Header() {
     const [activeSection, setActiveSection] = useState("hero");
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    const desktopConnectRef = useRef<HTMLAnchorElement>(null);
+    const mobileConnectRef = useRef<HTMLAnchorElement>(null);
+
+    useGSAP(() => {
+        gsap.to(".glass-shine", {
+            x: "200%",
+            duration: 4.5,
+            repeat: -1,
+            ease: "power2.inOut",
+            repeatDelay: 1
+        });
+    });
+
+    const handleHoverEnter = (ref: React.RefObject<HTMLAnchorElement | null>) => {
+        if (ref.current) {
+            gsap.to(ref.current, { scale: 1.05, duration: 0.3, ease: "back.out(1.7)" });
+            gsap.to(ref.current.querySelector('.connect-icon'), { rotation: 15, duration: 0.3 });
+        }
+    };
+
+    const handleHoverLeave = (ref: React.RefObject<HTMLAnchorElement | null>) => {
+        if (ref.current) {
+            gsap.to(ref.current, { scale: 1, duration: 0.3, ease: "power2.out" });
+            gsap.to(ref.current.querySelector('.connect-icon'), { rotation: 0, duration: 0.3 });
+        }
+    };
+
+    const handleConnectClick = (ref: React.RefObject<HTMLAnchorElement | null>) => {
+        setActiveSection("contact");
+        if (ref.current) {
+            gsap.fromTo(ref.current, 
+                { scale: 0.9 }, 
+                { scale: 1, duration: 0.4, ease: "elastic.out(1, 0.3)" }
+            );
+        }
+    };
 
     const navLinks = useMemo(
         () => [
@@ -115,14 +155,22 @@ export function Header() {
                                     href={link.href}
                                     onClick={() => setActiveSection(link.id)}
                                     className={`
-                                        relative px-4 py-2 text-[13px] font-semibold transition-all duration-300 rounded-full
+                                        relative px-4 py-2 text-[13px] font-semibold transition-colors duration-300 rounded-full
                                         ${isActive
-                                            ? "text-emerald-400 bg-black shadow-sm"
+                                            ? "text-emerald-400"
                                             : "text-slate-500 hover:text-slate-900 hover:bg-slate-100/50"
                                         }
                                     `}
                                 >
-                                    <span className={`${isActive ? "text-emerald-400":"text-black"}`}>{link.label}</span>
+                                    {isActive && (
+                                        <motion.div
+                                            layoutId="desktop-active-pill"
+                                            className="absolute inset-0 bg-black shadow-sm rounded-full"
+                                            transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                                            style={{ zIndex: 0 }}
+                                        />
+                                    )}
+                                    <span className={`relative z-10 ${isActive ? "text-emerald-400" : "text-black"}`}>{link.label}</span>
                                 </Link>
                             );
                         })}
@@ -131,12 +179,16 @@ export function Header() {
                     {/* Desktop CTA & Mobile Toggle */}
                     <div className="flex items-center gap-2 lg:gap-0">
                         <Link
+                            ref={desktopConnectRef}
                             href="#contact"
-                            onClick={() => setActiveSection("contact")}
-                            className="hidden lg:inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-xs font-bold tracking-wide text-white transition-all hover:bg-slate-800 hover:shadow-md hover:-translate-y-0.5"
+                            onMouseEnter={() => handleHoverEnter(desktopConnectRef)}
+                            onMouseLeave={() => handleHoverLeave(desktopConnectRef)}
+                            onClick={() => handleConnectClick(desktopConnectRef)}
+                            className="hidden lg:inline-flex relative overflow-hidden items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-xs font-bold tracking-wide text-white transition-colors hover:bg-slate-800 shadow-sm"
                         >
-                            <UserRound className="h-3.5 w-3.5 text-emerald-400" aria-hidden="true" />
-                            <span className="text-emerald-400">Connect</span>
+                            <div className="glass-shine absolute inset-0 -translate-x-[200%] skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent w-full pointer-events-none" />
+                            <UserRound className="connect-icon h-3.5 w-3.5 text-emerald-400 relative z-10" aria-hidden="true" />
+                            <span className="text-emerald-400 relative z-10">Connect</span>
                         </Link>
 
                         <button
@@ -180,14 +232,22 @@ export function Header() {
                                     setIsMobileMenuOpen(false);
                                 }}
                                 className={`
-                                px-4 py-3.5 text-sm font-semibold transition-all duration-200 rounded-xl
+                                relative px-4 py-3.5 text-sm font-semibold transition-colors duration-200 rounded-xl
                                 ${isActive
-                                        ? "text-emerald-800 bg-emerald-50 border border-emerald-100/50"
-                                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-transparent"
+                                        ? "text-emerald-800 border-transparent"
+                                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50 border-transparent"
                                     }
                             `}
                             >
-                                {link.label}
+                                {isActive && (
+                                    <motion.div
+                                        layoutId="mobile-active-pill"
+                                        className="absolute inset-0 bg-emerald-50 border border-emerald-100/50 rounded-xl"
+                                        transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                                        style={{ zIndex: 0 }}
+                                    />
+                                )}
+                                <span className="relative z-10">{link.label}</span>
                             </Link>
                         );
                     })}
@@ -195,16 +255,19 @@ export function Header() {
 
                 <div className="mt-auto p-6 border-t border-slate-100 bg-slate-50">
                     <Link
+                        ref={mobileConnectRef}
                         href="#contact"
+                        onMouseEnter={() => handleHoverEnter(mobileConnectRef)}
+                        onMouseLeave={() => handleHoverLeave(mobileConnectRef)}
                         onClick={() => {
-                            setActiveSection("contact");
-                            setIsMobileMenuOpen(false);
+                            handleConnectClick(mobileConnectRef);
+                            setTimeout(() => setIsMobileMenuOpen(false), 200); // Slight delay to see the bounce
                         }}
-                        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3.5 text-sm font-bold transition hover:bg-slate-800 hover:shadow-md"
-                        style={{ color: '#ffffff' }}
+                        className="inline-flex relative overflow-hidden w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3.5 text-sm font-bold text-white transition-colors hover:bg-slate-800 shadow-sm"
                     >
-                        <UserRound className="h-4 w-4 text-emerald-400" />
-                        <span style={{ color: '#ffffff' }} className="text-green-700">Let&apos;s Connect</span>
+                        <div className="glass-shine absolute inset-0 -translate-x-[150%] skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full pointer-events-none" />
+                        <UserRound className="connect-icon h-4 w-4 text-emerald-400 relative z-10" />
+                        <span className="text-emerald-400 relative z-10">Let&apos;s Connect</span>
                     </Link>
                 </div>
             </nav>

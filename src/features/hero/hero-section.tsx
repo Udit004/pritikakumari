@@ -5,15 +5,42 @@ import Link from "next/link";
 import { heroData } from "./data";
 import { FileText, Briefcase, Users, BarChart2, ExternalLink, ArrowRight } from "lucide-react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { useRef } from "react";
 import { useSectionTracking } from "@/hooks/useSectionTracking";
 import { trackEvent } from "@/lib/analytics";
 
 export function HeroSection() {
     const [typedTitle, setTypedTitle] = useState("");
-    const [isMounted, setIsMounted] = useState(false);
+    const containerRef = useRef<HTMLElement>(null);
 
     useSectionTracking("hero");
+
+    useGSAP(() => {
+        // Professional GSAP entrance animation
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        tl.fromTo(".hero-left-elem", 
+            { y: 30, opacity: 0 },
+            { y: 0, opacity: 1, duration: 1, stagger: 0.15 }
+        )
+        .fromTo(".hero-right-elem",
+            { x: 40, opacity: 0, scale: 0.95 },
+            { x: 0, opacity: 1, scale: 1, duration: 1.2 },
+            "-=0.8"
+        );
+        
+        // Add subtle floating animation to the image
+        gsap.to(".hero-right-elem", {
+            y: -10,
+            duration: 3,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+            delay: 0.5
+        });
+    }, { scope: containerRef });
 
     useEffect(() => {
         const titles = heroData.titleRotations;
@@ -54,18 +81,10 @@ export function HeroSection() {
         return () => window.clearTimeout(timeoutId);
     }, []);
 
-    useEffect(() => {
-        const frameId = window.requestAnimationFrame(() => {
-            setIsMounted(true);
-        });
-
-        return () => window.cancelAnimationFrame(frameId);
-    }, []);
-
     const leftPanel = (
         <>
             {/* Badge */}
-            <div className="group inline-flex w-fit items-center gap-2 rounded-full border border-green-200/80 bg-green-50/50 backdrop-blur-md mt-2 px-4 py-1.5 shadow-sm transition-all hover:bg-green-100/50">
+            <div className="hero-left-elem group inline-flex w-fit items-center gap-2 rounded-full border border-green-200/80 bg-green-50/50 backdrop-blur-md mt-2 px-4 py-1.5 shadow-sm transition-all hover:bg-green-100/50">
                 <span className="relative flex h-2.5 w-2.5">
                     <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                 </span>
@@ -75,7 +94,7 @@ export function HeroSection() {
             </div>
 
             {/* Headings */}
-            <div className="mt-4 space-y-3">
+            <div className="hero-left-elem mt-4 space-y-3">
                 <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-950 drop-shadow-sm">
                     <span className="text-slate-950">
                         {heroData.name}
@@ -90,12 +109,12 @@ export function HeroSection() {
             </div>
 
             {/* Description - Subtitle removed to avoid text repetition */}
-            <p className="mt-5 text-base sm:text-lg text-slate-600 max-w-lg leading-relaxed font-medium">
+            <p className="hero-left-elem mt-5 text-base sm:text-lg text-slate-600 max-w-lg leading-relaxed font-medium">
                 {heroData.description}
             </p>
 
             {/* CTA Buttons */}
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center w-full max-w-sm sm:max-w-none">
+            <div className="hero-left-elem mt-8 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center w-full max-w-sm sm:max-w-none">
                 <Link
                     href="#resume"
                     onClick={() => trackEvent("click_view_resume", { section: "hero" })}
@@ -119,7 +138,7 @@ export function HeroSection() {
             </div>
 
             {/* Stats */}
-            <div className="mt-10 lg:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-slate-200/80 pt-6">
+            <div className="hero-left-elem mt-10 lg:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-slate-200/80 pt-6">
                 {heroData.stats.map((stat, idx) => {
                     const Icons = [Briefcase, Users, BarChart2];
                     const Icon = Icons[idx] || Briefcase;
@@ -141,7 +160,7 @@ export function HeroSection() {
 
     const rightPanel = (
         <>
-            <div className="relative z-10 h-full w-full overflow-hidden rounded-4xl border border-white/50 bg-white/30 shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
+            <div className="hero-right-elem relative z-10 h-full w-full overflow-hidden rounded-4xl border border-white/50 bg-white/30 shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
                 <Image
                     src="/assests/images/hero/profile_image.png"
                     alt={`${heroData.name} - Profile`}
@@ -157,49 +176,24 @@ export function HeroSection() {
     return (
         <section
             id="hero"
+            ref={containerRef}
             className="group/hero relative w-full min-h-dvh lg:h-dvh lg:min-h-175 flex items-center justify-center overflow-hidden pt-16 pb-8 lg:pt-24 lg:py-0"
         >
             <div className="mx-auto w-full max-w-7xl px-6 lg:px-8 relative z-10 lg:min-h-full">
                 <div className="relative flex min-h-[calc(100vh-6rem)] flex-col justify-center gap-10 lg:gap-0">
                     <div className="absolute inset-y-6 right-0 -z-10 hidden w-[72vw] rounded-[3rem] bg-[radial-gradient(circle_at_18%_24%,rgba(167,243,208,0.38),transparent_34%),radial-gradient(circle_at_82%_28%,rgba(186,230,253,0.42),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.75),rgba(240,249,255,0.38))] blur-3xl lg:block" />
 
-                    {isMounted ? (
-                        <motion.div
-                            className="pointer-events-none relative z-10 w-full lg:absolute lg:-right-8 lg:top-1/2 lg:w-[76%] lg:-translate-y-1/2"
-                            initial={{ opacity: 0, y: 22, scale: 0.98 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            transition={{ duration: 0.85, delay: 0.1 }}
-                        >
-                            <div className="relative mx-auto h-[40vh] w-full max-w-170 sm:h-[46vh] lg:ml-30 lg:mr-0 lg:h-[82vh] lg:max-w-200">
-                                <div className="absolute -left-6 top-10 hidden h-28 w-28 rounded-full bg-emerald-300/30 blur-3xl lg:block" />
-                                <div className="absolute -right-8 bottom-12 hidden h-36 w-36 rounded-full bg-sky-300/30 blur-3xl lg:block" />
-                                {rightPanel}
-                            </div>
-                        </motion.div>
-                    ) : (
-                        <div className="pointer-events-none relative z-10 w-full lg:absolute lg:-right-4 lg:top-1/2 lg:w-[76%] lg:-translate-y-1/2">
-                            <div className="relative ml-auto h-[40vh] w-full max-w-170 sm:h-[46vh] lg:h-[82vh] lg:max-w-none">
-                                <div className="absolute -left-6 top-10 hidden h-28 w-28 rounded-full bg-emerald-300/30 blur-3xl lg:block" />
-                                <div className="absolute -right-8 bottom-12 hidden h-36 w-36 rounded-full bg-sky-300/30 blur-3xl lg:block" />
-                                {rightPanel}
-                            </div>
+                    <div className="pointer-events-none relative z-10 w-full lg:absolute lg:-right-8 lg:top-1/2 lg:w-[76%] lg:-translate-y-1/2">
+                        <div className="relative mx-auto h-[40vh] w-full max-w-170 sm:h-[46vh] lg:ml-30 lg:mr-0 lg:h-[82vh] lg:max-w-200">
+                            <div className="absolute -left-6 top-10 hidden h-28 w-28 rounded-full bg-emerald-300/30 blur-3xl lg:block" />
+                            <div className="absolute -right-8 bottom-12 hidden h-36 w-36 rounded-full bg-sky-300/30 blur-3xl lg:block" />
+                            {rightPanel}
                         </div>
-                    )}
+                    </div>
 
-                    {isMounted ? (
-                        <motion.div
-                            className="relative z-20 w-full max-w-2xl bg-transparent p-0 sm:max-w-3xl lg:max-w-[54%] lg:pr-10"
-                            initial={{ opacity: 0, y: 18 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.75 }}
-                        >
-                            {leftPanel}
-                        </motion.div>
-                    ) : (
-                        <div className="relative z-20 w-full max-w-2xl bg-transparent p-0 sm:max-w-3xl lg:max-w-[54%] lg:pr-10">
-                            {leftPanel}
-                        </div>
-                    )}
+                    <div className="relative z-20 w-full max-w-2xl bg-transparent p-0 sm:max-w-3xl lg:max-w-[54%] lg:pr-10">
+                        {leftPanel}
+                    </div>
                 </div>
             </div>
         </section>

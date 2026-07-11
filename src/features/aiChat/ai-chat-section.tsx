@@ -5,6 +5,9 @@ import { motion } from "framer-motion";
 import { ChevronDown, Plus, Send, Sparkles, UserRound, X } from "lucide-react";
 import { aiChatData } from "./data";
 import { useAiChat } from "./use-ai-chat";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { AnimatedCustomIcon, AnimatedTextIcon } from "./animated-icons";
 
 function formatTime(timestamp: number) {
   return new Intl.DateTimeFormat("en", {
@@ -42,6 +45,29 @@ function TypingIndicator() {
 export function AiChatSection() {
   const [isOpen, setIsOpen] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showCustomAnim, setShowCustomAnim] = useState(false);
+  
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useGSAP(() => {
+    if (!buttonRef.current) return;
+
+    const tl = gsap.timeline({ repeat: -1, repeatDelay: 6 });
+
+    tl.to(buttonRef.current, { rotationY: 90, duration: 0.8, ease: "power1.in" })
+      .call(() => {
+          setShowCustomAnim(true);
+      })
+      .to(buttonRef.current, { rotationY: 0, duration: 0.8, ease: "power1.out" })
+      .to({}, { duration: 3 })
+      .to(buttonRef.current, { rotationY: -90, duration: 0.8, ease: "power1.in" })
+      .call(() => {
+          setShowCustomAnim(false);
+      })
+      .to(buttonRef.current, { rotationY: 0, duration: 0.8, ease: "power1.out" });
+
+  }, { scope: buttonRef });
+
   const {
     messages,
     draft,
@@ -130,16 +156,24 @@ export function AiChatSection() {
   return (
     <>
       <button
+        ref={buttonRef}
         type="button"
         onClick={() => {
           setShowSuggestions(false);
           setIsOpen(true);
         }}
         aria-label="Open AI chat"
-        className="fixed bottom-5 right-5 z-50 inline-flex cursor-pointer items-center gap-2 rounded-full border border-emerald-200 bg-black px-4 py-3 text-sm font-semibold text-white shadow-[0_18px_40px_rgba(0,0,0,0.18)] transition hover:-translate-y-0.5 hover:bg-black sm:bottom-6 sm:right-6"
+        className="fixed bottom-5 right-5 z-50 flex cursor-pointer items-center justify-center gap-2 rounded-full border border-emerald-200 bg-black text-sm font-semibold text-white shadow-[0_18px_40px_rgba(0,0,0,0.18)] transition hover:scale-105 hover:bg-black sm:bottom-6 sm:right-6 w-[124px] h-[48px]"
       >
-        <Sparkles className="h-4 w-4 text-emerald-400" />
-        <span>AI Chat</span>
+        {showCustomAnim ? (
+            <div className="w-full h-full flex items-center justify-center pointer-events-none py-1">
+                <AnimatedCustomIcon />
+            </div>
+        ) : (
+            <div className="w-full h-full flex items-center justify-center pointer-events-none">
+                <AnimatedTextIcon />
+            </div>
+        )}
       </button>
 
       {isOpen ? (
