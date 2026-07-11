@@ -12,7 +12,7 @@ import { useSectionTracking } from "@/hooks/useSectionTracking";
 import { trackEvent } from "@/lib/analytics";
 
 export function HeroSection() {
-    const [typedTitle, setTypedTitle] = useState("");
+    const [titleIndex, setTitleIndex] = useState(0);
     const containerRef = useRef<HTMLElement>(null);
 
     useSectionTracking("hero");
@@ -40,46 +40,54 @@ export function HeroSection() {
             repeat: -1,
             delay: 0.5
         });
+
+
+        // Reel animation for FileText icon
+        const fileTl = gsap.timeline({ repeat: -1, delay: 2 });
+        fileTl.to(".cta-file-icon", { y: -30, duration: 0.4, ease: "power2.in" })
+              .set(".cta-file-icon", { y: 30 })
+              .to(".cta-file-icon", { y: 0, duration: 0.5, ease: "back.out(1.5)" })
+              .to({}, { duration: 3 }); // Pause before repeating
+
+        // Left-right animation for ExternalLink icon
+        gsap.to(".cta-external-icon", {
+            x: 4,
+            duration: 1.5,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            delay: 1.7
+        });
     }, { scope: containerRef });
 
-    useEffect(() => {
-        const titles = heroData.titleRotations;
-        let titleIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        let timeoutId: number;
+    const handleCtaEnter = (e: React.MouseEvent) => {
+        gsap.to(e.currentTarget, { scale: 1.05, duration: 0.3, ease: "back.out(1.7)", overwrite: "auto" });
+    };
 
-        const tick = () => {
-            const currentTitle = titles[titleIndex];
+    const handleCtaLeave = (e: React.MouseEvent) => {
+        gsap.to(e.currentTarget, { scale: 1, duration: 0.3, ease: "power2.out", overwrite: "auto" });
+    };
 
-            if (isDeleting) {
-                charIndex -= 1;
-                setTypedTitle(currentTitle.slice(0, charIndex));
-            } else {
-                charIndex += 1;
-                setTypedTitle(currentTitle.slice(0, charIndex));
-            }
+    useGSAP(() => {
+        const chars = gsap.utils.toArray(".reveal-char");
+        
+        if (chars.length === 0) return;
 
-            if (!isDeleting && charIndex === currentTitle.length) {
-                timeoutId = window.setTimeout(() => {
-                    isDeleting = true;
-                    tick();
-                }, 1200);
-                return;
-            }
+        const tl = gsap.timeline();
+        
+        tl.fromTo(chars, 
+            { y: 20, opacity: 0, rotationX: -90 },
+            { y: 0, opacity: 1, rotationX: 0, duration: 0.4, stagger: 0.04, ease: "back.out(2)" }
+        )
+        .to({}, { duration: 1.8 }) // Pause to read
+        .to(chars, 
+            { y: -20, opacity: 0, rotationX: 90, duration: 0.3, stagger: 0.02, ease: "power2.in" }
+        )
+        .call(() => {
+            setTitleIndex(prev => (prev + 1) % heroData.titleRotations.length);
+        });
 
-            if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                titleIndex = (titleIndex + 1) % titles.length;
-            }
-
-            timeoutId = window.setTimeout(tick, isDeleting ? 35 : 65);
-        };
-
-        tick();
-
-        return () => window.clearTimeout(timeoutId);
-    }, []);
+    }, { dependencies: [titleIndex], scope: containerRef });
 
     const leftPanel = (
         <>
@@ -100,10 +108,13 @@ export function HeroSection() {
                         {heroData.name}
                     </span>
                 </h1>
-                <h2 className="text-lg sm:text-2xl font-semibold max-w-xl">
-                    <span className="inline-block min-h-[1.5em] bg-linear-to-r from-emerald-700 via-green-500 to-lime-500 bg-clip-text text-transparent">
-                        {typedTitle}
-                        <span className="ml-0.5 inline-block animate-pulse text-emerald-600">|</span>
+                <h2 className="text-lg sm:text-2xl font-semibold max-w-xl perspective-1000">
+                    <span className="inline-flex flex-wrap min-h-[1.5em] text-emerald-600 overflow-hidden py-1 drop-shadow-sm">
+                        {heroData.titleRotations[titleIndex].split("").map((char, idx) => (
+                            <span key={`${titleIndex}-${idx}`} className="reveal-char inline-block whitespace-pre origin-bottom">
+                                {char}
+                            </span>
+                        ))}
                     </span>
                 </h2>
             </div>
@@ -117,10 +128,12 @@ export function HeroSection() {
             <div className="hero-left-elem mt-8 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center w-full max-w-sm sm:max-w-none">
                 <Link
                     href="#resume"
+                    onMouseEnter={handleCtaEnter}
+                    onMouseLeave={handleCtaLeave}
                     onClick={() => trackEvent("click_view_resume", { section: "hero" })}
-                    className="group relative inline-flex w-full sm:w-auto items-center justify-center gap-2 overflow-hidden rounded-full bg-slate-900 px-7 py-3 text-sm font-semibold text-white transition-all hover:bg-slate-800 hover:shadow-lg hover:shadow-slate-900/20 hover:-translate-y-0.5"
+                    className="hero-cta-primary group relative inline-flex w-full sm:w-auto items-center justify-center gap-2 overflow-hidden rounded-full bg-slate-900 px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
                 >
-                    <FileText className="text-green-500 h-4 w-4" />
+                    <FileText className="cta-file-icon text-green-500 h-4 w-4 shrink-0" />
                     <span className="text-green-500">{heroData.cta.primary}</span>
                     <ArrowRight className="h-4 w-4 text-green-500 transition-transform group-hover:translate-x-1" />
                 </Link>
@@ -129,10 +142,12 @@ export function HeroSection() {
                     href={heroData.contact.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onMouseEnter={handleCtaEnter}
+                    onMouseLeave={handleCtaLeave}
                     onClick={() => trackEvent("click_linkedin", { section: "hero" })}
-                    className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border-2 border-black bg-white/50 backdrop-blur-sm px-7 py-3 text-sm font-semibold text-slate-700 transition-all hover:border-emerald-500 hover:bg-white hover:text-emerald-600"
+                    className="hero-cta-secondary group inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border-2 border-black bg-white/50 backdrop-blur-sm px-7 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-emerald-500 hover:bg-white hover:text-emerald-600"
                 >
-                    <ExternalLink className="h-4 w-4 transition-colors group-hover:text-green-500" />
+                    <ExternalLink className="cta-external-icon h-4 w-4 transition-colors group-hover:text-green-500 shrink-0" />
                     {heroData.cta.secondary}
                 </Link>
             </div>
