@@ -12,10 +12,44 @@ import {
   BarChart,
   MessageSquare,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import SkillCard from "./SkillCard";
-import React from "react";
+import React, { useRef } from "react";
 import { useSectionTracking } from "@/hooks/useSectionTracking";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+
+function Counter({ from = 0, to, duration = 2 }: { from?: number, to: number, duration?: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+  useGSAP(() => {
+  if (!ref.current || !isInView) return;
+
+  const counter = { val: from };
+
+  const animate = () => {
+    counter.val = from;
+
+    gsap.to(counter, {
+      val: to,
+      duration,
+      ease: "power2.out",
+      onUpdate: () => {
+        ref.current!.textContent = Math.floor(counter.val).toString();
+      },
+      onComplete: () => {
+        gsap.delayedCall(3, animate); // wait 1 sec then restart
+      }
+    });
+  };
+
+  animate();
+
+}, [isInView]);
+
+  return <span ref={ref}>{from}</span>;
+}
 
 const iconMap: Record<string, React.ReactNode> = {
   Users: <Users className="h-5 w-5 text-emerald-400" />,
@@ -177,12 +211,13 @@ export function SkillsSection() {
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           {[
-            { label: "Skills", value: `${skillsData.skillsList.length}+` },
+            { label: "Skills", numericValue: skillsData.skillsList.length, suffix: "+" },
             {
               label: "Expert Level",
-              value: `${skillsData.skillsList.filter((s) => s.level === 5).length}`,
+              numericValue: skillsData.skillsList.filter((s) => s.level === 5).length,
+              suffix: ""
             },
-            { label: "Years Experience", value: "1+" },
+            { label: "Years Experience", numericValue: 1, suffix: "+" },
           ].map((stat, i) => (
             <div
               key={stat.label}
@@ -206,7 +241,7 @@ export function SkillsSection() {
                 className="text-3xl font-bold"
                 style={{ color: "#064e3b" }}
               >
-                {stat.value}
+                <Counter to={stat.numericValue} />{stat.suffix}
               </span>
               <span
                 className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.12em]"
