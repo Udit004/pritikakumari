@@ -1,7 +1,8 @@
 "use client";
 
-import { ReactNode } from "react";
-import { motion } from "framer-motion";
+import { ReactNode, useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 type Props = {
   name: string;
@@ -20,33 +21,74 @@ const levelLabels: Record<number, string> = {
 
 function SkillCard({ name, icon, level, index = 0 }: Props) {
   const maxLevel = 5;
+  const cardRef = useRef<HTMLDivElement>(null);
+  const shineRef = useRef<HTMLDivElement>(null);
+  const iconRef = useRef<HTMLDivElement>(null);
+
+  const { contextSafe } = useGSAP({ scope: cardRef });
+
+  const onMouseEnter = contextSafe(() => {
+    gsap.to(cardRef.current, {
+      y: -8,
+      rotateX: -6,
+      rotateY: 6,
+      boxShadow:
+        "0 22px 42px rgba(15, 23, 42, 0.14), 0 10px 24px rgba(16, 185, 129, 0.16), 0 0 0 1px rgba(16, 185, 129, 0.18)",
+      duration: 0.22,
+      ease: "power2.out",
+    });
+
+    // Icon pop and wobble
+    gsap.to(iconRef.current, {
+      scale: 1.15,
+      rotateZ: 8,
+      duration: 0.4,
+      ease: "back.out(3)",
+    });
+    
+    // Shine sweep effect
+    gsap.fromTo(
+      shineRef.current,
+      { x: "-100%" },
+      { x: "120%", duration: 0.6, ease: "power1.inOut" }
+    );
+  });
+
+  const onMouseLeave = contextSafe(() => {
+    gsap.to(cardRef.current, {
+      y: 0,
+      rotateX: 0,
+      rotateY: 0,
+      boxShadow:
+        "0 16px 30px rgba(15, 23, 42, 0.08), 0 4px 10px rgba(16, 185, 129, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+      duration: 0.22,
+      ease: "power2.out",
+    });
+
+    // Reset Icon
+    gsap.to(iconRef.current, {
+      scale: 1,
+      rotateZ: 0,
+      duration: 0.3,
+      ease: "power2.out",
+    });
+  });
 
   return (
-    <motion.div
-      className="group relative overflow-hidden rounded-2xl cursor-default"
+    <div
+      ref={cardRef}
+      className="skill-card group relative overflow-hidden rounded-2xl cursor-default opacity-0"
       style={{
         background: "linear-gradient(180deg, #ffffff 0%, #f4faf6 100%)",
         border: "1px solid rgba(16, 185, 129, 0.14)",
         boxShadow:
           "0 16px 30px rgba(15, 23, 42, 0.08), 0 4px 10px rgba(16, 185, 129, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
         transformStyle: "preserve-3d",
-        transformPerspective: 1200,
+        perspective: 1200,
+        transform: "translateY(24px)", // Initial state for GSAP
       }}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-30px" }}
-      transition={{
-        duration: 0.5,
-        delay: index * 0.07,
-      }}
-      whileHover={{
-        y: -8,
-        rotateX: -6,
-        rotateY: 6,
-        boxShadow:
-          "0 22px 42px rgba(15, 23, 42, 0.14), 0 10px 24px rgba(16, 185, 129, 0.16), 0 0 0 1px rgba(16, 185, 129, 0.18)",
-        transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
-      }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <div
         className="absolute top-0 left-0 right-0 h-0.75 rounded-t-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
@@ -67,7 +109,8 @@ function SkillCard({ name, icon, level, index = 0 }: Props) {
       <div className="relative p-6 flex flex-col gap-4">
         <div className="flex items-start justify-between">
           <div
-            className="flex h-12 w-12 items-center justify-center rounded-xl bg-black text-emerald-400 transition-all duration-300 group-hover:scale-105"
+            ref={iconRef}
+            className="flex h-12 w-12 items-center justify-center rounded-xl bg-black text-emerald-400"
             style={{
               border: "1px solid rgba(16,185,129,0.18)",
               boxShadow:
@@ -99,21 +142,16 @@ function SkillCard({ name, icon, level, index = 0 }: Props) {
 
         <div className="flex items-center gap-1.5">
           {Array.from({ length: maxLevel }).map((_, i) => (
-            <motion.div
+            <div
               key={i}
-              className="h-0.75 flex-1 rounded-full"
+              className="h-0.75 flex-1 rounded-full skill-level-bar"
               style={{
                 background:
                   i < level
                     ? "linear-gradient(90deg, #10b981, #34d399)"
                     : "rgba(16,185,129,0.1)",
-              }}
-              initial={{ scaleX: 0, originX: "0%" }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.4,
-                delay: index * 0.07 + i * 0.055 + 0.25,
+                transform: "scaleX(0)",
+                transformOrigin: "0% 50%",
               }}
             />
           ))}
@@ -121,18 +159,17 @@ function SkillCard({ name, icon, level, index = 0 }: Props) {
       </div>
 
       {/* Shine sweep on hover */}
-      <motion.div
+      <div
+        ref={shineRef}
         aria-hidden
         className="pointer-events-none absolute inset-0 rounded-2xl"
         style={{
           background:
             "linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.7) 50%, transparent 70%)",
+          transform: "translateX(-100%)",
         }}
-        initial={{ x: "-100%" }}
-        whileHover={{ x: "120%" }}
-        transition={{ duration: 0.6 }}
       />
-    </motion.div>
+    </div>
   );
 }
 

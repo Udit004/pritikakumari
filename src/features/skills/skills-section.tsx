@@ -12,41 +12,47 @@ import {
   BarChart,
   MessageSquare,
 } from "lucide-react";
-import { motion, useInView } from "framer-motion";
 import SkillCard from "./SkillCard";
 import React, { useRef } from "react";
 import { useSectionTracking } from "@/hooks/useSectionTracking";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 function Counter({ from = 0, to, duration = 2 }: { from?: number, to: number, duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
-
+  
   useGSAP(() => {
-  if (!ref.current || !isInView) return;
+    if (!ref.current) return;
 
-  const counter = { val: from };
+    const counter = { val: from };
 
-  const animate = () => {
-    counter.val = from;
+    const animate = () => {
+      counter.val = from;
 
-    gsap.to(counter, {
-      val: to,
-      duration,
-      ease: "power2.out",
-      onUpdate: () => {
-        ref.current!.textContent = Math.floor(counter.val).toString();
-      },
-      onComplete: () => {
-        gsap.delayedCall(3, animate); // wait 1 sec then restart
-      }
+      gsap.to(counter, {
+        val: to,
+        duration,
+        ease: "power2.out",
+        onUpdate: () => {
+          if (ref.current) ref.current.textContent = Math.floor(counter.val).toString();
+        },
+        onComplete: () => {
+          gsap.delayedCall(3, animate); // wait 3 sec then restart
+        }
+      });
+    };
+
+    ScrollTrigger.create({
+      trigger: ref.current,
+      start: "top 80%",
+      once: true,
+      onEnter: () => animate()
     });
-  };
 
-  animate();
-
-}, [isInView]);
+  });
 
   return <span ref={ref}>{from}</span>;
 }
@@ -63,12 +69,63 @@ const iconMap: Record<string, React.ReactNode> = {
 };
 
 export function SkillsSection() {
-
+  const sectionRef = useRef<HTMLElement>(null);
   useSectionTracking("skills");
+
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 70%",
+        toggleActions: "play none none none"
+      }
+    });
+
+    tl.fromTo(".skill-badge", 
+        { opacity: 0, y: 12 }, 
+        { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }
+      )
+      .fromTo(".skill-heading", 
+        { opacity: 0, y: 16 }, 
+        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 
+        "-=0.2"
+      )
+      .fromTo(".skill-underline-1", 
+        { scaleX: 0 }, 
+        { scaleX: 1, duration: 0.55, ease: "power3.out", transformOrigin: "0% 50%" }, 
+        "-=0.3"
+      )
+      .fromTo(".skill-underline-2", 
+        { scaleX: 0 }, 
+        { scaleX: 1, duration: 0.4, ease: "power3.out", transformOrigin: "0% 50%" }, 
+        "-=0.4"
+      )
+      .fromTo(".skill-subtitle", 
+        { opacity: 0, y: 10 }, 
+        { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 
+        "-=0.3"
+      )
+      .fromTo(".skill-card", 
+        { opacity: 0, y: 24 }, 
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.07, ease: "power2.out" }, 
+        "-=0.2"
+      )
+      .fromTo(".skill-level-bar", 
+        { scaleX: 0 }, 
+        { scaleX: 1, duration: 0.4, stagger: 0.02, ease: "power2.out", transformOrigin: "0% 50%" }, 
+        "-=0.5"
+      )
+      .fromTo(".skill-stats", 
+        { opacity: 0, y: 20 }, 
+        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 
+        "-=0.3"
+      );
+  }, { scope: sectionRef });
   
   return (
     <section
       id="skills"
+      ref={sectionRef}
       className="relative w-full overflow-hidden py-24 sm:py-28"
     >
       {/* ── Dot grid — matches hero section pattern ── */}
@@ -106,16 +163,13 @@ export function SkillsSection() {
         {/* ── Section header ── */}
         <div className="mb-14 space-y-4">
           {/* Badge — same style as hero "HR PROFESSIONAL" badge */}
-          <motion.div
-            className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5"
+          <div
+            className="skill-badge inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 opacity-0"
             style={{
               background: "rgba(16,185,129,0.08)",
               border: "1px solid rgba(16,185,129,0.25)",
+              transform: "translateY(12px)"
             }}
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           >
             <span
               className="inline-block w-2 h-2 rounded-full"
@@ -127,58 +181,36 @@ export function SkillsSection() {
             >
               My Skills
             </span>
-          </motion.div>
+          </div>
 
           {/* Heading — matches the bold emerald-green hero heading style */}
-          <motion.h2
-            className="text-4xl sm:text-5xl font-bold tracking-tight"
-            style={{ color: "#fffff" }}
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+          <h2
+            className="skill-heading text-4xl sm:text-5xl font-bold tracking-tight opacity-0"
+            style={{ color: "#fffff", transform: "translateY(16px)" }}
           >
             {skillsData.title}
-          </motion.h2>
+          </h2>
 
           {/* Underline accent */}
-          <motion.div
-            className="flex items-center gap-2.5"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-          >
-            <motion.div
-              className="h-[3px] w-14 rounded-full"
-              style={{ background: "linear-gradient(90deg, #10b981, #a7f3d0)" }}
-              initial={{ scaleX: 0, originX: "0%" }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.55, delay: 0.32 }}
+          <div className="flex items-center gap-2.5">
+            <div
+              className="skill-underline-1 h-[3px] w-14 rounded-full"
+              style={{ background: "linear-gradient(90deg, #10b981, #a7f3d0)", transform: "scaleX(0)" }}
             />
-            <motion.div
-              className="h-[3px] w-5 rounded-full"
-              style={{ background: "rgba(16,185,129,0.2)" }}
-              initial={{ scaleX: 0, originX: "0%" }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.5 }}
+            <div
+              className="skill-underline-2 h-[3px] w-5 rounded-full"
+              style={{ background: "rgba(16,185,129,0.2)", transform: "scaleX(0)" }}
             />
-          </motion.div>
+          </div>
 
           {/* Subtitle */}
-          <motion.p
-            className="text-base max-w-xl"
-            style={{ color: "#4b5563", lineHeight: "1.8" }}
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45, delay: 0.18 }}
+          <p
+            className="skill-subtitle text-base max-w-xl opacity-0"
+            style={{ color: "#4b5563", lineHeight: "1.8", transform: "translateY(10px)" }}
           >
             A curated overview of my professional capabilities, refined through
             hands-on experience across HR operations and organizational management.
-          </motion.p>
+          </p>
         </div>
 
         {/* ── Skills grid ── */}
@@ -199,16 +231,13 @@ export function SkillsSection() {
         </div>
 
         {/* ── Bottom stats bar — matches hero stat strip ── */}
-        <motion.div
-          className="mt-14 grid grid-cols-3 overflow-hidden rounded-2xl bg-white"
+        <div
+          className="skill-stats mt-14 grid grid-cols-3 overflow-hidden rounded-2xl bg-white opacity-0"
           style={{
             border: "1px solid rgba(16,185,129,0.15)",
             boxShadow: "0 4px 20px rgba(16,185,129,0.07)",
+            transform: "translateY(20px)"
           }}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
         >
           {[
             { label: "Skills", numericValue: skillsData.skillsList.length, suffix: "+" },
@@ -251,7 +280,7 @@ export function SkillsSection() {
               </span>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
