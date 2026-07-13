@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest } from "next/server";
 
 const AI_USER_AGENTS = [
   "chatgpt",
@@ -19,7 +19,7 @@ function isAiAgent(ua: string | null) {
   return AI_USER_AGENTS.some((k) => s.includes(k));
 }
 
-export async function middleware(req: NextRequest) {
+export default async function proxy(req: NextRequest) {
   // Prevent middleware from re-processing the internal fetch we do below
   if (req.headers.get("x-internal-fetch") === "1") {
     return NextResponse.next();
