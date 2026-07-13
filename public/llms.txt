@@ -1,0 +1,32 @@
+# Pritika Kumari
+HR Operations Specialist
+
+MBA-qualified HR Operations professional with expertise in end-to-end employee lifecycle management, HRMS administration, and payroll coordination. I bring a detail-oriented approach and hands-on experience in onboarding, exit formalities, and compliance management.
+
+Currently building HR analytics capabilities using Power BI, SQL, and Python to drive data-informed HR decisions and operational excellence.
+
+## Expertise
+- Core HR Operations: Employee Lifecycle Management, Onboarding & Exit Formalities, HRMS Administration, Payroll Coordination
+- Technical Skills: Zoho Payroll/HRMS, Excel, Power BI, SQL, Python
+- Competencies: Attention to Detail, Process Management, Data Analysis, Stakeholder Coordination
+
+## Skills
+- HR Operations
+- HRMS Administration
+- Employee Engagement
+- Payroll Coordination
+- Compliance Management
+- HR Documentation
+- Employee Lifecycle Management
+- Data Analysis (Excel, Power BI, SQL, Python)
+- Communication & Stakeholder Management
+
+## Projects
+- HR Analytics Dashboard: Designed interactive dashboards using Power BI to visualize HR metrics like attrition, headcount, and employee demographics. (Tools: Power BI)
+- Employee Data Analysis: Analyzed employee data using SQL and Excel to generate insights for better decision-making and workforce planning. (Tools: SQL, Excel)
+- HR Insights with Python: Built analytical reports using Python for data cleaning, analysis and automation of HR reporting processes. (Tools: Python)
+
+## Contact
+- Email: pritikakumaree96@gmail.com
+- Location: Noida, Uttar Pradesh, India
+- LinkedIn: https://www.linkedin.com/in/pritika-kumari-a68192376
