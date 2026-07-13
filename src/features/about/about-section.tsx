@@ -1,41 +1,75 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { aboutData } from "./data";
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
-import { BarChart2 } from "lucide-react";
+import { BarChart2, X } from "lucide-react";
 import { useSectionTracking } from "@/hooks/useSectionTracking";
-// import { AboutCanvas } from "./about-canvas";
 
-/* ─────────────────────────────────────────────────────────────
-   Framer Motion variants
-   Same easing curve [0.22, 1, 0.36, 1] used throughout hero.
-───────────────────────────────────────────────────────────── */
-const containerVariants = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.11, delayChildren: 0.05 } },
-};
+// GSAP Imports
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { AnimatePresence, motion } from "framer-motion";
 
-const fadeUp = {
-    hidden: { opacity: 0, y: 26 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] as const },
-    },
-};
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-/* ─────────────────────────────────────────────────────────────
-   Component
-───────────────────────────────────────────────────────── */
 export function AboutSection() {
     const sectionRef = useRef<HTMLElement>(null);
-    const isInView   = useInView(sectionRef, { once: true, margin: "-80px" });
+    const imageRef = useRef<HTMLDivElement>(null);
+    const [isImageOpen, setIsImageOpen] = useState(false);
 
     const paragraphs = aboutData.summary.split("\n\n");
 
     useSectionTracking("about");
+
+    useGSAP(() => {
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top 70%",
+                toggleActions: "play none none none"
+            }
+        });
+
+        // Text animations
+        tl.from(".about-badge", { opacity: 0, y: 30, duration: 0.8, ease: "power3.out" })
+          .from(".about-heading", { opacity: 0, y: 30, duration: 0.8, ease: "power3.out" }, "-=0.6")
+          .fromTo(".about-word", 
+              { opacity: 0, filter: "blur(4px)", y: 5 }, 
+              { opacity: 1, filter: "blur(0px)", y: 0, duration: 0.2, stagger: 0.015, ease: "power1.out" }, 
+              "-=0.4"
+          )
+          .from(".about-stats", { opacity: 0, y: 20, duration: 0.8, ease: "power3.out" }, "-=0.2");
+
+        // Image animation
+        gsap.from(imageRef.current, {
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top 70%",
+            },
+            opacity: 0,
+            x: 50,
+            scale: 0.9,
+            duration: 1.2,
+            ease: "power3.out",
+        });
+
+        // Floating card animation
+        gsap.from(".floating-card", {
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top 60%",
+            },
+            opacity: 0,
+            x: 20,
+            y: 20,
+            duration: 1,
+            ease: "back.out(1.5)",
+            delay: 0.5
+        });
+
+    }, { scope: sectionRef });
 
     return (
         <section
@@ -43,7 +77,7 @@ export function AboutSection() {
             ref={sectionRef}
             className="group/about relative w-full min-h-dvh lg:h-dvh lg:min-h-175 flex items-center justify-center overflow-hidden pt-24 pb-12 lg:py-0"
         >
-            {/* ── CSS keyframes (scoped with prefix) ── */}
+            {/* ── CSS keyframes ── */}
             <style>{`
                 @keyframes about-ring-spin {
                     to { transform: rotate(360deg); }
@@ -61,8 +95,7 @@ export function AboutSection() {
                 .about-badge-ping   { animation: about-badge-ping   2.2s ease-in-out infinite; }
             `}</style>
 
-
-            {/* ── Radial depth tint — reinforces canvas blur ── */}
+            {/* Radial depth tint */}
             <div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 z-0"
@@ -75,17 +108,9 @@ export function AboutSection() {
 
             <div className="mx-auto w-full max-w-7xl px-6 lg:px-8 relative z-10 flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-12 lg:items-center lg:h-full">
 
-                {/* ════════════════════════════════════════════
-                    LEFT — Text content
-                ════════════════════════════════════════════ */}
-                <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate={isInView ? "visible" : "hidden"}
-                    className="flex flex-col justify-center w-full order-2 lg:order-1 flex-1 lg:h-full z-20"
-                >
-                    {/* Badge — identical tokens to hero badge */}
-                    <motion.div variants={fadeUp} className="w-fit">
+                {/* LEFT — Text content */}
+                <div className="flex flex-col justify-center w-full order-2 lg:order-1 flex-1 lg:h-full z-20">
+                    <div className="about-badge w-fit">
                         <div className="inline-flex items-center gap-2 rounded-full border border-green-200/80 bg-green-50/50 backdrop-blur-md mt-4 px-4 py-1.5 shadow-sm transition-all hover:bg-green-100/50">
                             <span className="relative flex h-2.5 w-2.5">
                                 <span className="about-badge-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -95,74 +120,48 @@ export function AboutSection() {
                                 About Me
                             </p>
                         </div>
-                    </motion.div>
+                    </div>
 
-                    {/* Heading — same scale & gradient as hero h1 */}
-                    <motion.div variants={fadeUp} className="mt-4">
+                    <div className="about-heading mt-4">
                         <h2 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-950 drop-shadow-sm">
                             <span className="text-4xl font-bold tracking-tight" style={{ color: "#fffff" }}>
                                 Who I Am
                             </span>
                         </h2>
-                    </motion.div>
+                    </div>
 
-                    {/* Summary — first paragraph bold, rest regular (from aboutData) */}
-                    <div className="mt-5 space-y-4 max-w-lg">
+                    <div className="about-text mt-5 space-y-4 max-w-lg">
                         {paragraphs.map((p, i) => (
-                            <motion.p
+                            <p
                                 key={i}
-                                variants={fadeUp}
                                 className={`text-base sm:text-lg leading-relaxed font-medium ${
                                     i === 0
                                         ? "text-slate-900 font-semibold"
                                         : "text-slate-600"
                                 }`}
                             >
-                                {p}
-                            </motion.p>
+                                {p.split(" ").map((word, wordIndex) => (
+                                    <span key={wordIndex} className="about-word inline-block mr-[0.25em]">
+                                        {word}
+                                    </span>
+                                ))}
+                            </p>
                         ))}
                     </div>
 
-                    {/* ── Stats row — profile facts, not skills ──
-                        Same layout pattern used in hero stats row.
-                        Uses heroData.stats so the source of truth stays in data.ts. */}
-                    <motion.div
-                        variants={fadeUp}
-                        className="mt-10 lg:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-slate-200/80 pt-6"
-                    >
-                        {/* {heroData.stats.map((stat, idx) => {
-                            const Icon = STAT_ICONS[idx] ?? Briefcase;
-                            return (
-                                <div key={idx} className="flex flex-col gap-2">
-                                    <div className="flex items-center gap-3">
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100/80 text-emerald-600 shrink-0">
-                                            <Icon className="h-5 w-5" />
-                                        </div>
-                                        <span className="text-xl lg:text-2xl font-bold text-slate-900 leading-tight">
-                                            {stat.value}
-                                        </span>
-                                    </div>
-                                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest leading-tight">
-                                        {stat.label}
-                                    </span>
-                                </div>
-                            );
-                        })} */}
-                    </motion.div>
-                </motion.div>
+                    <div className="about-stats mt-10 lg:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-slate-200/80 pt-6">
+                        {/* Stats go here */}
+                    </div>
+                </div>
 
-                {/* ════════════════════════════════════════════
-                    RIGHT — Circular image with layered effects
-                ════════════════════════════════════════════ */}
-                <motion.div
-                    initial={{ opacity: 0, x: 38, scale: 0.97 }}
-                    animate={isInView ? { opacity: 1, x: 0, scale: 1 } : {}}
-                    transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                    className="relative flex w-full h-[44vh] sm:h-[50vh] lg:h-[78vh] items-center justify-center order-1 lg:order-2"
+                {/* RIGHT — Circular image */}
+                <div
+                    ref={imageRef}
+                    className="relative flex w-full h-[44vh] sm:h-[50vh] lg:h-[78vh] items-center justify-center order-1 lg:order-2 cursor-pointer group/img"
+                    onClick={() => setIsImageOpen(true)}
                 >
-                    <div className="relative flex items-center justify-center">
-
-                        {/* ── Layer 1: Ambient glow (breathes slowly) ── */}
+                    <div className="relative flex items-center justify-center transition-transform duration-500 group-hover/img:scale-105">
+                        {/* Layer 1: Ambient glow */}
                         <div
                             aria-hidden="true"
                             className="about-glow-breathe absolute rounded-full pointer-events-none"
@@ -174,7 +173,7 @@ export function AboutSection() {
                             }}
                         />
 
-                        {/* ── Layer 2: Spinning conic-gradient ring ── */}
+                        {/* Layer 2: Spinning conic-gradient ring */}
                         <div
                             aria-hidden="true"
                             className="about-ring-spin absolute rounded-full pointer-events-none"
@@ -185,14 +184,14 @@ export function AboutSection() {
                             }}
                         />
 
-                        {/* ── Layer 3: Slate-50 gap — clean separator between ring & image ── */}
+                        {/* Layer 3: Slate-50 gap */}
                         <div
                             aria-hidden="true"
                             className="absolute rounded-full bg-slate-50 pointer-events-none"
                             style={{ inset: "-1.5px" }}
                         />
 
-                        {/* ── Layer 4: Circular image ── */}
+                        {/* Layer 4: Circular image */}
                         <div
                             className="relative overflow-hidden rounded-full shadow-2xl shadow-emerald-300/40"
                             style={{
@@ -205,11 +204,9 @@ export function AboutSection() {
                                 alt={`${aboutData.title} profile`}
                                 fill
                                 loading="lazy"
-                                
                                 sizes="(min-width: 1024px) 375px, (min-width: 640px) 33vw, 230px"
                                 className="object-cover object-top"
                             />
-                            {/* Photographic inner vignette for depth */}
                             <div
                                 aria-hidden="true"
                                 className="absolute inset-0 rounded-full pointer-events-none"
@@ -217,37 +214,8 @@ export function AboutSection() {
                             />
                         </div>
 
-                        {/* ── Floating glassmorphic card: top-left ──
-                            Exact same tokens as hero's floating tag:
-                            bg-white/70 backdrop-blur-md border border-white/50 shadow-xl */}
-                        {/* <motion.div
-                            initial={{ opacity: 0, x: -14, y: 10 }}
-                            animate={isInView ? { opacity: 1, x: 0, y: 0 } : {}}
-                            transition={{ duration: 0.65, delay: 0.60, ease: [0.22, 1, 0.36, 1] }}
-                            className="hidden sm:flex absolute -left-8 top-[13%] lg:-left-14 z-20 cursor-default"
-                        >
-                            <div className="flex items-center gap-3 rounded-2xl bg-white/70 backdrop-blur-md border border-white/50 shadow-xl p-3 pr-5">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 shrink-0">
-                                    <TrendingUp className="h-5 w-5" />
-                                </div>
-                                <div>
-                                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider tabular-nums">
-                                        Specialization
-                                    </p>
-                                    <p className="text-sm font-extrabold text-slate-900 whitespace-nowrap">
-                                        HR Analytics
-                                    </p>
-                                </div>
-                            </div>
-                        </motion.div> */}
-
-                        {/* ── Floating glassmorphic card: bottom-right ── */}
-                        <motion.div
-                            initial={{ opacity: 0, x: 14, y: 10 }}
-                            animate={isInView ? { opacity: 1, x: 0, y: 0 } : {}}
-                            transition={{ duration: 0.65, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
-                            className="hidden sm:flex absolute -right-8 bottom-[11%] lg:-right-14 z-20 cursor-default"
-                        >
+                        {/* Floating glassmorphic card: bottom-right */}
+                        <div className="floating-card hidden sm:flex absolute -right-8 bottom-[11%] lg:-right-14 z-20 cursor-default">
                             <div className="flex items-center gap-3 rounded-2xl bg-white/70 backdrop-blur-md border border-white/50 shadow-xl p-3 pr-5">
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600 shrink-0">
                                     <BarChart2 className="h-5 w-5" />
@@ -261,11 +229,47 @@ export function AboutSection() {
                                     </p>
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
                     </div>
-                </motion.div>
+                </div>
 
             </div>
+
+            {/* Lightbox / Popup Modal */}
+            <AnimatePresence>
+                {isImageOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setIsImageOpen(false)}
+                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 cursor-zoom-out"
+                    >
+                        <button 
+                            className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors bg-white/10 rounded-full p-2"
+                            onClick={() => setIsImageOpen(false)}
+                        >
+                            <X className="w-6 h-6" />
+                        </button>
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                            className="relative w-full max-w-2xl aspect-square sm:aspect-auto sm:h-[80vh] rounded-3xl overflow-hidden shadow-2xl border border-white/10"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <Image
+                                src="/assests/images/about/image.png"
+                                alt={`${aboutData.title} profile`}
+                                fill
+                                className="object-cover object-top"
+                                sizes="(max-width: 768px) 100vw, 800px"
+                            />
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </section>
     );
 }
