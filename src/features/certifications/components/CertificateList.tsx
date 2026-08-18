@@ -22,7 +22,7 @@ const certificatesData = [
     tag: "Excel",
     image: "/assests/images/certifications/MicrosoftExcel.png",
     icon: <FileSpreadsheet size={24} />,
-    url: "https://www.ude.my/UC-4ba82390-7b87-4bad-9a8b-b674d950e6eb",
+    url: "https://www.udemy.com/certificate/UC-4ba82390-7b87-4bad-9a8b-b674d950e6eb/",
   },
   {
     title: "Microsoft Power BI Desktop for Business Intelligence",
@@ -32,7 +32,7 @@ const certificatesData = [
     tag: "Power BI",
     image: "/assests/images/certifications/MicrosoftPowerBI.jpeg",
     icon: <LayoutDashboard size={24} />,
-    url: "https://www.ude my/UC-a48ce599 073b 4460-600-984547266cf",
+    url: "https://www.udemy.com/certificate/UC-a48ce599-073b-4460-600-984547266cf/",
   },
   {
     title: "Ultimate HR Generalist: Certified Human Resource Management",
@@ -42,7 +42,7 @@ const certificatesData = [
     tag: "HR Management",
     image: "/assests/images/certifications/HRGeneralist.png",
     icon: <Users size={24} />,
-    url: "https://www.ude.my/UC-a1c4fe0f-1fc5-4c18-a21d-b6e106861884",
+    url: "https://www.udemy.com/certificate/UC-a1c4fe0f-1fc5-4c18-a21d-b6e106861884/",
   },
 
   {
@@ -53,7 +53,7 @@ const certificatesData = [
     tag: "Payroll",
     image: "/assests/images/certifications/IndianPayrollManagement.png",
     icon: <Calculator size={24} />,
-    url: "https://www.ude.my/UC-3e11e473-7f86-45f8-afc3-717138281614",
+    url: "https://www.udemy.com/certificate/UC-3e11e473-7f86-45f8-afc3-717138281614/",
   },
   {
     title: "TDS for Indian Payroll - For Professionals",
@@ -63,7 +63,7 @@ const certificatesData = [
     tag: "Payroll",
     image: "/assests/images/certifications/TDSPayroll.png",
     icon: <ShieldCheck size={24} />,
-    url: "https://www.ude.my/UC-634fab80-1bd3-493a-afc9-629fbd8fede0",
+    url: "https://www.udemy.com/certificate/UC-634fab80-1bd3-493a-afc9-629fbd8fede0/",
   },
 ];
 

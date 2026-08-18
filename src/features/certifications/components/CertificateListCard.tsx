@@ -59,38 +59,46 @@ export default function CertificateListCard({
     <div
       ref={cardRef}
       onClick={onClick}
-      className="group relative flex flex-col overflow-hidden rounded-2xl bg-white cursor-pointer h-full w-full flex-1 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(15,23,42,0.08),_0_8px_20px_rgba(16,185,129,0.12),_0_0_0_1px_rgba(16,185,129,0.18)]"
+      className="group relative flex flex-col overflow-hidden rounded-2xl cursor-pointer h-full w-full flex-1 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_25px_50px_rgba(15,23,42,0.1),_0_10px_25px_rgba(16,185,129,0.15),_0_0_0_1px_rgba(16,185,129,0.2)]"
       style={{
-        border: "1px solid rgba(16, 185, 129, 0.14)",
+        background: "linear-gradient(145deg, #ffffff 0%, #f4faf6 50%, #ecfdf5 100%)",
+        border: "1px solid rgba(16, 185, 129, 0.12)",
         boxShadow: "0 10px 25px rgba(15, 23, 42, 0.04), 0 4px 10px rgba(16, 185, 129, 0.04)",
       }}
     >
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl" />
+      
+      {/* Top accent bar */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-emerald-400 to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
       {/* Image Section */}
       {image && (
-        <div className="w-full h-44 bg-gray-50/50 overflow-hidden border-b border-gray-100 relative p-4 flex items-center justify-center">
+        <div className="relative w-full h-44 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden border-b border-gray-100/50 p-4 flex items-center justify-center">
           <img 
             src={image} 
             alt={title} 
             className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105" 
           />
-          <div className="absolute inset-0 bg-black/[0.02] group-hover:bg-transparent transition-colors duration-300"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
       )}
 
       {/* Content Section */}
-      <div className="p-6 flex flex-col flex-1">
+      <div className="p-6 flex flex-col flex-1 relative z-10">
         <div className="flex gap-4 mb-4">
           <div
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-black text-emerald-400 transition-all duration-300 group-hover:scale-105"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-all duration-300 group-hover:scale-105 group-hover:rotate-2"
             style={{
-              border: "1px solid rgba(16,185,129,0.18)",
-              boxShadow: "0 8px 18px rgba(16, 185, 129, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08)",
+              background: "linear-gradient(135deg, #064e3b 0%, #059669 100%)",
+              boxShadow: "0 8px 18px rgba(16, 185, 129, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15)",
+              border: "1px solid rgba(16,185,129,0.3)",
             }}
           >
-            {icon}
+            <span className="text-emerald-100">{icon}</span>
           </div>
-          <div className="flex flex-col">
-            <h3 className="text-sm font-bold leading-tight text-gray-900 mb-1 line-clamp-2">
+          <div className="flex flex-col min-w-0">
+            <h3 className="text-sm font-bold leading-tight text-gray-900 mb-1 line-clamp-2 group-hover:text-emerald-700 transition-colors">
               {title}
             </h3>
             <p className="text-xs text-gray-500 font-medium">{platform}</p>
@@ -102,10 +110,10 @@ export default function CertificateListCard({
             <BadgeCheck size={14} className="fill-emerald-100 text-emerald-600" />
             <span>Verified</span>
           </div>
-          <span className="text-xs font-bold text-gray-800">{year}</span>
+          <span className="text-xs font-bold text-gray-800 bg-white/80 px-2 py-1 rounded-full border border-gray-100">{year}</span>
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-gray-50/0">
+        <div className="flex items-center justify-between pt-4 border-t border-gray-100/50">
           <span
             className="text-[10px] font-bold px-2.5 py-1 rounded-full"
             style={{
@@ -117,17 +125,17 @@ export default function CertificateListCard({
             {category}
           </span>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {url && (
               <a 
                 href={url} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="flex items-center gap-1.5 text-xs font-bold text-emerald-700 hover:text-emerald-800 transition-colors cursor-pointer whitespace-nowrap"
+                className="group/verify flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 text-emerald-700 font-semibold text-xs transition-all duration-300 hover:bg-emerald-50 hover:text-emerald-800 hover:shadow-[0_4px_14px_rgba(16,185,129,0.25)] hover:-translate-y-0.5 border border-emerald-200/50 cursor-pointer whitespace-nowrap backdrop-blur-sm"
                 onClick={(e) => e.stopPropagation()}
               >
-                Verify Credential
-                <ExternalLink size={12} />
+                <span className="hidden sm:inline">Verify</span>
+                <ExternalLink size={12} className="transition-transform group-hover/verify:translate-x-0.5" />
               </a>
             )}
             <button 
@@ -135,9 +143,10 @@ export default function CertificateListCard({
                 e.stopPropagation();
                 if (onClick) onClick();
               }}
-              className="flex items-center gap-1 text-xs font-bold text-gray-900 hover:text-emerald-600 transition-colors cursor-pointer"
+              className="group/details flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-semibold text-xs transition-all duration-300 hover:from-emerald-700 hover:to-emerald-800 hover:shadow-[0_6px_20px_rgba(16,185,129,0.35)] hover:-translate-y-0.5 hover:scale-[1.02] cursor-pointer whitespace-nowrap"
             >
-              View Details <ArrowRight size={14} />
+              <span className="hidden sm:inline">View Details</span>
+              <ArrowRight size={12} className="transition-transform group-hover/details:translate-x-0.5" />
             </button>
           </div>
         </div>
