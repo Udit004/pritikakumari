@@ -6,7 +6,7 @@ import { Download, Eye, Expand, FileText, X } from "lucide-react";
 import { useSectionTracking } from "@/hooks/useSectionTracking";
 import { trackEvent } from "@/lib/analytics";
 
-const resumePdfHref = "/assests/resume/Pritika%20Kumari_HR%20Analytics_%20Resume.pdf";
+const resumePdfHref = "/assests/resume/Pritika_Resume.pdf";
 
 export function ResumeSection() {
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
@@ -23,7 +23,7 @@ export function ResumeSection() {
   };
 
   return (
-    <section id="resume" className="relative w-full overflow-hidden py-20 md:py-28">
+    <section id="resume" className="relative w-full py-20 md:py-28">
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div
           className="absolute top-0 left-0 h-72 w-96 rounded-full opacity-20 blur-3xl"

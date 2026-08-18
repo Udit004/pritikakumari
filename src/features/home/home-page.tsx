@@ -77,7 +77,7 @@ export function HomePage() {
   }, []);
 
   return (
-    <main className="relative overflow-hidden bg-surface-secondary">
+    <main className="relative bg-surface-secondary">
       {/* ── Global Ambient Background ── */}
       <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
         {/* We can add a subtle dotted pattern here if needed, or just let the background color handle it */}

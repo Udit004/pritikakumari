@@ -126,7 +126,7 @@ export function SkillsSection() {
     <section
       id="skills"
       ref={sectionRef}
-      className="relative w-full overflow-hidden py-24 sm:py-28"
+      className="relative w-full py-24 sm:py-28"
     >
       {/* ── Dot grid — matches hero section pattern ── */}
       <div
