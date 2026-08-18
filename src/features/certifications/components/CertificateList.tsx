@@ -9,9 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const categories = [
   "All Certificates",
   "HR Management",
-  "HR Analytics",
   "Payroll",
-  "Compliance",
   "Tools & Technology",
 ];
 
@@ -22,7 +20,9 @@ const certificatesData = [
     year: "2025",
     category: "Tools & Technology",
     tag: "Excel",
+    image: "/assests/images/certifications/MicrosoftExcel.png",
     icon: <FileSpreadsheet size={24} />,
+    url: "https://www.ude.my/UC-4ba82390-7b87-4bad-9a8b-b674d950e6eb",
   },
   {
     title: "Microsoft Power BI Desktop for Business Intelligence",
@@ -30,61 +30,50 @@ const certificatesData = [
     year: "2025",
     category: "Tools & Technology",
     tag: "Power BI",
+    image: "/assests/images/certifications/MicrosoftPowerBI.jpeg",
     icon: <LayoutDashboard size={24} />,
+    url: "https://www.ude my/UC-a48ce599 073b 4460-600-984547266cf",
   },
   {
     title: "Ultimate HR Generalist: Certified Human Resource Management",
     platform: "Udemy",
-    year: "2025",
+    year: "2026",
     category: "HR Management",
     tag: "HR Management",
+    image: "/assests/images/certifications/HRGeneralist.png",
     icon: <Users size={24} />,
+    url: "https://www.ude.my/UC-a1c4fe0f-1fc5-4c18-a21d-b6e106861884",
   },
-  {
-    title: "Diploma Course in Human Resource Management (HRM)",
-    platform: "Udemy",
-    year: "2025",
-    category: "HR Management",
-    tag: "HR Management",
-    icon: <Users size={24} />,
-  },
+
   {
     title: "A Complete Guide to Indian Payroll Management [2023-24]",
     platform: "Udemy",
-    year: "2024",
+    year: "2026",
     category: "Payroll",
     tag: "Payroll",
+    image: "/assests/images/certifications/IndianPayrollManagement.png",
     icon: <Calculator size={24} />,
+    url: "https://www.ude.my/UC-3e11e473-7f86-45f8-afc3-717138281614",
   },
   {
     title: "TDS for Indian Payroll - For Professionals",
     platform: "Udemy",
-    year: "2024",
+    year: "2026",
     category: "Payroll",
     tag: "Payroll",
+    image: "/assests/images/certifications/TDSPayroll.png",
     icon: <ShieldCheck size={24} />,
+    url: "https://www.ude.my/UC-634fab80-1bd3-493a-afc9-629fbd8fede0",
   },
 ];
 
 export default function CertificateList() {
   const [activeCategory, setActiveCategory] = useState("All Certificates");
-  const [activeIndex, setActiveIndex] = useState(0);
   const [selectedCert, setSelectedCert] = useState<any>(null);
 
   const filteredCertificates = certificatesData.filter(
     (cert) => activeCategory === "All Certificates" || cert.category === activeCategory
   );
-
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const container = e.currentTarget;
-    const scrollPosition = container.scrollLeft;
-    // We add gap (16px = 1rem) and padding to card width roughly to get snapping point
-    const itemWidth = 300; // approximate width of a mobile card + gap
-    const newIndex = Math.round(scrollPosition / itemWidth);
-    if (newIndex !== activeIndex && newIndex < filteredCertificates.length) {
-      setActiveIndex(newIndex);
-    }
-  };
 
   return (
     <div className="w-full max-w-7xl mx-auto py-8">
@@ -125,46 +114,25 @@ export default function CertificateList() {
         </div>
       </div>
 
-      {/* Grid / Carousel */}
-      <div 
-        className="flex md:grid items-stretch overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 px-4 sm:px-6 md:px-0 pb-6 md:pb-0 scrollbar-hide"
-        onScroll={handleScroll}
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        <AnimatePresence mode="popLayout">
-          {filteredCertificates.map((cert, index) => (
-            <motion.div
-              key={cert.title + index}
-              layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.3 }}
-              className="flex flex-col w-[310px] sm:w-[350px] shrink-0 md:w-auto snap-center"
-            >
-              <div className="w-full h-full flex flex-col">
-                <CertificateListCard
-                  title={cert.title}
-                  platform={cert.platform}
-                  year={cert.year}
-                  category={cert.tag}
-                  icon={cert.icon}
-                  index={index}
-                  onClick={() => setSelectedCert(cert)}
-                />
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
-
-      {/* Mobile Pagination Dots */}
-      <div className="flex md:hidden justify-center gap-1.5 mb-8">
-        {filteredCertificates.map((_, idx) => (
-          <div 
-            key={idx} 
-            className={`h-1.5 rounded-full transition-all duration-300 ${idx === activeIndex ? "w-4 bg-emerald-600" : "w-1.5 bg-emerald-100"}`}
-          />
+      {/* Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 md:px-0">
+        {filteredCertificates.map((cert, index) => (
+          <div
+            key={cert.title + index}
+            className="flex flex-col w-full"
+          >
+            <CertificateListCard
+              title={cert.title}
+              platform={cert.platform}
+              year={cert.year}
+              category={cert.tag}
+              icon={cert.icon}
+              image={cert.image}
+              url={cert.url}
+              index={index}
+              onClick={() => setSelectedCert(cert)}
+            />
+          </div>
         ))}
       </div>
 
@@ -182,7 +150,7 @@ export default function CertificateList() {
       <AnimatePresence>
         {selectedCert && (
           <DetailCertificate 
-            certificate={selectedCert} 
+            certificate={{...selectedCert, url: selectedCert.url}} 
             onClose={() => setSelectedCert(null)} 
           />
         )}

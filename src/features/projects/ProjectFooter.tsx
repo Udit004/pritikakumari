@@ -32,9 +32,6 @@ export function ProjectFooter() {
           {/* Text Content */}
           <div className="space-y-2 text-center sm:text-left">
             <div className="flex items-center justify-center sm:justify-start gap-2">
-              <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm">
-                <Briefcase className="w-4 h-4 text-emerald-700" />
-              </div>
               <h3 className="text-xl font-bold text-slate-900">
                 More Projects Coming Soon
               </h3>

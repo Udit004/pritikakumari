@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Header from './Header'
-import SingleCertificate from './SingleCertificate'
+import CertificateList from './CertificateList'
 import { useSectionTracking } from '@/hooks/useSectionTracking'
 
 export function CertificationsSection() {
@@ -14,7 +14,7 @@ export function CertificationsSection() {
       className="py-6 relative"
     >
         <Header/>
-        <SingleCertificate />
+        <CertificateList />
     </section>
   )
 }
