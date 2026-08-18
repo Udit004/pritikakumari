@@ -60,7 +60,7 @@ import { Analysis1 } from "./project1/Analysis1";
   };
 
   return (
-    <section id="projects" className="relative w-full overflow-hidden py-20 md:py-28">
+    <section id="projects" className="relative w-full py-20 md:py-28">
       {/* Background decorations */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Top-left glow */}

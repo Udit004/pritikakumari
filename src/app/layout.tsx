@@ -5,7 +5,6 @@ import "./globals.css";
 import Script from "next/script";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import ClarityProvider from "@/components/ClarityProvider";
-import LenisProvider from "@/components/LenisProvider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -125,7 +124,7 @@ export default function RootLayout({
         <GoogleAnalytics />
         <ClarityProvider />
         <Toaster />
-        <LenisProvider>{children}</LenisProvider>
+        {children}
 
         <Script
           id="person-schema"
