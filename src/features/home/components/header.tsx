@@ -43,8 +43,8 @@ export function Header() {
     const handleConnectClick = (ref: React.RefObject<HTMLAnchorElement | null>) => {
         setActiveSection("contact");
         if (ref.current) {
-            gsap.fromTo(ref.current, 
-                { scale: 0.9 }, 
+            gsap.fromTo(ref.current,
+                { scale: 0.9 },
                 { scale: 1, duration: 0.4, ease: "elastic.out(1, 0.3)" }
             );
         }
@@ -65,12 +65,13 @@ export function Header() {
         []
     );
 
-useEffect(() => {
+    // Header.tsx - scroll detection
+    useEffect(() => {
         const handleScroll = () => {
-          const scrollY = window.scrollY || document.documentElement.scrollTop;
+          const scrollY = window.scrollY ?? document.documentElement.scrollTop ?? document.body.scrollTop ?? 0;
           setIsScrolled(scrollY > 20);
         };
-        handleScroll(); // Initial check on mount
+        handleScroll(); // initial
         window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
