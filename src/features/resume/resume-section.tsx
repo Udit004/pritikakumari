@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Download, Eye, Expand, FileText, X } from "lucide-react";
 import { useSectionTracking } from "@/hooks/useSectionTracking";
 import { trackEvent } from "@/lib/analytics";
+import Image from "next/image";
 
 const resumePdfHref = "/assests/resume/Pritika_Resume.pdf";
 
@@ -42,28 +43,46 @@ export function ResumeSection() {
       </div>
 
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-8 relative z-10">
+        {/* Header with Image */}
         <motion.div
-          className="mb-16 space-y-4"
+          className="mb-16 w-full flex flex-col lg:flex-row items-center gap-12"
           variants={itemVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/15 px-4 py-1.5 border border-emerald-500/25">
-            <div className="w-2 h-2 rounded-full bg-emerald-500" />
-            <p className="text-xs font-bold uppercase tracking-widest text-emerald-700">
+          {/* Left side: Text */}
+          <div className="flex-1 space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/15 px-4 py-1.5 border border-emerald-500/25">
+              <div className="w-2 h-2 rounded-full bg-emerald-500" />
+              <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">
+                Resume
+              </p>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
               Resume
+            </h2>
+            <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+              Quick preview, full-page open, and download.
             </p>
+            <div className="flex items-center gap-2">
+              <div className="h-1 w-12 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-300" />
+              <div className="h-1 w-5 rounded-full bg-emerald-200" />
+            </div>
           </div>
-          <h2 className="text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl">
-            Resume
-          </h2>
-          <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-            Quick preview, full-page open, and download.
-          </p>
-          <div className="flex items-center gap-2">
-            <div className="h-1 w-12 rounded-full bg-linear-to-r from-emerald-500 to-emerald-300" />
-            <div className="h-1 w-5 rounded-full bg-emerald-200" />
+
+          {/* Right side: Image */}
+          <div className="flex-1 w-full flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-md">
+              <Image
+                src="/assests/images/resume/resume_headerImage.png"
+                alt="Resume Header"
+                width={500}
+                height={500}
+                className="w-full h-auto object-contain rounded-xl"
+                priority
+              />
+            </div>
           </div>
         </motion.div>
 
