@@ -18,6 +18,7 @@ import { useSectionTracking } from "@/hooks/useSectionTracking";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -160,57 +161,74 @@ export function SkillsSection() {
       />
 
       <div className="relative mx-auto w-full max-w-7xl px-6 lg:px-8">
-        {/* ── Section header ── */}
-        <div className="mb-14 space-y-4">
-          {/* Badge — same style as hero "HR PROFESSIONAL" badge */}
-          <div
-            className="skill-badge inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 opacity-0"
-            style={{
-              background: "rgba(16,185,129,0.08)",
-              border: "1px solid rgba(16,185,129,0.25)",
-              transform: "translateY(12px)"
-            }}
-          >
-            <span
-              className="inline-block w-2 h-2 rounded-full"
-              style={{ background: "#10b981" }}
-            />
-            <span
-              className="text-[11px] font-bold uppercase tracking-[0.12em]"
-              style={{ color: "#059669" }}
+        {/* ── Section header with Image ── */}
+        <div className="mb-14 w-full flex flex-col lg:flex-row items-center gap-12">
+          {/* Left side: Text */}
+          <div className="flex-1 space-y-4">
+            {/* Badge — same style as hero "HR PROFESSIONAL" badge */}
+            <div
+              className="skill-badge inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 opacity-0"
+              style={{
+                background: "rgba(16,185,129,0.08)",
+                border: "1px solid rgba(16,185,129,0.25)",
+                transform: "translateY(12px)"
+              }}
             >
-              My Skills
-            </span>
+              <span
+                className="inline-block w-2 h-2 rounded-full"
+                style={{ background: "#10b981" }}
+              />
+              <span
+                className="text-[11px] font-bold uppercase tracking-[0.12em]"
+                style={{ color: "#059669" }}
+              >
+                My Skills
+              </span>
+            </div>
+
+            {/* Heading — matches the bold emerald-green hero heading style */}
+            <h2
+              className="skill-heading text-4xl sm:text-5xl font-bold tracking-tight opacity-0 text-slate-900"
+              style={{ transform: "translateY(16px)" }}
+            >
+              {skillsData.title}
+            </h2>
+
+            {/* Underline accent */}
+            <div className="flex items-center gap-2.5">
+              <div
+                className="skill-underline-1 h-[3px] w-14 rounded-full"
+                style={{ background: "linear-gradient(90deg, #10b981, #a7f3d0)", transform: "scaleX(0)" }}
+              />
+              <div
+                className="skill-underline-2 h-[3px] w-5 rounded-full"
+                style={{ background: "rgba(16,185,129,0.2)", transform: "scaleX(0)" }}
+              />
+            </div>
+
+            {/* Subtitle */}
+            <p
+              className="skill-subtitle text-base max-w-xl opacity-0 text-gray-600 leading-relaxed"
+              style={{ transform: "translateY(10px)" }}
+            >
+              A curated overview of my professional capabilities, refined through
+              hands-on experience across HR operations and organizational management.
+            </p>
           </div>
 
-          {/* Heading — matches the bold emerald-green hero heading style */}
-          <h2
-            className="skill-heading text-4xl sm:text-5xl font-bold tracking-tight opacity-0"
-            style={{ color: "#fffff", transform: "translateY(16px)" }}
-          >
-            {skillsData.title}
-          </h2>
-
-          {/* Underline accent */}
-          <div className="flex items-center gap-2.5">
-            <div
-              className="skill-underline-1 h-[3px] w-14 rounded-full"
-              style={{ background: "linear-gradient(90deg, #10b981, #a7f3d0)", transform: "scaleX(0)" }}
-            />
-            <div
-              className="skill-underline-2 h-[3px] w-5 rounded-full"
-              style={{ background: "rgba(16,185,129,0.2)", transform: "scaleX(0)" }}
-            />
+          {/* Right side: Image */}
+          <div className="flex-1 w-full flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-md">
+              <Image
+                src="/assests/images/skills/skill_headerImage.png"
+                alt="Skills Header"
+                width={500}
+                height={500}
+                className="w-full h-auto object-contain rounded-xl"
+                priority
+              />
+            </div>
           </div>
-
-          {/* Subtitle */}
-          <p
-            className="skill-subtitle text-base max-w-xl opacity-0"
-            style={{ color: "#4b5563", lineHeight: "1.8", transform: "translateY(10px)" }}
-          >
-            A curated overview of my professional capabilities, refined through
-            hands-on experience across HR operations and organizational management.
-          </p>
         </div>
 
         {/* ── Skills grid ── */}
