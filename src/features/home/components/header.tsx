@@ -65,8 +65,11 @@ export function Header() {
         []
     );
 
-    useEffect(() => {
-        const handleScroll = () => setIsScrolled(window.scrollY > 20);
+useEffect(() => {
+        const handleScroll = () => {
+          const scrollY = window.scrollY || document.documentElement.scrollTop;
+          setIsScrolled(scrollY > 20);
+        };
         handleScroll(); // Initial check on mount
         window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
@@ -131,9 +134,9 @@ export function Header() {
     }, [navLinks]);
 
     return (
-        <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-xl shadow-md py-3' : 'bg-transparent py-5'}`}>
-            <div className={`mx-auto max-w-7xl px-4 sm:px-6 transition-all duration-300`}>
-                <div className={`flex items-center justify-between transition-all duration-500 ease-in-out`}>
+        <header className="fixed left-0 right-0 top-0 z-50 transition-all duration-300">
+            <div className={`mx-auto max-w-7xl px-4 sm:px-6 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-lg rounded-2xl mx-6 my-2' : 'bg-transparent mx-6 my-2'}`}>
+                <div className={`flex items-center justify-between transition-all duration-500 ease-in-out py-3`}>
 
                     {/* Logo */}
                     <Link href="#hero" onClick={() => setActiveSection("hero")} className="flex items-center gap-3 group">
@@ -147,7 +150,7 @@ export function Header() {
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <nav className={`hidden lg:flex items-center rounded-full px-2 py-1.5 transition-all duration-500 ${isScrolled ? 'bg-slate-100/50' : 'bg-white/50 backdrop-blur-sm border border-slate-200 shadow-sm'}`} aria-label="Primary navigation">
+                    <nav className="hidden lg:flex items-center px-2 py-1.5 transition-all duration-500 bg-transparent" aria-label="Primary navigation">
                         {navLinks.map((link) => {
                             const isActive = activeSection === link.id;
                             return (

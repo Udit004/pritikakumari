@@ -3,6 +3,7 @@
 import { educationData } from "./data";
 import { motion } from "framer-motion";
 import { useSectionTracking } from "@/hooks/useSectionTracking";
+import Image from "next/image";
 
 export function EducationSection() {
 
@@ -64,28 +65,43 @@ export function EducationSection() {
       </div>
 
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-8 relative z-10">
-        {/* Header */}
+        {/* Header with Image */}
         <motion.div
-          className="mb-16 space-y-4"
+          className="mb-16 w-full flex flex-col lg:flex-row items-center gap-12"
           variants={itemVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/15 px-4 py-1.5 border border-emerald-500/25">
-            <div className="w-2 h-2 rounded-full bg-emerald-500" />
-            <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">
-              Learning
-            </p>
+          {/* Left side: Text */}
+          <div className="flex-1 space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/15 px-4 py-1.5 border border-emerald-500/25">
+              <div className="w-2 h-2 rounded-full bg-emerald-500" />
+              <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">
+                Learning
+              </p>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
+              {educationData.title}
+            </h2>
+            <div className="flex items-center gap-2">
+              <div className="w-12 h-1 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-300" />
+              <div className="w-5 h-1 rounded-full bg-emerald-200" />
+            </div>
           </div>
-          <h2 className="text-4xl font-bold tracking-tight text-black" 
-          // style={{ color: "#064e3b" }}
-          >
-            {educationData.title}
-          </h2>
-          <div className="flex items-center gap-2">
-            <div className="w-12 h-1 rounded-full bg-linear-to-r from-emerald-500 to-emerald-300" />
-            <div className="w-5 h-1 rounded-full bg-emerald-200" />
+
+          {/* Right side: Image */}
+          <div className="flex-1 w-full flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-md">
+              <Image
+                src="/assests/images/education/education_headerImage.png"
+                alt="Education Header"
+                width={500}
+                height={500}
+                className="w-full h-auto object-contain rounded-xl"
+                priority
+              />
+            </div>
           </div>
         </motion.div>
 
