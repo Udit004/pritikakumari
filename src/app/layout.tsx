@@ -5,6 +5,7 @@ import "./globals.css";
 import Script from "next/script";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import ClarityProvider from "@/components/ClarityProvider";
+import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -118,14 +119,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased lenis`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <div id="scroll-sentinel" aria-hidden className="h-px w-full" />
         <GoogleAnalytics />
         <ClarityProvider />
         <Toaster />
-        {children}
+        <SmoothScrollProvider>
+          {children}
+        </SmoothScrollProvider>
 
         <Script
           id="person-schema"
