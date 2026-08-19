@@ -12,10 +12,11 @@ import {
 type Props = {
   certificate: any;
   onClose: () => void;
+  isOpen: boolean;
 };
 
-export default function DetailCertificate({ certificate, onClose }: Props) {
-  if (!certificate) return null;
+export default function DetailCertificate({ certificate, onClose, isOpen }: Props & { isOpen: boolean }) {
+  if (!isOpen || !certificate) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/40 backdrop-blur-sm">
       <motion.div

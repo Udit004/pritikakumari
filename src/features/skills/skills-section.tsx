@@ -19,20 +19,32 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import { motion, Variants } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-function Counter({ from = 0, to, duration = 2 }: { from?: number, to: number, duration?: number }) {
+const containerVariants: Variants = {
+  hidden: { opacity: 0, y: 70 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { staggerChildren: 0.15, duration: 0.6, ease: "easeOut" as const },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0 },
+};
+
+function Counter({ from = 0, to, duration = 2 }: { from?: number; to: number; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
-  
+
   useGSAP(() => {
     if (!ref.current) return;
-
     const counter = { val: from };
-
     const animate = () => {
       counter.val = from;
-
       gsap.to(counter, {
         val: to,
         duration,
@@ -41,20 +53,17 @@ function Counter({ from = 0, to, duration = 2 }: { from?: number, to: number, du
           if (ref.current) ref.current.textContent = Math.floor(counter.val).toString();
         },
         onComplete: () => {
-          gsap.delayedCall(3, animate); // wait 3 sec then restart
-        }
+          gsap.delayedCall(3, animate);
+        },
       });
     };
-
     ScrollTrigger.create({
       trigger: ref.current,
       start: "top 80%",
       once: true,
-      onEnter: () => animate()
+      onEnter: () => animate(),
     });
-
   });
-
   return <span ref={ref}>{from}</span>;
 }
 
@@ -73,63 +82,17 @@ export function SkillsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   useSectionTracking("skills");
 
-  useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 70%",
-        toggleActions: "play none none none"
-      }
-    });
-
-    tl.fromTo(".skill-badge", 
-        { opacity: 0, y: 12 }, 
-        { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }
-      )
-      .fromTo(".skill-heading", 
-        { opacity: 0, y: 16 }, 
-        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 
-        "-=0.2"
-      )
-      .fromTo(".skill-underline-1", 
-        { scaleX: 0 }, 
-        { scaleX: 1, duration: 0.55, ease: "power3.out", transformOrigin: "0% 50%" }, 
-        "-=0.3"
-      )
-      .fromTo(".skill-underline-2", 
-        { scaleX: 0 }, 
-        { scaleX: 1, duration: 0.4, ease: "power3.out", transformOrigin: "0% 50%" }, 
-        "-=0.4"
-      )
-      .fromTo(".skill-subtitle", 
-        { opacity: 0, y: 10 }, 
-        { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 
-        "-=0.3"
-      )
-      .fromTo(".skill-card", 
-        { opacity: 0, y: 24 }, 
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.07, ease: "power2.out" }, 
-        "-=0.2"
-      )
-      .fromTo(".skill-level-bar", 
-        { scaleX: 0 }, 
-        { scaleX: 1, duration: 0.4, stagger: 0.02, ease: "power2.out", transformOrigin: "0% 50%" }, 
-        "-=0.5"
-      )
-      .fromTo(".skill-stats", 
-        { opacity: 0, y: 20 }, 
-        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 
-        "-=0.3"
-      );
-  }, { scope: sectionRef });
-  
   return (
-    <section
+    <motion.section
       id="skills"
       ref={sectionRef}
       className="relative w-full py-24 sm:py-28"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
     >
-      {/* ── Dot grid — matches hero section pattern ── */}
+      {/* Dot grid */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -144,7 +107,7 @@ export function SkillsSection() {
         }}
       />
 
-      {/* ── Subtle ambient glow ── */}
+      {/* Ambient glow */}
       <div
         className="absolute top-0 right-0 w-[600px] h-[400px] pointer-events-none"
         style={{
@@ -161,62 +124,46 @@ export function SkillsSection() {
       />
 
       <div className="relative mx-auto w-full max-w-7xl px-6 lg:px-8">
-        {/* ── Section header with Image ── */}
+        {/* Section header */}
         <div className="mb-14 w-full flex flex-col lg:flex-row items-center gap-12">
-          {/* Left side: Text */}
           <div className="flex-1 space-y-4">
-            {/* Badge — same style as hero "HR PROFESSIONAL" badge */}
-            <div
-              className="skill-badge inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 opacity-0"
-              style={{
-                background: "rgba(16,185,129,0.08)",
-                border: "1px solid rgba(16,185,129,0.25)",
-                transform: "translateY(12px)"
-              }}
+            <motion.div
+              className="skill-badge inline-flex items-center gap-2 rounded-full px-3.5 py-1.5"
+              variants={itemVariants}
+              style={{ background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.25)" }}
             >
-              <span
-                className="inline-block w-2 h-2 rounded-full"
-                style={{ background: "#10b981" }}
-              />
-              <span
-                className="text-[11px] font-bold uppercase tracking-[0.12em]"
-                style={{ color: "#059669" }}
-              >
+              <span className="inline-block w-2 h-2 rounded-full" style={{ background: "#10b981" }} />
+              <span className="text-[11px] font-bold uppercase tracking-[0.12em]" style={{ color: "#059669" }}>
                 My Skills
               </span>
-            </div>
+            </motion.div>
 
-            {/* Heading — matches the bold emerald-green hero heading style */}
-            <h2
-              className="skill-heading text-4xl sm:text-5xl font-bold tracking-tight opacity-0 text-slate-900"
-              style={{ transform: "translateY(16px)" }}
-            >
+            <motion.h2 className="skill-heading text-4xl sm:text-5xl font-bold tracking-tight text-slate-900" variants={itemVariants}>
               {skillsData.title}
-            </h2>
+            </motion.h2>
 
-            {/* Underline accent */}
             <div className="flex items-center gap-2.5">
-              <div
+              <motion.div
                 className="skill-underline-1 h-[3px] w-14 rounded-full"
-                style={{ background: "linear-gradient(90deg, #10b981, #a7f3d0)", transform: "scaleX(0)" }}
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                transition={{ duration: 0.55, ease: "easeOut" }}
+                style={{ background: "linear-gradient(90deg, #10b981, #a7f3d0)", transformOrigin: "0% 50%" }}
               />
-              <div
+              <motion.div
                 className="skill-underline-2 h-[3px] w-5 rounded-full"
-                style={{ background: "rgba(16,185,129,0.2)", transform: "scaleX(0)" }}
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                style={{ background: "rgba(16,185,129,0.2)", transformOrigin: "0% 50%" }}
               />
             </div>
 
-            {/* Subtitle */}
-            <p
-              className="skill-subtitle text-base max-w-xl opacity-0 text-gray-600 leading-relaxed"
-              style={{ transform: "translateY(10px)" }}
-            >
-              A curated overview of my professional capabilities, refined through
-              hands-on experience across HR operations and organizational management.
-            </p>
+            <motion.p className="skill-subtitle text-base max-w-xl text-gray-600 leading-relaxed" variants={itemVariants}>
+              A curated overview of my professional capabilities, refined through hands-on experience across HR operations and organizational management.
+            </motion.p>
           </div>
 
-          {/* Right side: Image */}
           <div className="flex-1 w-full flex justify-center lg:justify-end">
             <div className="relative w-full max-w-md">
               <Image
@@ -231,75 +178,49 @@ export function SkillsSection() {
           </div>
         </div>
 
-        {/* ── Skills grid ── */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Skills grid */}
+        <motion.div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" variants={containerVariants}>
           {skillsData.skillsList.map((skill, index) => (
             <SkillCard
               key={skill.name}
               name={skill.name}
-              icon={
-                iconMap[skill.icon] ?? (
-                  <Users className="h-5 w-5 text-black" />
-                )
-              }
+              icon={iconMap[skill.icon] ?? <Users className="h-5 w-5 text-black" />}
               level={skill.level}
               index={index}
             />
           ))}
-        </div>
+        </motion.div>
 
-        {/* ── Bottom stats bar — matches hero stat strip ── */}
-        <div
-          className="skill-stats mt-14 grid grid-cols-3 overflow-hidden rounded-2xl bg-white opacity-0"
-          style={{
-            border: "1px solid rgba(16,185,129,0.15)",
-            boxShadow: "0 4px 20px rgba(16,185,129,0.07)",
-            transform: "translateY(20px)"
-          }}
+        {/* Bottom stats bar */}
+        <motion.div
+          className="skill-stats mt-14 grid grid-cols-3 overflow-hidden rounded-2xl bg-white"
+          variants={containerVariants}
+          style={{ border: "1px solid rgba(16,185,129,0.15)", boxShadow: "0 4px 20px rgba(16,185,129,0.07)" }}
         >
           {[
             { label: "Skills", numericValue: skillsData.skillsList.length, suffix: "+" },
             {
               label: "Expert Level",
               numericValue: skillsData.skillsList.filter((s) => s.level === 5).length,
-              suffix: ""
+              suffix: "",
             },
             { label: "Years Experience", numericValue: 1, suffix: "+" },
           ].map((stat, i) => (
-            <div
-              key={stat.label}
-              className="flex flex-col items-center justify-center py-7 px-4 text-center relative"
-            >
-              {/* Vertical divider */}
+            <div key={stat.label} className="flex flex-col items-center justify-center py-7 px-4 text-center relative">
               {i > 0 && (
-                <div
-                  className="absolute left-0 top-1/4 bottom-1/4 w-px"
-                  style={{ background: "rgba(16,185,129,0.15)" }}
-                />
+                <div className="absolute left-0 top-1/4 bottom-1/4 w-px" style={{ background: "rgba(16,185,129,0.15)" }} />
               )}
-
-              {/* Emerald icon dot */}
-              <div
-                className="w-2 h-2 rounded-full mb-3"
-                style={{ background: "#10b981" }}
-              />
-
-              <span
-                className="text-3xl font-bold"
-                style={{ color: "#064e3b" }}
-              >
+              <div className="w-2 h-2 rounded-full mb-3" style={{ background: "#10b981" }} />
+              <span className="text-3xl font-bold" style={{ color: "#064e3b" }}>
                 <Counter to={stat.numericValue} />{stat.suffix}
               </span>
-              <span
-                className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.12em]"
-                style={{ color: "#6b7280" }}
-              >
+              <span className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.12em]" style={{ color: "#6b7280" }}>
                 {stat.label}
               </span>
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }

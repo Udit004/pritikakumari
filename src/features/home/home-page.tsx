@@ -14,7 +14,7 @@ const HeroCanvas = dynamic(
 
 const SkillsSection = dynamic(
   () => import("@/features/skills").then((mod) => mod.SkillsSection),
-  { ssr: false, loading: () => null }
+  { loading: () => <div className="py-20" /> }
 );
 
 const ExperienceSection = dynamic(
@@ -28,7 +28,7 @@ const ProjectsSection = dynamic(
 );
 const CertificationsSection = dynamic(
   () => import("@/features/certifications/components/certifications-section").then((mod) => mod.CertificationsSection),
-  { ssr: false, loading: () => null }
+  { loading: () => <div className="py-20" /> }
 );
 
 const EducationSection = dynamic(
@@ -38,7 +38,7 @@ const EducationSection = dynamic(
 
 const ResumeSection = dynamic(
   () => import("@/features/resume").then((mod) => mod.ResumeSection),
-  { ssr: false, loading: () => null }
+  { loading: () => <div className="py-20" /> }
 );
 
 const ContactSection = dynamic(

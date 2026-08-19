@@ -147,13 +147,12 @@ export default function CertificateList() {
       </div> */}
 
       {/* Detail Modal */}
-      <AnimatePresence>
-        {selectedCert && (
-          <DetailCertificate 
-            certificate={{...selectedCert, url: selectedCert.url}} 
-            onClose={() => setSelectedCert(null)} 
-          />
-        )}
+      <AnimatePresence mode="wait">
+        <DetailCertificate 
+          certificate={selectedCert ? {...selectedCert, url: selectedCert.url} : null} 
+          onClose={() => setSelectedCert(null)} 
+          isOpen={!!selectedCert}
+        />
       </AnimatePresence>
     </div>
   );

@@ -44,16 +44,16 @@ export default function CertificateListCard({
         y: 0, 
         scale: 1,
         duration: 0.7, 
-        delay: index * 0.1, 
+        delay: 0, 
         ease: "power3.out",
         scrollTrigger: {
           trigger: cardRef.current,
-          start: "top bottom-=50",
+          start: "top 85%",
           toggleActions: "play none none reverse"
         }
       }
     );
-  }, { scope: cardRef, dependencies: [index] });
+  }, { scope: cardRef });
 
   return (
     <div
