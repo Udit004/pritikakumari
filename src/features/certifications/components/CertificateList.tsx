@@ -131,6 +131,7 @@ export default function CertificateList() {
               url={cert.url}
               index={index}
               onClick={() => setSelectedCert(cert)}
+              priority={index < 3}
             />
           </div>
         ))}

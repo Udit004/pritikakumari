@@ -5,6 +5,7 @@ import { BadgeCheck, ArrowRight, ExternalLink } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,6 +20,7 @@ type Props = {
   url?: string;
   index?: number;
   onClick?: () => void;
+  priority?: boolean;
 };
 
 export default function CertificateListCard({
@@ -32,6 +34,7 @@ export default function CertificateListCard({
   url,
   index = 0,
   onClick,
+  priority,
 }: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -75,10 +78,14 @@ export default function CertificateListCard({
       {/* Image Section */}
       {image && (
         <div className="relative w-full h-44 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden border-b border-gray-100/50 p-4 flex items-center justify-center">
-          <img 
-            src={image} 
-            alt={title} 
-            className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105" 
+          <Image
+            src={image}
+            alt={title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-contain transition-transform duration-700 group-hover:scale-105"
+            loading={priority ? "eager" : "lazy"}
+            priority={priority}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>

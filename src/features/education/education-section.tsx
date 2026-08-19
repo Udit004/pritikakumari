@@ -94,7 +94,7 @@ export function EducationSection() {
           <div className="flex-1 w-full flex justify-center lg:justify-end">
             <div className="relative w-full max-w-md">
               <Image
-                src="/assests/images/education/education_headerImage.png"
+                src="/assests/images/education/Education_headerImage.png"
                 alt="Education Header"
                 width={500}
                 height={500}
