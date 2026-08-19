@@ -23,36 +23,37 @@ export function AboutSection() {
 
     useSectionTracking("about");
 
-    useGSAP(() => {
+useGSAP(() => {
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: sectionRef.current,
                 start: "top 70%",
-                toggleActions: "play none none none"
+                toggleActions: "play none none none",
+                onEnter: () => tl.play(),
+                onLeaveBack: () => tl.reverse()
             }
         });
 
-        // Text animations
-        tl.from(".about-badge", { opacity: 0, y: 30, duration: 0.8, ease: "power3.out" })
-          .from(".about-heading", { opacity: 0, y: 30, duration: 0.8, ease: "power3.out" }, "-=0.6")
-          .fromTo(".about-word", 
-              { opacity: 0, filter: "blur(4px)", y: 5 }, 
-              { opacity: 1, filter: "blur(0px)", y: 0, duration: 0.2, stagger: 0.015, ease: "power1.out" }, 
+        // Text animations - use .from() so they animate TO current visible state
+        tl.from(".about-badge", { opacity: 0, y: 30, duration: 0.8, ease: "power3.out", immediateRender: false })
+          .from(".about-heading", { opacity: 0, y: 30, duration: 0.8, ease: "power3.out", immediateRender: false }, "-=0.6")
+          .from(".about-word", 
+              { opacity: 0, filter: "blur(4px)", y: 5, duration: 0.2, stagger: 0.015, ease: "power1.out", immediateRender: false }, 
               "-=0.4"
           )
-          .from(".about-stats", { opacity: 0, y: 20, duration: 0.8, ease: "power3.out" }, "-=0.2");
+          .from(".about-stats", { opacity: 0, y: 20, duration: 0.8, ease: "power3.out", immediateRender: false }, "-=0.2");
 
         // Image animation
         gsap.from(imageRef.current, {
             scrollTrigger: {
                 trigger: sectionRef.current,
                 start: "top 70%",
+                onEnter: () => gsap.to(imageRef.current, { opacity: 1, x: 0, scale: 1, duration: 1.2, ease: "power3.out" }),
             },
             opacity: 0,
             x: 50,
             scale: 0.9,
-            duration: 1.2,
-            ease: "power3.out",
+            immediateRender: false,
         });
 
         // Floating card animation
@@ -60,14 +61,28 @@ export function AboutSection() {
             scrollTrigger: {
                 trigger: sectionRef.current,
                 start: "top 60%",
+                onEnter: () => gsap.to(".floating-card", { opacity: 1, x: 0, y: 0, duration: 1, ease: "back.out(1.5)" }),
             },
             opacity: 0,
             x: 20,
             y: 20,
-            duration: 1,
-            ease: "back.out(1.5)",
+            immediateRender: false,
             delay: 0.5
         });
+
+        // Fallback: ensure visibility if ScrollTrigger doesn't fire
+        const fallback = setTimeout(() => {
+          if (sectionRef.current) {
+            gsap.set(sectionRef.current.querySelectorAll(".about-badge, .about-heading, .about-word, .about-stats, .floating-card"), { 
+              opacity: 1, y: 0, x: 0, scale: 1, filter: "none", clearProps: "all" 
+            });
+            if (imageRef.current) {
+              gsap.set(imageRef.current, { opacity: 1, y: 0, x: 0, scale: 1, clearProps: "all" });
+            }
+          }
+        }, 2000);
+        
+        return () => clearTimeout(fallback);
 
     }, { scope: sectionRef });
 

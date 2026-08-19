@@ -39,23 +39,33 @@ export default function CertificateListCard({
   const cardRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    gsap.fromTo(
-      cardRef.current,
-      { opacity: 0, y: 30, scale: 0.95 },
-      { 
-        opacity: 1, 
-        y: 0, 
-        scale: 1,
-        duration: 0.7, 
-        delay: 0, 
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: cardRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse"
+    const ctx = gsap.context(() => {
+      gsap.from(
+        cardRef.current,
+        { 
+          opacity: 0, 
+          y: 30, 
+          scale: 0.95,
+          duration: 0.7, 
+          ease: "power3.out",
+          immediateRender: false,
+          scrollTrigger: {
+            trigger: cardRef.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          }
         }
+      );
+    }, cardRef);
+    
+    // Fallback: ensure visibility if ScrollTrigger doesn't fire
+    const fallback = setTimeout(() => {
+      if (cardRef.current) {
+        gsap.set(cardRef.current, { opacity: 1, y: 0, scale: 1, clearProps: "all" });
       }
-    );
+    }, 2000);
+    
+    return () => clearTimeout(fallback);
   }, { scope: cardRef });
 
   return (
