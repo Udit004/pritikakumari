@@ -123,7 +123,7 @@ export default function DetailCertificate({ certificate, onClose, isOpen }: Prop
           <div className="mb-8">
             <h3 className="text-sm font-bold text-gray-900 mb-3">Skills Covered</h3>
             <div className="flex flex-wrap gap-2">
-              {['Excel Functions', 'Data Analysis', 'Pivot Tables', 'Charts', 'Dashboards'].map((skill) => (
+              {(certificate.Skills || []).map((skill: string) => (
                 <span 
                   key={skill}
                   className="px-3 py-1.5 rounded-full text-xs font-bold text-emerald-700 bg-emerald-50/50 border border-emerald-100"
@@ -138,7 +138,7 @@ export default function DetailCertificate({ certificate, onClose, isOpen }: Prop
           <div className="mb-10">
             <h3 className="text-sm font-bold text-gray-900 mb-2">Description</h3>
             <p className="text-sm text-gray-600 leading-relaxed">
-              Comprehensive course covering Excel essentials to advanced level including formulas, data analysis, pivot tables, charts and dashboard creation.
+              {certificate.Description || "No description available."}
             </p>
           </div>
 

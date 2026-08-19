@@ -21,6 +21,8 @@ type Props = {
   index?: number;
   onClick?: () => void;
   priority?: boolean;
+  Skills?: string[];
+  Description?: string;
 };
 
 export default function CertificateListCard({

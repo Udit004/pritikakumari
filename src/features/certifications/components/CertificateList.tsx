@@ -23,6 +23,8 @@ const certificatesData = [
     image: "/assests/images/certifications/MicrosoftExcel.png",
     icon: <FileSpreadsheet size={24} />,
     url: "https://www.udemy.com/certificate/UC-4ba82390-7b87-4bad-9a8b-b674d950e6eb/",
+    Skills: ["Excel Functions","Data Analysis","Pivot Tables","Charts","Dashboards"],
+    Description: "Comprehensive course covering Excel essentials to advanced level including formulas, data analysis, pivot tables, charts and dashboard creation."
   },
   {
     title: "Microsoft Power BI Desktop for Business Intelligence",
@@ -33,6 +35,8 @@ const certificatesData = [
     image: "/assests/images/certifications/MicrosoftPowerBI.jpeg",
     icon: <LayoutDashboard size={24} />,
     url: "https://www.udemy.com/certificate/UC-a48ce599-073b-4460-600-984547266cf/",
+    Skills: ["Power BI","Data Analysis","Data Visualization","DAX","Business Intelligence"],
+    Description: "Master data analysis and visualization using Power BI, create compelling dashboards, and leverage DAX for advanced business intelligence."
   },
   {
     title: "Ultimate HR Generalist: Certified Human Resource Management",
@@ -43,6 +47,8 @@ const certificatesData = [
     image: "/assests/images/certifications/HRGeneralist.png",
     icon: <Users size={24} />,
     url: "https://www.udemy.com/certificate/UC-a1c4fe0f-1fc5-4c18-a21d-b6e106861884/",
+    Skills: ["HR Generalist","HR Management","Recruitment","Employee Relations","Performance Management"],
+    Description: "Comprehensive HR training covering recruitment, employee relations, performance management, HR policies, and legal compliance."
   },
 
   {
@@ -54,6 +60,8 @@ const certificatesData = [
     image: "/assests/images/certifications/IndianPayrollManagement.png",
     icon: <Calculator size={24} />,
     url: "https://www.udemy.com/certificate/UC-3e11e473-7f86-45f8-afc3-717138281614/",
+    Skills: ["Indian Payroll Management","TDS","Payroll","Compliance"],
+    Description: "Comprehensive guide to Indian payroll management including TDS calculation, compliance, and regulatory requirements."
   },
   {
     title: "TDS for Indian Payroll - For Professionals",
@@ -64,6 +72,8 @@ const certificatesData = [
     image: "/assests/images/certifications/TDSPayroll.png",
     icon: <ShieldCheck size={24} />,
     url: "https://www.udemy.com/certificate/UC-634fab80-1bd3-493a-afc9-629fbd8fede0/",
+    Skills: ["TDS for Indian Payroll","TDS","Payroll","Compliance"],
+    Description: "Learn TDS for Indian Payroll, master TDS calculation, compliance, and regulatory requirements for professionals."
   },
 ];
 
@@ -130,6 +140,8 @@ export default function CertificateList() {
               image={cert.image}
               url={cert.url}
               index={index}
+              Skills={cert.Skills}
+              Description={cert.Description}
               onClick={() => setSelectedCert(cert)}
               priority={index < 3}
             />

@@ -9,12 +9,12 @@ export function CertificationsSection() {
   useSectionTracking("certificates");
 
   return (
-    <section 
-      id="certificates" 
+    <section
+      id="certificates"
       className="py-6 relative"
     >
-        <Header/>
-        <CertificateList />
+      <Header />
+      <CertificateList />
     </section>
   )
 }
