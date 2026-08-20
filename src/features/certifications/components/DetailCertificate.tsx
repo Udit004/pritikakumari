@@ -1,12 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { 
-  X, 
-  ChevronLeft, 
-  ChevronRight, 
-  ExternalLink, 
-  BadgeCheck 
+import {
+  X,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  BadgeCheck
 } from "lucide-react";
 
 type Props = {
@@ -26,7 +26,7 @@ export default function DetailCertificate({ certificate, onClose, isOpen }: Prop
         className="relative w-full max-w-[1080px] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[90vh] md:max-h-[85vh]"
       >
         {/* Close Button - Mobile absolute, Desktop absolute top right */}
-        <button 
+        <button
           onClick={onClose}
           className="absolute top-4 right-4 z-10 p-2 rounded-full bg-gray-100/80 hover:bg-gray-200 text-gray-700 transition-all hover:scale-110 active:scale-95 cursor-pointer"
         >
@@ -35,7 +35,7 @@ export default function DetailCertificate({ certificate, onClose, isOpen }: Prop
 
         {/* Left Side - Image Slider */}
         <div className="w-full md:w-[55%] lg:w-[50%] p-6 md:p-8 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 bg-gray-50/50 relative">
-          
+
           <div className="flex items-center w-full justify-between relative group">
             {/* Prev Button */}
             <button className="h-10 w-10 flex items-center justify-center rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] border border-gray-100 text-gray-600 hover:text-black hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)] transition-all hover:scale-110 active:scale-95 z-10 -ml-2 sm:-ml-4 shrink-0 cursor-pointer">
@@ -45,8 +45,8 @@ export default function DetailCertificate({ certificate, onClose, isOpen }: Prop
             {/* Certificate Placeholder Div or Image */}
             <div className="w-full max-w-[420px] aspect-[4/3] bg-[#fdfbf7] border border-[#e5e1d8] rounded-lg shadow-sm mx-4 relative overflow-hidden flex items-center justify-center">
               {certificate.image ? (
-                <img 
-                  src={certificate.image} 
+                <img
+                  src={certificate.image}
                   alt={certificate.title}
                   className="w-full h-full object-cover"
                 />
@@ -85,8 +85,8 @@ export default function DetailCertificate({ certificate, onClose, isOpen }: Prop
         </div>
 
         {/* Right Side - Details */}
-        <div className="w-full md:w-[45%] lg:w-[50%] p-6 md:p-8 lg:p-10 flex flex-col overflow-y-auto">
-          
+        <div className="w-full md:w-[45%] lg:w-[50%] p-6 md:p-8 lg:p-10 flex flex-col min-h-0 overflow-y-auto touch-pan-y overscroll-contain" data-lenis-prevent style={{ WebkitOverflowScrolling: 'touch' }}>
+
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-3 pr-8">
             {certificate.title}
           </h2>
@@ -107,7 +107,7 @@ export default function DetailCertificate({ certificate, onClose, isOpen }: Prop
                 <span className="text-sm font-bold text-gray-900">{certificate.platform}</span>
               </div>
             </div>
-            
+
             <div className="flex flex-col">
               <span className="text-[11px] font-semibold text-gray-500 mb-1">Issued Date</span>
               <span className="text-sm font-bold text-gray-900">{certificate.year}</span>
@@ -124,7 +124,7 @@ export default function DetailCertificate({ certificate, onClose, isOpen }: Prop
             <h3 className="text-sm font-bold text-gray-900 mb-3">Skills Covered</h3>
             <div className="flex flex-wrap gap-2">
               {(certificate.Skills || []).map((skill: string) => (
-                <span 
+                <span
                   key={skill}
                   className="px-3 py-1.5 rounded-full text-xs font-bold text-emerald-700 bg-emerald-50/50 border border-emerald-100"
                 >
@@ -145,10 +145,10 @@ export default function DetailCertificate({ certificate, onClose, isOpen }: Prop
           {/* Actions */}
           <div className="mt-auto flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-100/60">
             {certificate.url && (
-              <a 
-                href={certificate.url} 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href={certificate.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex-1 flex items-center justify-center gap-2.5 bg-white text-emerald-700 border border-emerald-300 hover:border-emerald-500 hover:bg-emerald-50 py-3.5 px-6 rounded-full text-sm font-bold transition-all shadow-sm cursor-pointer whitespace-nowrap"
               >
                 Verify Credential

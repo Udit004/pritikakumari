@@ -23,7 +23,7 @@ const certificatesData = [
     image: "/assests/images/certifications/MicrosoftExcel.png",
     icon: <FileSpreadsheet size={24} />,
     url: "https://www.udemy.com/certificate/UC-4ba82390-7b87-4bad-9a8b-b674d950e6eb/",
-    Skills: ["Excel Functions","Data Analysis","Pivot Tables","Charts","Dashboards"],
+    Skills: ["Excel Functions", "Data Analysis", "Pivot Tables", "Charts", "Dashboards"],
     Description: "Comprehensive course covering Excel essentials to advanced level including formulas, data analysis, pivot tables, charts and dashboard creation."
   },
   {
@@ -35,7 +35,7 @@ const certificatesData = [
     image: "/assests/images/certifications/MicrosoftPowerBI.jpeg",
     icon: <LayoutDashboard size={24} />,
     url: "https://www.udemy.com/certificate/UC-a48ce599-073b-4460-600-984547266cf/",
-    Skills: ["Power BI","Data Analysis","Data Visualization","DAX","Business Intelligence"],
+    Skills: ["Power BI", "Data Analysis", "Data Visualization", "DAX", "Business Intelligence"],
     Description: "Master data analysis and visualization using Power BI, create compelling dashboards, and leverage DAX for advanced business intelligence."
   },
   {
@@ -47,7 +47,7 @@ const certificatesData = [
     image: "/assests/images/certifications/HRGeneralist.png",
     icon: <Users size={24} />,
     url: "https://www.udemy.com/certificate/UC-a1c4fe0f-1fc5-4c18-a21d-b6e106861884/",
-    Skills: ["HR Generalist","HR Management","Recruitment","Employee Relations","Performance Management"],
+    Skills: ["HR Generalist", "HR Management", "Recruitment", "Employee Relations", "Performance Management"],
     Description: "Comprehensive HR training covering recruitment, employee relations, performance management, HR policies, and legal compliance."
   },
 
@@ -60,7 +60,7 @@ const certificatesData = [
     image: "/assests/images/certifications/IndianPayrollManagement.png",
     icon: <Calculator size={24} />,
     url: "https://www.udemy.com/certificate/UC-3e11e473-7f86-45f8-afc3-717138281614/",
-    Skills: ["Indian Payroll Management","TDS","Payroll","Compliance"],
+    Skills: ["Indian Payroll Management", "TDS", "Payroll", "Compliance"],
     Description: "Comprehensive guide to Indian payroll management including TDS calculation, compliance, and regulatory requirements."
   },
   {
@@ -72,9 +72,29 @@ const certificatesData = [
     image: "/assests/images/certifications/TDSPayroll.png",
     icon: <ShieldCheck size={24} />,
     url: "https://www.udemy.com/certificate/UC-634fab80-1bd3-493a-afc9-629fbd8fede0/",
-    Skills: ["TDS for Indian Payroll","TDS","Payroll","Compliance"],
+    Skills: ["TDS for Indian Payroll", "TDS", "Payroll", "Compliance"],
     Description: "Learn TDS for Indian Payroll, master TDS calculation, compliance, and regulatory requirements for professionals."
   },
+
+  {
+    title: "Diploma in Labour Laws and Statutory Compliances (new Codes)",
+    platform: "Udemy",
+    year: "2026",
+    category: "Labour Laws",
+    tag: "Labour Laws",
+    image: "/assests/images/certifications/LabourLaws.png",
+    icon: <ShieldCheck size={24} />,
+    url: "https://www.udemy.com/certificate/UC-1c69f724-3d8f-4c36-963b-44f483c3c1af/",
+    Skills: [
+      "Labour Laws",
+      "Statutory Compliance",
+      "New Labour Codes",
+      "Employment Laws"
+    ],
+    Description: "Learn Indian labour laws and statutory compliance requirements, including the new labour codes, employment regulations, and key compliance obligations for professionals."
+  }
+
+
 ];
 
 export default function CertificateList() {
@@ -93,11 +113,10 @@ export default function CertificateList() {
           <button
             key={category}
             onClick={() => setActiveCategory(category)}
-            className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all cursor-pointer ${
-              activeCategory === category
+            className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all cursor-pointer ${activeCategory === category
                 ? "bg-black text-white shadow-md"
                 : "text-gray-600 hover:text-black hover:bg-gray-50"
-            }`}
+              }`}
           >
             {category}
           </button>
@@ -161,9 +180,9 @@ export default function CertificateList() {
 
       {/* Detail Modal */}
       <AnimatePresence mode="wait">
-        <DetailCertificate 
-          certificate={selectedCert ? {...selectedCert, url: selectedCert.url} : null} 
-          onClose={() => setSelectedCert(null)} 
+        <DetailCertificate
+          certificate={selectedCert ? { ...selectedCert, url: selectedCert.url } : null}
+          onClose={() => setSelectedCert(null)}
           isOpen={!!selectedCert}
         />
       </AnimatePresence>
