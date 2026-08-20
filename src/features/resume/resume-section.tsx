@@ -6,11 +6,13 @@ import { Download, Eye, Expand, FileText, X } from "lucide-react";
 import { useSectionTracking } from "@/hooks/useSectionTracking";
 import { trackEvent } from "@/lib/analytics";
 import Image from "next/image";
+import { useSound } from "@/components/SoundProvider";
 
 const resumePdfHref = "/assests/resume/Pritika_Resume.pdf";
 
 export function ResumeSection() {
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
+  const { play } = useSound();
 
   useSectionTracking("resume");
 
@@ -135,7 +137,10 @@ export function ResumeSection() {
               <a
                 href={resumePdfHref}
                 download
-                onClick={() => trackEvent("download_resume", { section: "resume" })}
+                onClick={() => {
+                  play("success");
+                  trackEvent("download_resume", { section: "resume" });
+                }}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-slate-800 cursor-pointer"
               >
                 <Download className="h-4 w-4 text-emerald-400" />
@@ -145,7 +150,10 @@ export function ResumeSection() {
                 href={resumePdfHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => trackEvent("view_resume_fullpage", { section: "resume" })}
+                onClick={() => {
+                  play("heroSecondary");
+                  trackEvent("view_resume_fullpage", { section: "resume" });
+                }}
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-emerald-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition-all hover:-translate-y-0.5 hover:border-emerald-300 cursor-pointer"
               >
                 <Eye className="h-4 w-4 text-emerald-600" />

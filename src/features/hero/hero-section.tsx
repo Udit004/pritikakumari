@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { heroData } from "./data";
 import { FileText, Briefcase, Users, BarChart2, ExternalLink, ArrowRight } from "lucide-react";
@@ -10,10 +10,12 @@ import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 import { useSectionTracking } from "@/hooks/useSectionTracking";
 import { trackEvent } from "@/lib/analytics";
+import { useSound } from "@/components/SoundProvider";
 
 export function HeroSection() {
     const [titleIndex, setTitleIndex] = useState(0);
     const containerRef = useRef<HTMLElement>(null);
+    const { play } = useSound();
 
     useSectionTracking("hero");
 
@@ -130,7 +132,10 @@ export function HeroSection() {
                     href="#resume"
                     onMouseEnter={handleCtaEnter}
                     onMouseLeave={handleCtaLeave}
-                    onClick={() => trackEvent("click_view_resume", { section: "hero" })}
+                    onClick={() => {
+                        play("heroPrimary");
+                        trackEvent("click_view_resume", { section: "hero" });
+                    }}
                     className="hero-cta-primary group relative inline-flex w-full sm:w-auto items-center justify-center gap-2 overflow-hidden rounded-full bg-slate-900 px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
                 >
                     <FileText className="cta-file-icon text-green-500 h-4 w-4 shrink-0" />
@@ -144,7 +149,10 @@ export function HeroSection() {
                     rel="noopener noreferrer"
                     onMouseEnter={handleCtaEnter}
                     onMouseLeave={handleCtaLeave}
-                    onClick={() => trackEvent("click_linkedin", { section: "hero" })}
+                    onClick={() => {
+                        play("heroSecondary");
+                        trackEvent("click_linkedin", { section: "hero" });
+                    }}
                     className="hero-cta-secondary group inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border-2 border-black bg-white/50 backdrop-blur-sm px-7 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-emerald-500 hover:bg-white hover:text-emerald-600"
                 >
                     <ExternalLink className="cta-external-icon h-4 w-4 transition-colors group-hover:text-green-500 shrink-0" />

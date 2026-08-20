@@ -7,11 +7,14 @@ import { UserRound, Menu, X } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { motion } from "framer-motion";
+import { SoundToggle } from "@/components/SoundToggle";
+import { useSound } from "@/components/SoundProvider";
 
 export function Header() {
     const [activeSection, setActiveSection] = useState("hero");
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const { play } = useSound();
 
     const desktopConnectRef = useRef<HTMLAnchorElement>(null);
     const mobileConnectRef = useRef<HTMLAnchorElement>(null);
@@ -42,6 +45,7 @@ export function Header() {
 
     const handleConnectClick = (ref: React.RefObject<HTMLAnchorElement | null>) => {
         setActiveSection("contact");
+        play("confirm");
         if (ref.current) {
             gsap.fromTo(ref.current,
                 { scale: 0.9 },
@@ -155,10 +159,13 @@ export function Header() {
                         {navLinks.map((link) => {
                             const isActive = activeSection === link.id;
                             return (
-                                <Link
+                        <Link
                                     key={link.id}
                                     href={link.href}
-                                    onClick={() => setActiveSection(link.id)}
+                                    onClick={() => {
+                                        setActiveSection(link.id);
+                                        play("nav");
+                                    }}
                                     className={`
                                         relative px-4 py-2 text-[13px] font-semibold transition-colors duration-300 rounded-full
                                         ${isActive
@@ -181,8 +188,11 @@ export function Header() {
                         })}
                     </nav>
 
-                    {/* Desktop CTA & Mobile Toggle */}
-                    <div className="flex items-center gap-2 lg:gap-0">
+                    {/* Desktop CTA, Sound Toggle & Mobile Toggle */}
+                    <div className="flex items-center gap-2 lg:gap-2">
+                        {/* Sound toggle — visible on all breakpoints */}
+                        <SoundToggle />
+
                         <Link
                             ref={desktopConnectRef}
                             href="#contact"
@@ -234,6 +244,7 @@ export function Header() {
                                 href={link.href}
                                 onClick={() => {
                                     setActiveSection(link.id);
+                                    play("nav");
                                     setIsMobileMenuOpen(false);
                                 }}
                                 className={`

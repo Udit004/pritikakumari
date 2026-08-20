@@ -11,6 +11,8 @@ import { AnimatedCustomIcon, AnimatedTextIcon } from "./animated-icons";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
+import { useSound } from "@/components/SoundProvider";
+
 
 function formatTime(timestamp: number) {
   return new Intl.DateTimeFormat("en", {
@@ -18,6 +20,7 @@ function formatTime(timestamp: number) {
     minute: "2-digit",
   }).format(new Date(timestamp));
 }
+
 
 
 
@@ -48,6 +51,7 @@ export function AiChatSection() {
   const [isOpen, setIsOpen] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showCustomAnim, setShowCustomAnim] = useState(false);
+  const { play } = useSound();
   
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -161,6 +165,7 @@ export function AiChatSection() {
         ref={buttonRef}
         type="button"
         onClick={() => {
+          play("click");
           setShowSuggestions(false);
           setIsOpen(true);
         }}

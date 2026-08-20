@@ -6,6 +6,7 @@ import Script from "next/script";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import ClarityProvider from "@/components/ClarityProvider";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
+import { SoundProvider } from "@/components/SoundProvider";
 
 // Primary body font — clean, humanist, highly readable
 const inter = Inter({
@@ -134,7 +135,7 @@ export default function RootLayout({
         <ClarityProvider />
         <Toaster />
         <SmoothScrollProvider>
-          {children}
+          <SoundProvider>{children}</SoundProvider>
         </SmoothScrollProvider>
 
         <Script

@@ -7,8 +7,10 @@ import { ContactForm } from "./contact-form";
 import { useSectionTracking } from "@/hooks/useSectionTracking";
 import { trackEvent } from "@/lib/analytics";
 import Image from "next/image";
+import { useSound } from "@/components/SoundProvider";
 
 export function ContactSection() {
+  const { play } = useSound();
 
   useSectionTracking("contact");
 
@@ -132,7 +134,10 @@ export function ContactSection() {
                         href={contact.link}
                         target={contact.icon === "Linkedin" ? "_blank" : undefined}
                         rel={contact.icon === "Linkedin" ? "noopener noreferrer" : undefined}
-                        onClick={() => trackEvent("click_contact_link", { type: contact.type, section: "contact" })}
+                        onClick={() => {
+                          play("nav");
+                          trackEvent("click_contact_link", { type: contact.type, section: "contact" });
+                        }}
                         className="text-sm text-gray-600 hover:text-emerald-600 transition-colors truncate block mt-1"
                       >
                         {contact.value}
