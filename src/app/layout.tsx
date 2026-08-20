@@ -1,19 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Playfair_Display, Inter } from "next/font/google";
 import { Toaster } from "@/components/toaster";
 import "./globals.css";
 import Script from "next/script";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import ClarityProvider from "@/components/ClarityProvider";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+
+// Primary body font — clean, humanist, highly readable
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Display / heading font — confident serif, built for consultancies & premium B2B brands
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -119,7 +126,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased lenis`}
+      className={`${inter.variable} ${playfair.variable} h-full antialiased lenis`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <div id="scroll-sentinel" aria-hidden className="h-px w-full" />

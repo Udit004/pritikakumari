@@ -8,6 +8,9 @@ import { useAiChat } from "./use-ai-chat";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { AnimatedCustomIcon, AnimatedTextIcon } from "./animated-icons";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
 
 function formatTime(timestamp: number) {
   return new Intl.DateTimeFormat("en", {
@@ -16,28 +19,27 @@ function formatTime(timestamp: number) {
   }).format(new Date(timestamp));
 }
 
-function TypingIndicator() {
+
+
+function SkeletonMessage() {
   return (
-    <div className="flex items-center gap-1 py-1">
-      <motion.span
-        aria-hidden="true"
-        className="h-2 w-2 rounded-full bg-emerald-400"
-        animate={{ opacity: [0.35, 1, 0.35], y: [0, -2, 0] }}
-        transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: 0 }}
-      />
-      <motion.span
-        aria-hidden="true"
-        className="h-2 w-2 rounded-full bg-emerald-400"
-        animate={{ opacity: [0.35, 1, 0.35], y: [0, -2, 0] }}
-        transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: 0.12 }}
-      />
-      <motion.span
-        aria-hidden="true"
-        className="h-2 w-2 rounded-full bg-emerald-400"
-        animate={{ opacity: [0.35, 1, 0.35], y: [0, -2, 0] }}
-        transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: 0.24 }}
-      />
-      <span className="ml-2 text-xs text-black/45">Typing</span>
+    <div className="max-w-[min(92%,36rem)] pl-1 sm:pl-3">
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.18 }}
+        className="space-y-3"
+      >
+        {[1, 2, 3, 4].map((i) => (
+          <motion.div
+            key={i}
+            className="h-4 bg-emerald-300 rounded animate-pulse"
+            style={{ width: `${Math.min(90, 60 + i * 7)}%` }}
+            animate={{ opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut", delay: i * 0.1 }}
+          />
+        ))}
+      </motion.div>
     </div>
   );
 }
@@ -221,9 +223,11 @@ export function AiChatSection() {
 
             <div
               ref={scrollRef}
-              className={`flex-1 overflow-y-auto bg-[radial-gradient(circle_at_top,rgba(167,243,208,0.32)_0%,rgba(255,255,255,0.84)_42%,rgba(255,255,255,0.96)_100%)] px-4 py-4 sm:px-5 ${
+              data-lenis-prevent
+              className={`flex-1 min-h-0 overflow-y-auto touch-pan-y overscroll-contain bg-[radial-gradient(circle_at_top,rgba(167,243,208,0.32)_0%,rgba(255,255,255,0.84)_42%,rgba(255,255,255,0.96)_100%)] px-4 py-4 sm:px-5 ${
                 isEmptyState ? "flex items-center justify-center" : "space-y-5"
               }`}
+              style={{ WebkitOverflowScrolling: 'touch' }}
             >
               {isEmptyState ? (
                 <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center">
@@ -303,22 +307,70 @@ export function AiChatSection() {
                   <div key={message.id} className="flex justify-start">
                     <div className="max-w-[min(92%,36rem)] pl-1 sm:pl-3">
                       {isAssistantTyping ? (
-                        <motion.div
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.18 }}
-                          className="text-[15px] leading-7 text-black/90"
-                        >
-                          <TypingIndicator />
-                        </motion.div>
+                        <SkeletonMessage />
                       ) : (
                         <motion.div
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                          className="text-[15px] leading-7 text-black/90"
+                          className="prose prose-sm max-w-none"
                         >
-                          <div className="whitespace-pre-wrap">{message.content}</div>
+                          <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            rehypePlugins={[rehypeHighlight]}
+                            components={{
+                              // Force all headings to a dark, readable colour
+                              h1: ({ children, ...props }) => (
+                                <h1 className="text-slate-900 font-bold text-lg mt-4 mb-2" {...props}>{children}</h1>
+                              ),
+                              h2: ({ children, ...props }) => (
+                                <h2 className="text-slate-900 font-semibold text-base mt-3 mb-1.5" {...props}>{children}</h2>
+                              ),
+                              h3: ({ children, ...props }) => (
+                                <h3 className="text-slate-800 font-semibold text-sm mt-2 mb-1" {...props}>{children}</h3>
+                              ),
+                              h4: ({ children, ...props }) => (
+                                <h4 className="text-slate-800 font-medium text-sm mt-2 mb-1" {...props}>{children}</h4>
+                              ),
+                              p: ({ children, ...props }) => (
+                                <p className="text-black/85 leading-6 my-1" {...props}>{children}</p>
+                              ),
+                              strong: ({ children, ...props }) => (
+                                <strong className="text-slate-900 font-semibold" {...props}>{children}</strong>
+                              ),
+                              code: ({ children, ...props }) => (
+                                <pre className="rounded-lg bg-black/5 p-3 overflow-x-auto"><code {...props}>{children}</code></pre>
+                              ),
+                              a: ({ href, children, ...props }) => (
+                                <a
+                                  href={href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-emerald-600 underline hover:text-emerald-800"
+                                  {...props}
+                                >
+                                  {children}
+                                </a>
+                              ),
+                              ul: ({ children, ...props }) => (
+                                <ul className="list-disc pl-5 my-1 space-y-1 text-black/85" {...props}>
+                                  {children}
+                                </ul>
+                              ),
+                              ol: ({ children, ...props }) => (
+                                <ol className="list-decimal pl-5 my-1 space-y-1 text-black/85" {...props}>
+                                  {children}
+                                </ol>
+                              ),
+                              li: ({ children, ...props }) => (
+                                <li className="my-0.5 text-black/85" {...props}>
+                                  {children}
+                                </li>
+                              ),
+                            }}
+                          >
+                            {message.content}
+                          </ReactMarkdown>
                           <div className="mt-2 text-[11px] text-black/50">{formatTime(message.createdAt)}</div>
                         </motion.div>
                       )}
@@ -327,6 +379,7 @@ export function AiChatSection() {
                 );
                 })
               )}
+              {isStreaming && (messages.length === 0 || messages[messages.length - 1].role !== "assistant") && <SkeletonMessage />}
             </div>
 
             <div className="border-t border-emerald-200/80 bg-white/55 px-4 py-4 sm:px-5 backdrop-blur-xl">
