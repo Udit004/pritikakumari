@@ -140,7 +140,7 @@ export function Header() {
 
     return (
         <header className="fixed left-0 right-0 top-0 z-50 transition-all duration-300">
-            <div className={`mx-auto max-w-7xl px-4 sm:px-6 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-lg rounded-2xl mx-6 my-2' : 'bg-transparent mx-6 my-2'}`}>
+            <div className={`mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 transition-all duration-300 overflow-hidden ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-lg rounded-2xl' : 'bg-transparent'}`}>
                 <div className={`flex items-center justify-between transition-all duration-500 ease-in-out py-3`}>
 
                     {/* Logo */}
@@ -225,7 +225,7 @@ export function Header() {
 
             {/* Mobile Menu Drawer */}
             <nav
-                className={`fixed right-0 top-0 z-50 h-dvh w-70 bg-white shadow-2xl transition-transform duration-300 ease-out lg:hidden flex flex-col ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                className={`fixed right-0 top-0 z-50 h-dvh w-[85vw] max-w-[320px] bg-white shadow-2xl transition-transform duration-300 ease-out lg:hidden flex flex-col ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
                 aria-label="Mobile navigation"
             >
                 <div className="flex shrink-0 items-center justify-between px-6 py-5 border-b border-slate-100">
