@@ -22,7 +22,14 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("sound-enabled") === "true") setEnabled(true);
+    try {
+      const stored = localStorage.getItem("sound-enabled");
+      if (stored === "true") {
+        setEnabled(true);
+      }
+    } catch {
+      // Storage access may be restricted
+    }
   }, []);
 
   const toggle = useCallback(() => {

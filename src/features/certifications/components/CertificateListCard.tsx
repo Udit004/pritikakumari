@@ -32,16 +32,14 @@ export default function CertificateListCard({
   category,
   icon,
   image,
-  href = "#",
   url,
-  index = 0,
   onClick,
   priority,
 }: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    const ctx = gsap.context(() => {
+    gsap.context(() => {
       gsap.from(
         cardRef.current,
         { 

@@ -77,7 +77,7 @@ export function ContactForm({ itemVariants }: ContactFormProps) {
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
     >
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="space-y-4 sm:space-y-5" onSubmit={handleSubmit}>
         {/* Honeypot field */}
         <input
           type="text"
@@ -99,7 +99,7 @@ export function ContactForm({ itemVariants }: ContactFormProps) {
             type="text"
             placeholder="Your Name"
             required
-            className="w-full rounded-xl border border-emerald-200/30 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-gray-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/50 transition-all"
+            className="w-full rounded-2xl border border-emerald-200/50 bg-slate-50/50 px-4 sm:px-5 py-3.5 sm:py-4 text-sm sm:text-base text-slate-900 placeholder:text-gray-400 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
           />
           <label className="sr-only" htmlFor="contact-email">
             Your Email
@@ -110,7 +110,7 @@ export function ContactForm({ itemVariants }: ContactFormProps) {
             type="email"
             placeholder="Your Email"
             required
-            className="w-full rounded-xl border border-emerald-200/30 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-gray-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/50 transition-all"
+            className="w-full rounded-2xl border border-emerald-200/50 bg-slate-50/50 px-4 sm:px-5 py-3.5 sm:py-4 text-sm sm:text-base text-slate-900 placeholder:text-gray-400 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
           />
         </div>
 
@@ -124,7 +124,7 @@ export function ContactForm({ itemVariants }: ContactFormProps) {
           type="text"
           placeholder="Subject"
           required
-          className="w-full rounded-xl border border-emerald-200/30 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-gray-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/50 transition-all"
+          className="w-full rounded-2xl border border-emerald-200/50 bg-slate-50/50 px-4 sm:px-5 py-3.5 sm:py-4 text-sm sm:text-base text-slate-900 placeholder:text-gray-400 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
         />
 
         {/* Message textarea */}
@@ -134,20 +134,20 @@ export function ContactForm({ itemVariants }: ContactFormProps) {
         <textarea
           id="contact-message"
           name="message"
-          placeholder="Message"
-          rows={4}
+          placeholder="Write your message here..."
+          rows={5}
           required
-          className="w-full rounded-xl border border-emerald-200/30 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-gray-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/50 transition-all resize-none"
+          className="w-full rounded-2xl border border-emerald-200/50 bg-slate-50/50 px-4 sm:px-5 py-3.5 sm:py-4 text-sm sm:text-base text-slate-900 placeholder:text-gray-400 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all resize-none"
         />
 
         {/* Submit button */}
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full flex items-center justify-center gap-2 rounded-xl bg-black px-6 py-3 text-sm font-semibold text-white transition hover:shadow-lg hover:from-emerald-700 hover:to-emerald-600 disabled:cursor-not-allowed disabled:opacity-70 cursor-pointer"
+          className="w-full flex items-center justify-center gap-2.5 rounded-2xl bg-slate-950 hover:bg-emerald-950 px-6 py-4 text-sm sm:text-base font-bold text-white transition hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-70 cursor-pointer"
         >
-          <span className="text-green-500">{isSubmitting ? "Sending..." : "Send Message"}</span>
-          <Send className="h-4 w-4 text-green-500" />
+          <span className="text-emerald-400">{isSubmitting ? "Sending..." : "Send Message"}</span>
+          <Send className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400" />
         </button>
       </form>
     </motion.div>

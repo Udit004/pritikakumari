@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import CertificateListCard from "./CertificateListCard";
 import DetailCertificate from "./DetailCertificate";
 import { LayoutDashboard, Users, Calculator, ShieldCheck, FileSpreadsheet } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 const categories = [
   "All Certificates",
@@ -13,7 +13,20 @@ const categories = [
   "Tools & Technology",
 ];
 
-const certificatesData = [
+export interface CertificateItem {
+  title: string;
+  platform: string;
+  year: string;
+  category: string;
+  tag: string;
+  image: string;
+  icon: React.ReactNode;
+  url: string;
+  Skills: string[];
+  Description: string;
+}
+
+const certificatesData: CertificateItem[] = [
   {
     title: "Excel from Beginner to Advanced",
     platform: "Udemy",
@@ -99,21 +112,21 @@ const certificatesData = [
 
 export default function CertificateList() {
   const [activeCategory, setActiveCategory] = useState("All Certificates");
-  const [selectedCert, setSelectedCert] = useState<any>(null);
+  const [selectedCert, setSelectedCert] = useState<CertificateItem | null>(null);
 
   const filteredCertificates = certificatesData.filter(
     (cert) => activeCategory === "All Certificates" || cert.category === activeCategory
   );
 
   return (
-    <div className="w-full max-w-7xl mx-auto py-8">
+    <div className="w-full max-w-7xl mx-auto py-2 lg:py-4">
       {/* Category Filter - Desktop */}
-      <div className="hidden md:flex flex-wrap items-center justify-center p-1.5 bg-white border border-gray-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] rounded-full w-fit mx-auto mb-10 gap-1">
+      <div className="hidden md:flex flex-wrap items-center justify-center p-1 bg-white border border-gray-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] rounded-full w-fit mx-auto mb-4 lg:mb-5 gap-1">
         {categories.map((category) => (
           <button
             key={category}
             onClick={() => setActiveCategory(category)}
-            className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all cursor-pointer ${activeCategory === category
+            className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer ${activeCategory === category
                 ? "bg-black text-white shadow-md"
                 : "text-gray-600 hover:text-black hover:bg-gray-50"
               }`}
@@ -124,7 +137,7 @@ export default function CertificateList() {
       </div>
 
       {/* Category Filter - Mobile */}
-      <div className="md:hidden flex items-start mb-6 px-4 sm:px-6">
+      <div className="md:hidden flex items-start mb-4 px-4 sm:px-6">
         <div className="relative inline-block w-full max-w-[220px]">
           <select
             value={activeCategory}
@@ -144,7 +157,7 @@ export default function CertificateList() {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 md:px-0">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6 px-4 sm:px-6 md:px-0">
         {filteredCertificates.map((cert, index) => (
           <div
             key={cert.title + index}

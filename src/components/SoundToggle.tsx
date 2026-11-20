@@ -4,7 +4,7 @@ import { Volume2, VolumeX } from "lucide-react";
 import { useSound } from "@/components/SoundProvider";
 
 export function SoundToggle() {
-  const { enabled, toggle, play } = useSound();
+  const { enabled, toggle } = useSound();
 
   const handleToggle = () => {
     // Play the click *before* toggling so it's audible when turning ON

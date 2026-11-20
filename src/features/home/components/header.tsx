@@ -144,9 +144,24 @@ export function Header() {
                 <div className={`flex items-center justify-between transition-all duration-500 ease-in-out py-3`}>
 
                     {/* Logo */}
-                    <Link href="#hero" onClick={() => setActiveSection("hero")} className="flex items-center gap-3 group">
-                        <div className="relative overflow-hidden rounded-full transition-transform duration-300 group-hover:scale-105 bg-white shadow-sm border border-slate-100">
-                            <Image src="/assests/images/logo.png" alt="Logo" width={40} height={40} className="object-cover" />
+                    <Link
+                        href="#hero"
+                        onClick={() => {
+                            setActiveSection("hero");
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                        }}
+                        className="flex items-center gap-3 group"
+                    >
+                        <div className="relative flex items-center justify-center h-10 w-10 overflow-hidden rounded-full transition-transform duration-300 group-hover:scale-105 bg-white shadow-sm border border-slate-100 p-1">
+                            <Image
+                                src="/assests/images/PK%20leaf%20logo%20%E2%80%94%20vector%20SVG.svg"
+                                alt="Pritika Kumari Logo"
+                                width={36}
+                                height={36}
+                                unoptimized
+                                priority
+                                className="object-contain"
+                            />
                         </div>
                         <div className="hidden sm:block">
                             <p className="text-sm font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Pritika Kumari</p>
@@ -159,12 +174,15 @@ export function Header() {
                         {navLinks.map((link) => {
                             const isActive = activeSection === link.id;
                             return (
-                        <Link
+                                <Link
                                     key={link.id}
                                     href={link.href}
                                     onClick={() => {
                                         setActiveSection(link.id);
                                         play("nav");
+                                        if (link.id === "hero") {
+                                            window.scrollTo({ top: 0, behavior: "smooth" });
+                                        }
                                     }}
                                     className={`
                                         relative px-4 py-2 text-[13px] font-semibold transition-colors duration-300 rounded-full
@@ -246,6 +264,9 @@ export function Header() {
                                     setActiveSection(link.id);
                                     play("nav");
                                     setIsMobileMenuOpen(false);
+                                    if (link.id === "hero") {
+                                        window.scrollTo({ top: 0, behavior: "smooth" });
+                                    }
                                 }}
                                 className={`
                                 relative px-4 py-3.5 text-sm font-semibold transition-colors duration-200 rounded-xl

@@ -20,28 +20,13 @@ export function HeroSection() {
     useSectionTracking("hero");
 
     useGSAP(() => {
-        // Professional GSAP entrance animation
+        // Professional GSAP entrance animation for text content
         const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
         tl.fromTo(".hero-left-elem", 
             { y: 30, opacity: 0 },
             { y: 0, opacity: 1, duration: 1, stagger: 0.15 }
-        )
-        .fromTo(".hero-right-elem",
-            { x: 40, opacity: 0, scale: 0.95 },
-            { x: 0, opacity: 1, scale: 1, duration: 1.2 },
-            "-=0.8"
         );
-        
-        // Add subtle floating animation to the image
-        gsap.to(".hero-right-elem", {
-            y: -10,
-            duration: 3,
-            ease: "sine.inOut",
-            yoyo: true,
-            repeat: -1,
-            delay: 0.5
-        });
 
 
         // Reel animation for FileText icon
@@ -182,32 +167,31 @@ export function HeroSection() {
     );
 
     const rightPanel = (
-        <>
-            <div className="hero-right-elem relative z-10 h-full w-full overflow-hidden rounded-4xl border border-white/50 bg-white/30 shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
-                <Image
-                    src="/assests/images/hero/profile_image.png"
-                    alt={`${heroData.name} - Profile`}
-                    priority
-                    sizes="(min-width: 1024px) 40vw, (min-width: 640px) 55vw, 90vw"
-                    fill
-                    className="object-cover object-center"
-                />
-            </div>
-        </>
+        <div className="relative z-10 h-full w-full flex items-center justify-center">
+            <Image
+                src="/assests/images/hero/heroImage.svg"
+                alt={`${heroData.name} - Professional Overview`}
+                priority
+                unoptimized
+                sizes="(min-width: 1024px) 50vw, (min-width: 640px) 70vw, 95vw"
+                fill
+                className="object-contain object-center"
+            />
+        </div>
     );
 
     return (
         <section
             id="hero"
             ref={containerRef}
-            className="group/hero relative w-full min-h-dvh lg:h-dvh lg:min-h-175 flex items-center justify-center overflow-hidden pt-16 pb-8 lg:pt-24 lg:py-0"
+            className="scene-section group/hero relative w-full min-h-[100svh] flex items-center justify-center pt-24 pb-16 lg:pt-28 lg:pb-20"
         >
             <div className="mx-auto w-full max-w-7xl px-6 lg:px-8 relative z-10 lg:min-h-full">
-                <div className="relative flex min-h-[calc(100vh-6rem)] flex-col justify-center gap-10 lg:gap-0">
+                <div className="relative flex min-h-[calc(100svh-7rem)] flex-col justify-center gap-10 lg:gap-0">
                     <div className="absolute inset-y-6 right-0 -z-10 hidden w-[72vw] rounded-[3rem] bg-[radial-gradient(circle_at_18%_24%,rgba(167,243,208,0.38),transparent_34%),radial-gradient(circle_at_82%_28%,rgba(186,230,253,0.42),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.75),rgba(240,249,255,0.38))] blur-3xl lg:block" />
 
                     <div className="pointer-events-none relative z-10 w-full lg:absolute lg:-right-8 lg:top-1/2 lg:w-[76%] lg:-translate-y-1/2">
-                        <div className="relative mx-auto h-[40vh] w-full max-w-170 sm:h-[46vh] lg:ml-30 lg:mr-0 lg:h-[82vh] lg:max-w-200">
+                        <div className="relative mx-auto h-[40vh] w-full max-w-170 sm:h-[46vh] lg:ml-30 lg:mr-0 lg:h-[72vh] lg:max-h-[640px] lg:max-w-200">
                             <div className="absolute -left-6 top-10 hidden h-28 w-28 rounded-full bg-emerald-300/30 blur-3xl lg:block" />
                             <div className="absolute -right-8 bottom-12 hidden h-36 w-36 rounded-full bg-sky-300/30 blur-3xl lg:block" />
                             {rightPanel}

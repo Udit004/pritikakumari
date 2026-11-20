@@ -9,8 +9,10 @@ import {
   BadgeCheck
 } from "lucide-react";
 
+import { CertificateItem } from "./CertificateList";
+
 type Props = {
-  certificate: any;
+  certificate: CertificateItem | null;
   onClose: () => void;
   isOpen: boolean;
 };

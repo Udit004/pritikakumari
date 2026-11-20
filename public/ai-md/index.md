@@ -7,16 +7,15 @@ URL: https://pritikakumari.vercel.app/
 ![og-image](https://pritikakumari.vercel.app/opengraph-image.png?opengraph-image.0_k~09elw_m.d.png)
 
 Images:
-- /_next/image?url=%2Fassests%2Fimages%2Flogo.png&amp;w=96&amp;q=75
-- /_next/image?url=%2Fassests%2Fimages%2Fhero%2Fprofile_image.png&amp;w=3840&amp;q=75
+- /assests/images/PK%20leaf%20logo%20%E2%80%94%20vector%20SVG.svg
+- /assests/images/hero/heroImage.svg
 - /_next/image?url=%2Fassests%2Fimages%2Fabout%2Fimage.png&amp;w=3840&amp;q=75
-- /_next/image?url=%2Fassests%2Fimages%2Flogo.png&amp;w=128&amp;q=75
 
 ---
 
 [
 
-![Logo](/_next/image?url=%2Fassests%2Fimages%2Flogo.png&w=96&q=75)
+![Logo](/assests/images/PK%20leaf%20logo%20%E2%80%94%20vector%20SVG.svg)
 
 Pritika Kumari
 
@@ -74,7 +73,7 @@ Stack
 
 Power BI · SQL · Python
 
-![Pritika Kumari Logo](/_next/image?url=%2Fassests%2Fimages%2Flogo.png&w=128&q=75)
+![Pritika Kumari Logo](/assests/images/PK%20leaf%20logo%20%E2%80%94%20vector%20SVG.svg)
 
 ## Pritika Kumari
 

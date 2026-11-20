@@ -127,9 +127,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${playfair.variable} h-full overflow-x-hidden antialiased lenis`}
+      className={`${inter.variable} ${playfair.variable} min-h-screen overflow-x-clip antialiased scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col overflow-x-hidden bg-background text-foreground">
+      <body className="min-h-screen flex flex-col overflow-x-clip bg-background text-foreground">
         <div id="scroll-sentinel" aria-hidden className="h-px w-full" />
         <GoogleAnalytics />
         <ClarityProvider />

@@ -2,7 +2,6 @@
 
 import { skillsData } from "./data";
 import {
-  BookOpen,
   Users,
   Monitor,
   FileText,
@@ -19,52 +18,32 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import { motion, Variants } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0, y: 70 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { staggerChildren: 0.15, duration: 0.6, ease: "easeOut" as const },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0 },
-};
-
-function Counter({ from = 0, to, duration = 2 }: { from?: number; to: number; duration?: number }) {
+function Counter({ to, duration = 2 }: { to: number; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
 
   useGSAP(() => {
     if (!ref.current) return;
-    const counter = { val: from };
-    const animate = () => {
-      counter.val = from;
-      gsap.to(counter, {
-        val: to,
-        duration,
-        ease: "power2.out",
-        onUpdate: () => {
-          if (ref.current) ref.current.textContent = Math.floor(counter.val).toString();
-        },
-        onComplete: () => {
-          gsap.delayedCall(3, animate);
-        },
-      });
-    };
+    const counter = { val: 0 };
     ScrollTrigger.create({
       trigger: ref.current,
-      start: "top 80%",
+      start: "top 90%",
       once: true,
-      onEnter: () => animate(),
+      onEnter: () => {
+        gsap.to(counter, {
+          val: to,
+          duration,
+          ease: "power2.out",
+          onUpdate: () => {
+            if (ref.current) ref.current.textContent = Math.floor(counter.val).toString();
+          },
+        });
+      },
     });
   });
-  return <span ref={ref}>{from}</span>;
+  return <span ref={ref}>0</span>;
 }
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -80,147 +59,124 @@ const iconMap: Record<string, React.ReactNode> = {
 
 export function SkillsSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const headerImageRef = useRef<HTMLDivElement>(null);
   useSectionTracking("skills");
 
+  useGSAP(() => {
+    if (headerImageRef.current) {
+      gsap.to(headerImageRef.current, {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.2,
+        },
+        y: -25,
+        ease: "none",
+      });
+    }
+  }, { scope: sectionRef });
+
   return (
-    <motion.section
+    <section
       id="skills"
       ref={sectionRef}
-      className="relative w-full py-24 sm:py-28"
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }}
+      className="scene-section relative w-full min-h-[100svh] flex flex-col justify-center py-16 lg:py-20"
     >
-      {/* Dot grid */}
+      {/* Background radial atmosphere */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage:
-            "radial-gradient(circle, rgba(16,185,129,0.18) 1.5px, transparent 1.5px)",
-          backgroundSize: "28px 28px",
-          maskImage:
-            "radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 100%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 100%)",
-          opacity: 0.55,
-        }}
-      />
-
-      {/* Ambient glow */}
-      <div
-        className="absolute top-0 right-0 w-[600px] h-[400px] pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at 100% 0%, rgba(167,243,208,0.35) 0%, transparent 65%)",
-        }}
-      />
-      <div
-        className="absolute bottom-0 left-0 w-[500px] h-[350px] pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at 0% 100%, rgba(167,243,208,0.2) 0%, transparent 65%)",
+            "radial-gradient(circle, rgba(16,185,129,0.12) 1.5px, transparent 1.5px)",
+          backgroundSize: "32px 32px",
+          maskImage: "radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 100%)",
+          WebkitMaskImage: "radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 100%)",
+          opacity: 0.5,
         }}
       />
 
       <div className="relative mx-auto w-full max-w-7xl px-6 lg:px-8">
-        {/* Section header */}
-        <div className="mb-14 w-full flex flex-col lg:flex-row items-center gap-12">
-          <div className="flex-1 space-y-4">
-            <motion.div
-              className="skill-badge inline-flex items-center gap-2 rounded-full px-3.5 py-1.5"
-              variants={itemVariants}
-              style={{ background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.25)" }}
-            >
-              <span className="inline-block w-2 h-2 rounded-full" style={{ background: "#10b981" }} />
-              <span className="text-[11px] font-bold uppercase tracking-[0.12em]" style={{ color: "#059669" }}>
-                My Skills
-              </span>
-            </motion.div>
-
-            <motion.h2 className="skill-heading text-4xl sm:text-5xl font-bold tracking-tight text-slate-900" variants={itemVariants}>
-              {skillsData.title}
-            </motion.h2>
-
-            <div className="flex items-center gap-2.5">
-              <motion.div
-                className="skill-underline-1 h-[3px] w-14 rounded-full"
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                transition={{ duration: 0.55, ease: "easeOut" }}
-                style={{ background: "linear-gradient(90deg, #10b981, #a7f3d0)", transformOrigin: "0% 50%" }}
-              />
-              <motion.div
-                className="skill-underline-2 h-[3px] w-5 rounded-full"
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                style={{ background: "rgba(16,185,129,0.2)", transformOrigin: "0% 50%" }}
-              />
+        {/* Section Header - styled consistently with Project section */}
+        <div className="mb-12 lg:mb-16 w-full flex flex-col lg:flex-row items-center gap-8 lg:gap-12 shrink-0">
+          <div className="flex-1 space-y-6 text-left">
+            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/15 px-4 py-1.5 border border-emerald-500/25">
+              <div className="w-2 h-2 rounded-full bg-emerald-500" />
+              <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">
+                Core Competencies
+              </p>
             </div>
 
-            <motion.p className="skill-subtitle text-base max-w-xl text-gray-600 leading-relaxed" variants={itemVariants}>
-              A curated overview of my professional capabilities, refined through hands-on experience across HR operations and organizational management.
-            </motion.p>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
+              {skillsData.title}
+            </h2>
+
+            <div className="flex items-center gap-2">
+              <div className="w-12 h-1 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-300" />
+              <div className="w-5 h-1 rounded-full bg-emerald-200" />
+            </div>
+
+            <p className="text-lg text-gray-600 leading-relaxed max-w-2xl">
+              A curated overview of my professional capabilities across HR operations, talent lifecycle management, and organizational data analytics.
+            </p>
           </div>
 
-          <div className="flex-1 w-full flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-md">
+          {/* Header Illustration - matching Project section image size */}
+          <div
+            ref={headerImageRef}
+            className="flex-1 w-full flex justify-center lg:justify-end"
+          >
+            <div className="relative w-full max-w-lg">
               <Image
                 src="/assests/images/skills/skill_headerImage.png"
-                alt="Skills Header"
-                width={500}
-                height={500}
-                className="w-full h-auto object-contain rounded-xl"
+                alt="Skills Overview Illustration"
+                width={600}
+                height={600}
+                className="w-full h-auto object-contain rounded-lg"
                 priority
               />
             </div>
           </div>
         </div>
 
-        {/* Skills grid */}
-        <motion.div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" variants={containerVariants}>
+        {/* Skills Cards Grid - 3x3 layout with clean balanced spacing */}
+        <div className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 shrink-0">
           {skillsData.skillsList.map((skill, index) => (
             <SkillCard
               key={skill.name}
               name={skill.name}
-              icon={iconMap[skill.icon] ?? <Users className="h-5 w-5 text-black" />}
+              icon={iconMap[skill.icon] ?? <Users className="h-5 w-5 text-emerald-400" />}
               level={skill.level}
               index={index}
             />
           ))}
-        </motion.div>
+        </div>
 
-        {/* Bottom stats bar */}
-        <motion.div
-          className="skill-stats mt-14 grid grid-cols-3 overflow-hidden rounded-2xl bg-white"
-          variants={containerVariants}
-          style={{ border: "1px solid rgba(16,185,129,0.15)", boxShadow: "0 4px 20px rgba(16,185,129,0.07)" }}
-        >
+        {/* Numerical Metrics Bar */}
+        <div className="mt-8 lg:mt-12 grid grid-cols-1 sm:grid-cols-3 rounded-2xl bg-white border border-emerald-200/50 shadow-sm overflow-hidden divide-y sm:divide-y-0 sm:divide-x divide-slate-100 shrink-0">
           {[
-            { label: "Skills", numericValue: skillsData.skillsList.length, suffix: "+" },
+            { label: "Core Skills", value: skillsData.skillsList.length, suffix: "+" },
             {
-              label: "Expert Level",
-              numericValue: skillsData.skillsList.filter((s) => s.level === 5).length,
-              suffix: "",
+              label: "High Proficiency",
+              value: skillsData.skillsList.filter((s) => s.level >= 4).length,
+              suffix: " Disciplines",
             },
-            { label: "Years Experience", numericValue: 1, suffix: "+" },
+            { label: "Hands-on Experience", value: 1, suffix: "+ Year" },
           ].map((stat, i) => (
-            <div key={stat.label} className="flex flex-col items-center justify-center py-7 px-4 text-center relative">
-              {i > 0 && (
-                <div className="absolute left-0 top-1/4 bottom-1/4 w-px" style={{ background: "rgba(16,185,129,0.15)" }} />
-              )}
-              <div className="w-2 h-2 rounded-full mb-3" style={{ background: "#10b981" }} />
-              <span className="text-3xl font-bold" style={{ color: "#064e3b" }}>
-                <Counter to={stat.numericValue} />{stat.suffix}
-              </span>
-              <span className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.12em]" style={{ color: "#6b7280" }}>
+            <div key={i} className="flex flex-col items-center justify-center py-3.5 sm:py-4 px-4 text-center">
+              <div className="flex items-baseline gap-1">
+                <span className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight">
+                  <Counter to={stat.value} />
+                </span>
+                <span className="text-base sm:text-lg font-bold text-emerald-600">{stat.suffix}</span>
+              </div>
+              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500">
                 {stat.label}
               </span>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 }

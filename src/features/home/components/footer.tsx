@@ -47,29 +47,34 @@ export function Footer() {
       <div className="relative z-10 border-b border-white/5 px-4 py-10 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 text-center lg:flex-row lg:items-center lg:justify-between lg:text-left">
           {/* Logo + Name */}
-          <div className="flex flex-col items-center gap-4 lg:flex-row lg:items-center">
+          <Link
+            href="#hero"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex flex-col items-center gap-4 lg:flex-row lg:items-center group"
+          >
             <div className="relative">
               {/* Glow ring behind logo */}
-              <div className="absolute inset-0 rounded-full bg-emerald-400/20 blur-md" />
-              <div className="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border border-emerald-500/30 bg-white shadow-lg shadow-emerald-500/10">
+              <div className="absolute inset-0 rounded-full bg-emerald-400/20 blur-md transition-transform duration-300 group-hover:scale-110" />
+              <div className="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border border-emerald-500/30 bg-white shadow-lg shadow-emerald-500/10 transition-transform duration-300 group-hover:scale-105 p-1.5">
                 <Image
-                  src="/assests/images/logo.png"
+                  src="/assests/images/PK%20leaf%20logo%20%E2%80%94%20vector%20SVG.svg"
                   alt="Pritika Kumari Logo"
-                  width={56}
-                  height={56}
-                  className="object-cover"
+                  width={48}
+                  height={48}
+                  unoptimized
+                  className="object-contain"
                 />
               </div>
             </div>
             <div>
-              <h2 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+              <h2 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl transition-colors duration-200 group-hover:text-emerald-300">
                 Pritika Kumari
               </h2>
               <p className="mt-0.5 text-sm font-semibold uppercase tracking-[0.15em] text-emerald-400">
                 HR Operations Professional
               </p>
             </div>
-          </div>
+          </Link>
 
           {/* Tagline */}
           <p className="max-w-sm text-sm leading-relaxed text-slate-400 lg:text-right">
