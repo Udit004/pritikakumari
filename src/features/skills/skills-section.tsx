@@ -1,6 +1,7 @@
 "use client";
 
-import { skillsData } from "./data";
+import { useState, useRef } from "react";
+import { skillsData, SkillItem } from "./data";
 import {
   Users,
   Monitor,
@@ -10,14 +11,16 @@ import {
   UserCog,
   BarChart,
   MessageSquare,
+  Sparkles,
 } from "lucide-react";
 import SkillCard from "./SkillCard";
-import React, { useRef } from "react";
+import React from "react";
 import { useSectionTracking } from "@/hooks/useSectionTracking";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -57,11 +60,26 @@ const iconMap: Record<string, React.ReactNode> = {
   MessageSquare: <MessageSquare className="h-5 w-5 text-emerald-400" />,
 };
 
+const filterCategories = [
+  "All Capabilities",
+  "People Operations",
+  "HR Systems",
+  "Compliance & Payroll",
+  "Analytics & Strategy",
+];
+
 export function SkillsSection() {
+  const [activeCategory, setActiveCategory] = useState("All Capabilities");
+
   const sectionRef = useRef<HTMLElement>(null);
   const headerImageRef = useRef<HTMLDivElement>(null);
   const skillsGridRef = useRef<HTMLDivElement>(null);
+
   useSectionTracking("skills");
+
+  const filteredSkills = skillsData.skillsList.filter(
+    (skill) => activeCategory === "All Capabilities" || skill.category === activeCategory
+  );
 
   useGSAP(
     () => {
@@ -81,28 +99,30 @@ export function SkillsSection() {
         });
       }
 
-      // Desktop: 3D Stagger Reveal + Differential Column Parallax Scrub
+      // Desktop: 3D Stagger Wave Reveal + Column Parallax Scrub
       mm.add("(min-width: 1024px)", () => {
         const cards = gsap.utils.toArray<HTMLElement>(".skill-card-wrapper");
         if (cards.length === 0 || !skillsGridRef.current) return;
 
-        // 1. Initial 3D Scroll Reveal Wave
+        // 1. Initial 3D Scroll Reveal Wave with spring settle
         gsap.fromTo(
           cards,
           {
             opacity: 0,
-            y: 50,
-            rotateX: 14,
-            scale: 0.94,
+            y: 60,
+            rotateX: 16,
+            rotateY: -8,
+            scale: 0.9,
           },
           {
             opacity: 1,
             y: 0,
             rotateX: 0,
+            rotateY: 0,
             scale: 1,
-            duration: 0.75,
-            stagger: 0.07,
-            ease: "power3.out",
+            duration: 0.8,
+            stagger: 0.08,
+            ease: "back.out(1.4)",
             scrollTrigger: {
               trigger: skillsGridRef.current,
               start: "top 85%",
@@ -168,14 +188,14 @@ export function SkillsSection() {
 
       return () => mm.revert();
     },
-    { scope: sectionRef }
+    { scope: sectionRef, dependencies: [activeCategory] }
   );
 
   return (
     <section
       id="skills"
       ref={sectionRef}
-      className="scene-section relative w-full min-h-[100svh] flex flex-col justify-center py-16 lg:py-20"
+      className="scene-section relative w-full min-h-[100svh] flex flex-col justify-center py-16 lg:py-24"
     >
       {/* Background radial atmosphere */}
       <div
@@ -192,7 +212,7 @@ export function SkillsSection() {
 
       <div className="relative mx-auto w-full max-w-7xl px-6 lg:px-8">
         {/* Section Header - styled consistently with Project section */}
-        <div className="mb-12 lg:mb-16 w-full flex flex-col lg:flex-row items-center gap-8 lg:gap-12 shrink-0">
+        <div className="mb-10 lg:mb-14 w-full flex flex-col lg:flex-row items-center gap-8 lg:gap-12 shrink-0">
           <div className="flex-1 space-y-6 text-left">
             <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/15 px-4 py-1.5 border border-emerald-500/25">
               <div className="w-2 h-2 rounded-full bg-emerald-500" />
@@ -233,30 +253,81 @@ export function SkillsSection() {
           </div>
         </div>
 
-        {/* Skills Cards Grid - 3x3 layout with multi-column parallax scrolling architecture */}
+        {/* ── Creative Interactive Domain Filter Tabs ── */}
+        <div className="mb-8 w-full flex items-center justify-center">
+          <div className="hidden sm:flex flex-wrap items-center justify-center p-1.5 bg-white border border-emerald-100 shadow-sm rounded-full gap-1.5">
+            {filterCategories.map((category) => (
+              <button
+                key={category}
+                type="button"
+                onClick={() => setActiveCategory(category)}
+                className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                  activeCategory === category
+                    ? "bg-slate-950 text-white shadow-md scale-[1.02]"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-emerald-50/60"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
+          {/* Mobile Select dropdown */}
+          <div className="sm:hidden w-full max-w-[260px]">
+            <select
+              value={activeCategory}
+              onChange={(e) => setActiveCategory(e.target.value)}
+              className="w-full appearance-none bg-white border border-emerald-200 text-slate-900 text-sm font-bold rounded-full px-5 py-2.5 pr-10 shadow-sm focus:outline-none"
+            >
+              {filterCategories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* ── Skills Cards Matrix with 3D Parallax & Kinetic Organic Float ── */}
         <div
           ref={skillsGridRef}
-          className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 shrink-0"
+          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 shrink-0"
         >
-          {skillsData.skillsList.map((skill, index) => {
-            const isCenterCol = index % 3 === 1;
-            const colClass = isCenterCol ? "skill-card-col-center" : "skill-card-col-side";
+          <AnimatePresence mode="popLayout">
+            {filteredSkills.map((skill, index) => {
+              const isCenterCol = index % 3 === 1;
+              const colClass = isCenterCol ? "skill-card-col-center" : "skill-card-col-side";
 
-            return (
-              <div key={skill.name} className={`skill-card-wrapper ${colClass} w-full h-full`}>
-                <SkillCard
-                  name={skill.name}
-                  icon={iconMap[skill.icon] ?? <Users className="h-5 w-5 text-emerald-400" />}
-                  level={skill.level}
-                  index={index}
-                />
-              </div>
-            );
-          })}
+              return (
+                <motion.div
+                  key={skill.name}
+                  layout
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  className={`skill-card-wrapper ${colClass} animate-skill-float w-full h-full`}
+                  style={{
+                    animationDelay: `${(index % 3) * 0.75}s`,
+                  }}
+                >
+                  <SkillCard
+                    name={skill.name}
+                    icon={iconMap[skill.icon] ?? <Users className="h-5 w-5 text-emerald-400" />}
+                    level={skill.level}
+                    index={index}
+                    category={skill.category}
+                    tags={skill.tags}
+                    masteryText={skill.masteryText}
+                  />
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
         </div>
 
         {/* Numerical Metrics Bar */}
-        <div className="mt-8 lg:mt-12 grid grid-cols-1 sm:grid-cols-3 rounded-2xl bg-white border border-emerald-200/50 shadow-sm overflow-hidden divide-y sm:divide-y-0 sm:divide-x divide-slate-100 shrink-0">
+        <div className="mt-10 lg:mt-14 grid grid-cols-1 sm:grid-cols-3 rounded-2xl bg-white border border-emerald-200/50 shadow-sm overflow-hidden divide-y sm:divide-y-0 sm:divide-x divide-slate-100 shrink-0">
           {[
             { label: "Core Skills", value: skillsData.skillsList.length, suffix: "+" },
             {
@@ -266,14 +337,14 @@ export function SkillsSection() {
             },
             { label: "Hands-on Experience", value: 1, suffix: "+ Year" },
           ].map((stat, i) => (
-            <div key={i} className="flex flex-col items-center justify-center py-3.5 sm:py-4 px-4 text-center">
+            <div key={i} className="flex flex-col items-center justify-center py-4 px-4 text-center">
               <div className="flex items-baseline gap-1">
                 <span className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight">
                   <Counter to={stat.value} />
                 </span>
                 <span className="text-base sm:text-lg font-bold text-emerald-600">{stat.suffix}</span>
               </div>
-              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                 {stat.label}
               </span>
             </div>
