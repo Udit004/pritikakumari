@@ -60,22 +60,116 @@ const iconMap: Record<string, React.ReactNode> = {
 export function SkillsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headerImageRef = useRef<HTMLDivElement>(null);
+  const skillsGridRef = useRef<HTMLDivElement>(null);
   useSectionTracking("skills");
 
-  useGSAP(() => {
-    if (headerImageRef.current) {
-      gsap.to(headerImageRef.current, {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.2,
-        },
-        y: -25,
-        ease: "none",
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+
+      // Header illustration subtle parallax
+      if (headerImageRef.current) {
+        gsap.to(headerImageRef.current, {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.2,
+          },
+          y: -25,
+          ease: "none",
+        });
+      }
+
+      // Desktop: 3D Stagger Reveal + Differential Column Parallax Scrub
+      mm.add("(min-width: 1024px)", () => {
+        const cards = gsap.utils.toArray<HTMLElement>(".skill-card-wrapper");
+        if (cards.length === 0 || !skillsGridRef.current) return;
+
+        // 1. Initial 3D Scroll Reveal Wave
+        gsap.fromTo(
+          cards,
+          {
+            opacity: 0,
+            y: 50,
+            rotateX: 14,
+            scale: 0.94,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            scale: 1,
+            duration: 0.75,
+            stagger: 0.07,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: skillsGridRef.current,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+
+        // 2. Center Column Upward Float Parallax Scrub
+        const centerCol = gsap.utils.toArray<HTMLElement>(".skill-card-col-center");
+        if (centerCol.length > 0) {
+          gsap.to(centerCol, {
+            y: -35,
+            ease: "none",
+            scrollTrigger: {
+              trigger: skillsGridRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1.2,
+            },
+          });
+        }
+
+        // 3. Side Columns Downward Complementary Drift Parallax Scrub
+        const sideCol = gsap.utils.toArray<HTMLElement>(".skill-card-col-side");
+        if (sideCol.length > 0) {
+          gsap.to(sideCol, {
+            y: 15,
+            ease: "none",
+            scrollTrigger: {
+              trigger: skillsGridRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1.2,
+            },
+          });
+        }
       });
-    }
-  }, { scope: sectionRef });
+
+      // Mobile / Tablet: Smooth staggered entrance
+      mm.add("(max-width: 1023px)", () => {
+        const cards = gsap.utils.toArray<HTMLElement>(".skill-card-wrapper");
+        if (cards.length === 0 || !skillsGridRef.current) return;
+
+        gsap.fromTo(
+          cards,
+          { opacity: 0, y: 30, scale: 0.96 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.6,
+            stagger: 0.06,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: skillsGridRef.current,
+              start: "top 88%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
+
+      return () => mm.revert();
+    },
+    { scope: sectionRef }
+  );
 
   return (
     <section
@@ -139,17 +233,26 @@ export function SkillsSection() {
           </div>
         </div>
 
-        {/* Skills Cards Grid - 3x3 layout with clean balanced spacing */}
-        <div className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 shrink-0">
-          {skillsData.skillsList.map((skill, index) => (
-            <SkillCard
-              key={skill.name}
-              name={skill.name}
-              icon={iconMap[skill.icon] ?? <Users className="h-5 w-5 text-emerald-400" />}
-              level={skill.level}
-              index={index}
-            />
-          ))}
+        {/* Skills Cards Grid - 3x3 layout with multi-column parallax scrolling architecture */}
+        <div
+          ref={skillsGridRef}
+          className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 shrink-0"
+        >
+          {skillsData.skillsList.map((skill, index) => {
+            const isCenterCol = index % 3 === 1;
+            const colClass = isCenterCol ? "skill-card-col-center" : "skill-card-col-side";
+
+            return (
+              <div key={skill.name} className={`skill-card-wrapper ${colClass} w-full h-full`}>
+                <SkillCard
+                  name={skill.name}
+                  icon={iconMap[skill.icon] ?? <Users className="h-5 w-5 text-emerald-400" />}
+                  level={skill.level}
+                  index={index}
+                />
+              </div>
+            );
+          })}
         </div>
 
         {/* Numerical Metrics Bar */}
