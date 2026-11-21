@@ -11,7 +11,7 @@ export function CertificationsSection() {
   return (
     <section
       id="certificates"
-      className="scene-section relative w-full min-h-[100svh] flex flex-col justify-center py-20"
+      className="scene-section relative w-full min-h-[100svh] py-16 lg:py-24 overflow-hidden"
     >
       {/* Background ambient glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">

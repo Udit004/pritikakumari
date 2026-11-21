@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <div className="relative w-full overflow-hidden py-16 sm:py-20">
+    <div className="relative w-full overflow-hidden pt-8 pb-6 sm:pt-12 sm:pb-8">
       {/* Subtle ambient glows */}
       <div
         className="absolute top-0 right-0 w-[600px] h-[400px] pointer-events-none"

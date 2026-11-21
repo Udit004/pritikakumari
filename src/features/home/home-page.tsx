@@ -1,46 +1,25 @@
 "use client";
 
+import { useEffect } from "react";
 import dynamic from "next/dynamic";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { HeroSection } from "@/features/hero/hero-section";
 import { AboutSection } from "@/features/about";
+import { SkillsSection } from "@/features/skills";
+import { ExperienceSection } from "@/features/experience";
+import { ProjectsSection } from "@/features/projects";
+import { CertificationsSection } from "@/features/certifications/components/certifications-section";
+import { EducationSection } from "@/features/education";
+import { ResumeSection } from "@/features/resume";
+import { ContactSection } from "@/features/contact";
+import { Footer } from "@/features/home/components/footer";
 import { Header } from "./components/header";
-import { Footer } from "./components/footer";
 import { ScrollProgress } from "@/components/animations/ScrollProgress";
 
-const SkillsSection = dynamic(
-  () => import("@/features/skills").then((mod) => mod.SkillsSection),
-  { loading: () => <div className="py-20 min-h-[50vh]" /> }
-);
-
-const ExperienceSection = dynamic(
-  () => import("@/features/experience").then((mod) => mod.ExperienceSection),
-  { ssr: false, loading: () => <div className="py-20 min-h-[50vh]" /> }
-);
-
-const ProjectsSection = dynamic(
-  () => import("@/features/projects").then((mod) => mod.ProjectsSection),
-  { ssr: false, loading: () => <div className="py-20 min-h-[50vh]" /> }
-);
-
-const CertificationsSection = dynamic(
-  () => import("@/features/certifications/components/certifications-section").then((mod) => mod.CertificationsSection),
-  { loading: () => <div className="py-20 min-h-[50vh]" /> }
-);
-
-const EducationSection = dynamic(
-  () => import("@/features/education").then((mod) => mod.EducationSection),
-  { ssr: false, loading: () => <div className="py-20 min-h-[50vh]" /> }
-);
-
-const ResumeSection = dynamic(
-  () => import("@/features/resume").then((mod) => mod.ResumeSection),
-  { loading: () => <div className="py-20 min-h-[50vh]" /> }
-);
-
-const ContactSection = dynamic(
-  () => import("@/features/contact").then((mod) => mod.ContactSection),
-  { ssr: false, loading: () => <div className="py-20 min-h-[50vh]" /> }
-);
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const AiChatSection = dynamic(
   () => import("@/features/aiChat").then((mod) => mod.AiChatSection),
@@ -48,6 +27,23 @@ const AiChatSection = dynamic(
 );
 
 export function HomePage() {
+  useEffect(() => {
+    // When all page sections and assets are mounted, ensure ScrollTrigger calculates all pin spacers in natural top-down sequence
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 200);
+
+    const handleLoad = () => {
+      ScrollTrigger.refresh();
+    };
+    window.addEventListener("load", handleLoad);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("load", handleLoad);
+    };
+  }, []);
+
   return (
     <main className="relative bg-surface-secondary selection:bg-emerald-500/20 selection:text-emerald-950">
       {/* ── Top Cinematic Scroll Progress Bar ── */}

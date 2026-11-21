@@ -3,7 +3,16 @@
 import { useState, useRef } from "react";
 import CertificateListCard from "./CertificateListCard";
 import DetailCertificate from "./DetailCertificate";
-import { LayoutDashboard, Users, Calculator, ShieldCheck, FileSpreadsheet } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  Calculator,
+  ShieldCheck,
+  FileSpreadsheet,
+  ChevronLeft,
+  ChevronRight,
+  ArrowRight,
+} from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -120,116 +129,148 @@ const certificatesData: CertificateItem[] = [
 export default function CertificateList() {
   const [activeCategory, setActiveCategory] = useState("All Certificates");
   const [selectedCert, setSelectedCert] = useState<CertificateItem | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
+  const streamSectionRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const filteredCertificates = certificatesData.filter(
     (cert) => activeCategory === "All Certificates" || cert.category === activeCategory
   );
 
+  const isScrollable = filteredCertificates.length > 2;
+
+  // Compute maximum travel distance dynamically to handle all screen resolutions
+  const getMaxTravel = () => {
+    if (!trackRef.current || !streamSectionRef.current) return 1200;
+    const travel = trackRef.current.scrollWidth - streamSectionRef.current.offsetWidth + 120;
+    return Math.max(800, travel);
+  };
+
+  // For Left-to-Right motion:
+  // Card 1 is at the start (x = -maxTravel). As track moves to the right,
+  // Card 2, 3, 4, 5, 6 slide in from the left and travel across to the right.
+  const displayCertificates = isScrollable
+    ? [...filteredCertificates].reverse()
+    : filteredCertificates;
+
   useGSAP(
     () => {
+      if (!isScrollable || !trackRef.current || !streamSectionRef.current) return;
+
       const mm = gsap.matchMedia();
 
-      // Desktop: 3D Stagger Entrance + Column-Based Parallax Scrub
+      // Desktop: Smooth Pinned Horizontal Scrub from Left to Right
       mm.add("(min-width: 1024px)", () => {
-        const cards = gsap.utils.toArray<HTMLElement>(".cert-card");
-        if (cards.length === 0) return;
+        const track = trackRef.current;
+        const container = streamSectionRef.current;
+        if (!track || !container) return;
 
-        // 1. Initial 3D Scroll Reveal Wave
-        gsap.fromTo(
-          cards,
-          {
-            opacity: 0,
-            y: 55,
-            rotateX: 12,
-            scale: 0.94,
+        // Pinned stage: stops the normal whole website scrolling while cards glide
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            id: "certs-pin",
+            trigger: container,
+            start: "center center",
+            end: "+=1300",
+            pin: true,
+            pinSpacing: true,
+            anticipatePin: 1,
+            scrub: 0.8,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              const idx = Math.min(
+                filteredCertificates.length - 1,
+                Math.round(self.progress * (filteredCertificates.length - 1))
+              );
+              setActiveIndex(idx);
+            },
           },
+        });
+
+        // Movement from Left to Right:
+        // Starts shifted left (-getMaxTravel()) showing Card 01 (Excel).
+        // Glides rightward to 0 as you scroll, then unpins and continues website scrolling.
+        tl.fromTo(
+          track,
+          { x: () => -getMaxTravel() },
           {
-            opacity: 1,
-            y: 0,
-            rotateX: 0,
-            scale: 1,
-            duration: 0.75,
-            stagger: 0.08,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: gridRef.current,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            },
+            x: 0,
+            ease: "none",
           }
         );
 
-        // 2. Continuous Differential Parallax on Scroll (Center column floats upward)
-        const centerColCards = gsap.utils.toArray<HTMLElement>(".cert-card-col-center");
-        if (centerColCards.length > 0) {
-          gsap.to(centerColCards, {
-            y: -30,
-            ease: "none",
-            scrollTrigger: {
-              trigger: gridRef.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1.2,
-            },
-          });
-        }
-
-        // Side columns gentle complementary drift
-        const sideColCards = gsap.utils.toArray<HTMLElement>(".cert-card-col-side");
-        if (sideColCards.length > 0) {
-          gsap.to(sideColCards, {
-            y: 15,
-            ease: "none",
-            scrollTrigger: {
-              trigger: gridRef.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1.2,
-            },
-          });
-        }
-      });
-
-      // Mobile / Tablet: Smooth staggered entrance
-      mm.add("(max-width: 1023px)", () => {
-        const cards = gsap.utils.toArray<HTMLElement>(".cert-card");
-        if (cards.length === 0) return;
-
-        gsap.fromTo(
-          cards,
-          { opacity: 0, y: 35, scale: 0.96 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.6,
-            stagger: 0.08,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: gridRef.current,
-              start: "top 88%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
+        return () => {
+          tl.scrollTrigger?.kill();
+          tl.kill();
+        };
       });
 
       return () => mm.revert();
     },
-    { scope: containerRef, dependencies: [activeCategory] }
+    { scope: containerRef, dependencies: [activeCategory, filteredCertificates.length, isScrollable] }
   );
 
+  // Programmatic navigation to card
+  const goToCard = (index: number) => {
+    const targetIdx = Math.max(0, Math.min(filteredCertificates.length - 1, index));
+    setActiveIndex(targetIdx);
+
+    if (typeof window !== "undefined" && window.innerWidth < 1024 && scrollAreaRef.current) {
+      const cardWidth = 360;
+      scrollAreaRef.current.scrollTo({ left: targetIdx * cardWidth, behavior: "smooth" });
+    } else {
+      const st = ScrollTrigger.getById("certs-pin");
+      if (st && filteredCertificates.length > 1) {
+        const progress = targetIdx / (filteredCertificates.length - 1);
+        const targetScroll = st.start + (st.end - st.start) * progress;
+        window.scrollTo({ top: targetScroll, behavior: "smooth" });
+      } else if (trackRef.current && streamSectionRef.current) {
+        const maxTravel = getMaxTravel();
+        const progress = targetIdx / Math.max(1, filteredCertificates.length - 1);
+        const targetX = -maxTravel + progress * maxTravel;
+        gsap.to(trackRef.current, {
+          x: targetX,
+          duration: 0.5,
+          ease: "power2.out",
+        });
+      }
+    }
+  };
+
+  const scrollPrev = () => {
+    goToCard(activeIndex - 1);
+  };
+
+  const scrollNext = () => {
+    goToCard(activeIndex + 1);
+  };
+
+  const handleMobileScroll = () => {
+    if (scrollAreaRef.current) {
+      const scrollLeft = scrollAreaRef.current.scrollLeft;
+      const cardWidth = 360;
+      const idx = Math.min(
+        filteredCertificates.length - 1,
+        Math.max(0, Math.round(scrollLeft / cardWidth))
+      );
+      setActiveIndex(idx);
+    }
+  };
+
   return (
-    <div ref={containerRef} className="w-full max-w-7xl mx-auto py-2 lg:py-4">
+    <div ref={containerRef} className="w-full py-4 relative">
       {/* Category Filter - Desktop */}
-      <div className="hidden md:flex flex-wrap items-center justify-center p-1.5 bg-white border border-emerald-100 shadow-sm rounded-full w-fit mx-auto mb-8 gap-1.5">
+      <div className="hidden md:flex flex-wrap items-center justify-center p-1.5 bg-white border border-emerald-100 shadow-sm rounded-full w-fit mx-auto mb-8 gap-1.5 z-20 relative">
         {categories.map((category) => (
           <button
             key={category}
-            onClick={() => setActiveCategory(category)}
+            onClick={() => {
+              setActiveCategory(category);
+              setActiveIndex(0);
+            }}
             className={`px-5 py-2 rounded-full text-xs sm:text-sm font-bold transition-all cursor-pointer ${
               activeCategory === category
                 ? "bg-slate-950 text-white shadow-md scale-[1.02]"
@@ -242,11 +283,14 @@ export default function CertificateList() {
       </div>
 
       {/* Category Filter - Mobile */}
-      <div className="md:hidden flex items-start mb-6 px-4 sm:px-6">
+      <div className="md:hidden flex items-start mb-6 px-4 sm:px-6 z-20 relative">
         <div className="relative inline-block w-full max-w-[240px]">
           <select
             value={activeCategory}
-            onChange={(e) => setActiveCategory(e.target.value)}
+            onChange={(e) => {
+              setActiveCategory(e.target.value);
+              setActiveIndex(0);
+            }}
             className="w-full appearance-none bg-white border border-emerald-200 text-slate-900 text-sm font-bold rounded-full px-5 py-2.5 pr-10 shadow-sm focus:outline-none"
           >
             {categories.map((category) => (
@@ -263,45 +307,159 @@ export default function CertificateList() {
         </div>
       </div>
 
-      {/* Grid with 3D Parallax Scrolling Architecture */}
-      <div
-        ref={gridRef}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 px-4 sm:px-6 md:px-0"
-      >
-        <AnimatePresence mode="popLayout">
-          {filteredCertificates.map((cert, index) => {
-            const isCenterCol = index % 3 === 1;
-            const colClass = isCenterCol ? "cert-card-col-center" : "cert-card-col-side";
+      {/* Main Showcase Area */}
+      {isScrollable ? (
+        /* SINGLE-ROW HORIZONTAL SHOWCASE RIBBON (Movement Left -> Right) */
+        <div ref={streamSectionRef} className="relative w-full overflow-hidden py-4">
+          {/* Edge Vignette Masks for Soft Dissolve */}
+          <div
+            className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 z-30"
+            style={{
+              background: "linear-gradient(to right, rgba(245, 243, 240, 1) 0%, rgba(245, 243, 240, 0) 100%)",
+            }}
+          />
+          <div
+            className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 z-30"
+            style={{
+              background: "linear-gradient(to left, rgba(245, 243, 240, 1) 0%, rgba(245, 243, 240, 0) 100%)",
+            }}
+          />
 
-            return (
-              <motion.div
-                key={cert.title}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className={`cert-card ${colClass} flex flex-col w-full h-full`}
-              >
-                <CertificateListCard
-                  title={cert.title}
-                  platform={cert.platform}
-                  year={cert.year}
-                  category={cert.tag}
-                  icon={cert.icon}
-                  image={cert.image}
-                  url={cert.url}
-                  index={index}
-                  Skills={cert.Skills}
-                  Description={cert.Description}
-                  onClick={() => setSelectedCert(cert)}
-                  priority={index < 3}
+          {/* Directional Tag Pill */}
+          <div className="max-w-7xl mx-auto px-6 sm:px-12 mb-4 flex items-center justify-end">
+            <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-500 bg-white/80 px-3 py-1 rounded-full border border-slate-200/60 shadow-2xs">
+              <span>Scrolls Left to Right</span>
+              <ArrowRight size={13} className="text-emerald-600" />
+            </div>
+          </div>
+
+          {/* Horizontal Track Container */}
+          <div
+            ref={scrollAreaRef}
+            onScroll={handleMobileScroll}
+            className="w-full overflow-x-auto lg:overflow-x-visible no-scrollbar touch-pan-x snap-x snap-mandatory lg:snap-none"
+          >
+            <div
+              ref={trackRef}
+              className="flex items-stretch gap-6 lg:gap-8 will-change-transform px-6 sm:px-12"
+              style={{ width: "max-content" }}
+            >
+              {displayCertificates.map((cert, index) => {
+                const originalIndex = filteredCertificates.length - 1 - index;
+                const isCurrent = activeIndex === originalIndex;
+
+                return (
+                  <div
+                    key={cert.title}
+                    className={`w-[340px] sm:w-[390px] lg:w-[420px] h-[480px] shrink-0 flex flex-col snap-center transition-all duration-500 ${
+                      isCurrent
+                        ? "scale-[1.02] ring-2 ring-emerald-500/40 shadow-xl rounded-3xl"
+                        : "opacity-85 hover:opacity-100"
+                    }`}
+                  >
+                    <CertificateListCard
+                      title={cert.title}
+                      platform={cert.platform}
+                      year={cert.year}
+                      category={cert.tag}
+                      icon={cert.icon}
+                      image={cert.image}
+                      url={cert.url}
+                      index={originalIndex}
+                      Skills={cert.Skills}
+                      Description={cert.Description}
+                      onClick={() => setSelectedCert(cert)}
+                      priority={originalIndex < 2}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Bottom Interactive Controls & Counter Bar */}
+          <div className="max-w-7xl mx-auto px-6 sm:px-12 flex items-center justify-between pt-8">
+            {/* Active Counter */}
+            {/* <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Credential</span>
+              <span className="text-xs font-black text-emerald-800 bg-white px-3 py-1 rounded-full border border-emerald-200/80 shadow-2xs">
+                0{activeIndex + 1} / 0{filteredCertificates.length}
+              </span>
+            </div> */}
+
+            {/* Pagination Indicator Dots */}
+            <div className="flex items-center gap-1.5">
+              {filteredCertificates.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => goToCard(i)}
+                  aria-label={`Jump to certificate ${i + 1}`}
+                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                    activeIndex === i ? "w-8 bg-emerald-600" : "w-2 bg-emerald-200/70 hover:bg-emerald-300"
+                  }`}
                 />
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
-      </div>
+              ))}
+            </div>
+
+            {/* Prev / Next Navigation Arrows */}
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={scrollPrev}
+                className="w-10 h-10 rounded-full bg-white border border-emerald-200/80 shadow-2xs flex items-center justify-center text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                aria-label="Previous Certificate"
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button
+                type="button"
+                onClick={scrollNext}
+                className="w-10 h-10 rounded-full bg-white border border-emerald-200/80 shadow-2xs flex items-center justify-center text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                aria-label="Next Certificate"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* CENTERED SHOWCASE FOR FILTERED CATEGORIES WITH <= 2 CARDS */
+        <div className="w-full max-w-5xl mx-auto px-4 sm:px-6">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCategory}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 py-4"
+            >
+              {filteredCertificates.map((cert, index) => (
+                <div
+                  key={cert.title}
+                  className="w-[340px] sm:w-[390px] lg:w-[420px] h-[480px] shrink-0 flex flex-col"
+                >
+                  <CertificateListCard
+                    title={cert.title}
+                    platform={cert.platform}
+                    year={cert.year}
+                    category={cert.tag}
+                    icon={cert.icon}
+                    image={cert.image}
+                    url={cert.url}
+                    index={index}
+                    Skills={cert.Skills}
+                    Description={cert.Description}
+                    onClick={() => setSelectedCert(cert)}
+                    priority
+                  />
+                </div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      )}
 
       {/* Detail Modal */}
       <AnimatePresence mode="wait">

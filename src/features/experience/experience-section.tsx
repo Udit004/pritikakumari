@@ -90,7 +90,7 @@ export function ExperienceSection() {
     <section
       id="experience"
       ref={sectionRef}
-      className="scene-section relative w-full min-h-[100svh] flex flex-col justify-center py-20 lg:py-28"
+      className="scene-section relative w-full min-h-[100svh] flex flex-col justify-center py-20 lg:py-28 bg-[#f8faf9] z-10"
     >
       {/* Background radial glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
