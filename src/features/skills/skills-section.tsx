@@ -60,7 +60,7 @@ export function SkillsSection() {
         // 1. VERTICAL POSITION OF ENTIRE GRID:
         //    - More negative (e.g. -85, -95, -110) = shifts all cards HIGHER up
         //    - Less negative (e.g. -50, -40, 0)    = shifts all cards LOWER down
-        const gridVerticalShift = isXL ? -90 : -80;
+        const gridVerticalShift = isXL ? -95 : -90;
 
         // 2. HORIZONTAL SPACING BETWEEN COLUMNS (Col 1, Col 2, Col 3):
         //    - Higher (e.g. 380, 400) = wider horizontal gap
