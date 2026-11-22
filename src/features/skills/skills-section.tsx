@@ -9,6 +9,7 @@ import { useSectionTracking } from "@/hooks/useSectionTracking";
 import { skillsData } from "./data";
 import { getNineSkillCards } from "./types";
 import { SingleSkillCard } from "./SingleSkillCard";
+import { MobileSkillsDeck } from "./MobileSkillsDeck";
 import "./skills-animation.css";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -527,7 +528,7 @@ export function SkillsSection() {
     <section
       id="skills"
       ref={sectionRef}
-      className="scene-section relative w-full h-[100svh] min-h-[100svh] bg-[#f8faf9] z-20 overflow-hidden flex flex-col justify-between"
+      className="scene-section relative w-full min-h-[100svh] md:h-[100svh] md:overflow-hidden bg-[#f8faf9] z-20 flex flex-col justify-between py-12 md:py-0"
     >
       {/* ── Background radial atmosphere consistent with portfolio identity ── */}
       <div
@@ -575,13 +576,13 @@ export function SkillsSection() {
 
           {/* Right Header Illustration - Recovered Original Position and Scale */}
           <div className="flex-1 w-full flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-sm lg:max-w-md">
+            <div className="relative w-full max-w-[220px] sm:max-w-sm lg:max-w-md">
               <Image
                 src="/assests/images/skills/skill_headerImage.png"
                 alt="Skills Overview Illustration"
                 width={500}
                 height={500}
-                className="w-full h-auto max-h-[200px] lg:max-h-[220px] object-contain rounded-xl drop-shadow-sm"
+                className="w-full h-auto max-h-[140px] md:max-h-[200px] lg:max-h-[220px] object-contain rounded-xl drop-shadow-sm"
                 priority
               />
             </div>
@@ -604,22 +605,9 @@ export function SkillsSection() {
         ))}
       </div>
 
-      {/* ── Mobile Layout (< 768px): Responsive Interactive Cards (No Scroll Lock) ── */}
-      <div className="md:hidden flex flex-col gap-4 w-full max-w-md mx-auto my-4 px-4 z-10 overflow-y-auto max-h-[85vh]">
-        {/* <div className="p-2.5 bg-emerald-50 border border-emerald-200/80 rounded-2xl text-center text-xs text-emerald-800 flex items-center justify-center gap-2">
-          <RotateCw className="w-3.5 h-3.5 text-emerald-600 animate-spin" />
-          <span>Tap any of the 9 cards to flip between artwork and skills!</span>
-        </div> */}
-
-        {skillCards.map((card) => (
-          <div key={card.id} className="w-full h-[200px] relative">
-            <SingleSkillCard
-              card={card}
-              isMobile={true}
-              className="w-full h-full"
-            />
-          </div>
-        ))}
+      {/* ── Mobile Layout (< 768px): Domino Cascade Left-to-Right Flip Stream ── */}
+      <div className="md:hidden w-full mx-auto my-2 z-10">
+        <MobileSkillsDeck skillCards={skillCards} />
       </div>
     </section>
   );
