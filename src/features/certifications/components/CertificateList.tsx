@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import CertificateListCard from "./CertificateListCard";
 import DetailCertificate from "./DetailCertificate";
+import MobileCertificatesDeck from "./MobileCertificatesDeck";
 import {
   LayoutDashboard,
   Users,
@@ -307,55 +308,140 @@ export default function CertificateList() {
         </div>
       </div>
 
-      {/* Main Showcase Area */}
-      {isScrollable ? (
-        /* SINGLE-ROW HORIZONTAL SHOWCASE RIBBON (Movement Left -> Right) */
-        <div ref={streamSectionRef} className="relative w-full overflow-hidden py-4">
-          {/* Edge Vignette Masks for Soft Dissolve */}
-          <div
-            className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 z-30"
-            style={{
-              background: "linear-gradient(to right, rgba(245, 243, 240, 1) 0%, rgba(245, 243, 240, 0) 100%)",
-            }}
-          />
-          <div
-            className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 z-30"
-            style={{
-              background: "linear-gradient(to left, rgba(245, 243, 240, 1) 0%, rgba(245, 243, 240, 0) 100%)",
-            }}
-          />
+      {/* ── Mobile View (< 768px): Auto-Moving Domino/Gliding Certificate Carousel ── */}
+      <div className="md:hidden w-full">
+        <MobileCertificatesDeck
+          key={activeCategory}
+          certificates={filteredCertificates}
+          onSelectCert={(cert) => setSelectedCert(cert)}
+        />
+      </div>
 
-          {/* Directional Tag Pill */}
-          <div className="max-w-7xl mx-auto px-6 sm:px-12 mb-4 flex items-center justify-end">
-            <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-500 bg-white/80 px-3 py-1 rounded-full border border-slate-200/60 shadow-2xs">
-              <span>Scrolls Left to Right</span>
-              <ArrowRight size={13} className="text-emerald-600" />
+      {/* ── Desktop & Tablet Showcase Area (>= 768px) ── */}
+      <div className="hidden md:block w-full">
+        {isScrollable ? (
+          /* SINGLE-ROW HORIZONTAL SHOWCASE RIBBON (Movement Left -> Right) */
+          <div ref={streamSectionRef} className="relative w-full overflow-hidden py-4">
+            {/* Edge Vignette Masks for Soft Dissolve */}
+            <div
+              className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 z-30"
+              style={{
+                background: "linear-gradient(to right, rgba(245, 243, 240, 1) 0%, rgba(245, 243, 240, 0) 100%)",
+              }}
+            />
+            <div
+              className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 z-30"
+              style={{
+                background: "linear-gradient(to left, rgba(245, 243, 240, 1) 0%, rgba(245, 243, 240, 0) 100%)",
+              }}
+            />
+
+            {/* Directional Tag Pill */}
+            <div className="max-w-7xl mx-auto px-6 sm:px-12 mb-4 flex items-center justify-end">
+              <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-500 bg-white/80 px-3 py-1 rounded-full border border-slate-200/60 shadow-2xs">
+                <span>Scrolls Left to Right</span>
+                <ArrowRight size={13} className="text-emerald-600" />
+              </div>
+            </div>
+
+            {/* Horizontal Track Container */}
+            <div
+              ref={scrollAreaRef}
+              onScroll={handleMobileScroll}
+              className="w-full overflow-x-auto lg:overflow-x-visible no-scrollbar touch-pan-x snap-x snap-mandatory lg:snap-none"
+            >
+              <div
+                ref={trackRef}
+                className="flex items-stretch gap-6 lg:gap-8 will-change-transform px-6 sm:px-12"
+                style={{ width: "max-content" }}
+              >
+                {displayCertificates.map((cert, index) => {
+                  const originalIndex = filteredCertificates.length - 1 - index;
+                  const isCurrent = activeIndex === originalIndex;
+
+                  return (
+                    <div
+                      key={cert.title}
+                      className={`w-[340px] sm:w-[390px] lg:w-[420px] h-[480px] shrink-0 flex flex-col snap-center transition-all duration-500 ${
+                        isCurrent
+                          ? "scale-[1.02] ring-2 ring-emerald-500/40 shadow-xl rounded-3xl"
+                          : "opacity-85 hover:opacity-100"
+                      }`}
+                    >
+                      <CertificateListCard
+                        title={cert.title}
+                        platform={cert.platform}
+                        year={cert.year}
+                        category={cert.tag}
+                        icon={cert.icon}
+                        image={cert.image}
+                        url={cert.url}
+                        index={originalIndex}
+                        Skills={cert.Skills}
+                        Description={cert.Description}
+                        onClick={() => setSelectedCert(cert)}
+                        priority={originalIndex < 2}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Bottom Interactive Controls & Counter Bar */}
+            <div className="max-w-7xl mx-auto px-6 sm:px-12 flex items-center justify-between pt-8">
+              {/* Pagination Indicator Dots */}
+              <div className="flex items-center gap-1.5">
+                {filteredCertificates.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => goToCard(i)}
+                    aria-label={`Jump to certificate ${i + 1}`}
+                    className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                      activeIndex === i ? "w-8 bg-emerald-600" : "w-2 bg-emerald-200/70 hover:bg-emerald-300"
+                    }`}
+                  />
+                ))}
+              </div>
+
+              {/* Prev / Next Navigation Arrows */}
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={scrollPrev}
+                  className="w-10 h-10 rounded-full bg-white border border-emerald-200/80 shadow-2xs flex items-center justify-center text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                  aria-label="Previous Certificate"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <button
+                  type="button"
+                  onClick={scrollNext}
+                  className="w-10 h-10 rounded-full bg-white border border-emerald-200/80 shadow-2xs flex items-center justify-center text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                  aria-label="Next Certificate"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
             </div>
           </div>
-
-          {/* Horizontal Track Container */}
-          <div
-            ref={scrollAreaRef}
-            onScroll={handleMobileScroll}
-            className="w-full overflow-x-auto lg:overflow-x-visible no-scrollbar touch-pan-x snap-x snap-mandatory lg:snap-none"
-          >
-            <div
-              ref={trackRef}
-              className="flex items-stretch gap-6 lg:gap-8 will-change-transform px-6 sm:px-12"
-              style={{ width: "max-content" }}
-            >
-              {displayCertificates.map((cert, index) => {
-                const originalIndex = filteredCertificates.length - 1 - index;
-                const isCurrent = activeIndex === originalIndex;
-
-                return (
+        ) : (
+          /* CENTERED SHOWCASE FOR FILTERED CATEGORIES WITH <= 2 CARDS */
+          <div className="w-full max-w-5xl mx-auto px-4 sm:px-6">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeCategory}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 py-4"
+              >
+                {filteredCertificates.map((cert, index) => (
                   <div
                     key={cert.title}
-                    className={`w-[340px] sm:w-[390px] lg:w-[420px] h-[480px] shrink-0 flex flex-col snap-center transition-all duration-500 ${
-                      isCurrent
-                        ? "scale-[1.02] ring-2 ring-emerald-500/40 shadow-xl rounded-3xl"
-                        : "opacity-85 hover:opacity-100"
-                    }`}
+                    className="w-[340px] sm:w-[390px] lg:w-[420px] h-[480px] shrink-0 flex flex-col"
                   >
                     <CertificateListCard
                       title={cert.title}
@@ -365,101 +451,19 @@ export default function CertificateList() {
                       icon={cert.icon}
                       image={cert.image}
                       url={cert.url}
-                      index={originalIndex}
+                      index={index}
                       Skills={cert.Skills}
                       Description={cert.Description}
                       onClick={() => setSelectedCert(cert)}
-                      priority={originalIndex < 2}
+                      priority
                     />
                   </div>
-                );
-              })}
-            </div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
           </div>
-
-          {/* Bottom Interactive Controls & Counter Bar */}
-          <div className="max-w-7xl mx-auto px-6 sm:px-12 flex items-center justify-between pt-8">
-            {/* Active Counter */}
-            {/* <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Credential</span>
-              <span className="text-xs font-black text-emerald-800 bg-white px-3 py-1 rounded-full border border-emerald-200/80 shadow-2xs">
-                0{activeIndex + 1} / 0{filteredCertificates.length}
-              </span>
-            </div> */}
-
-            {/* Pagination Indicator Dots */}
-            <div className="flex items-center gap-1.5">
-              {filteredCertificates.map((_, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => goToCard(i)}
-                  aria-label={`Jump to certificate ${i + 1}`}
-                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                    activeIndex === i ? "w-8 bg-emerald-600" : "w-2 bg-emerald-200/70 hover:bg-emerald-300"
-                  }`}
-                />
-              ))}
-            </div>
-
-            {/* Prev / Next Navigation Arrows */}
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={scrollPrev}
-                className="w-10 h-10 rounded-full bg-white border border-emerald-200/80 shadow-2xs flex items-center justify-center text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 transition-all hover:scale-105 active:scale-95 cursor-pointer"
-                aria-label="Previous Certificate"
-              >
-                <ChevronLeft size={18} />
-              </button>
-              <button
-                type="button"
-                onClick={scrollNext}
-                className="w-10 h-10 rounded-full bg-white border border-emerald-200/80 shadow-2xs flex items-center justify-center text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 transition-all hover:scale-105 active:scale-95 cursor-pointer"
-                aria-label="Next Certificate"
-              >
-                <ChevronRight size={18} />
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : (
-        /* CENTERED SHOWCASE FOR FILTERED CATEGORIES WITH <= 2 CARDS */
-        <div className="w-full max-w-5xl mx-auto px-4 sm:px-6">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCategory}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 py-4"
-            >
-              {filteredCertificates.map((cert, index) => (
-                <div
-                  key={cert.title}
-                  className="w-[340px] sm:w-[390px] lg:w-[420px] h-[480px] shrink-0 flex flex-col"
-                >
-                  <CertificateListCard
-                    title={cert.title}
-                    platform={cert.platform}
-                    year={cert.year}
-                    category={cert.tag}
-                    icon={cert.icon}
-                    image={cert.image}
-                    url={cert.url}
-                    index={index}
-                    Skills={cert.Skills}
-                    Description={cert.Description}
-                    onClick={() => setSelectedCert(cert)}
-                    priority
-                  />
-                </div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Detail Modal */}
       <AnimatePresence mode="wait">

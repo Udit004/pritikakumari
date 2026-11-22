@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import {
   X,
   ChevronLeft,
@@ -47,10 +48,12 @@ export default function DetailCertificate({ certificate, onClose, isOpen }: Prop
             {/* Certificate Placeholder Div or Image */}
             <div className="w-full max-w-[420px] aspect-[4/3] bg-[#fdfbf7] border border-[#e5e1d8] rounded-lg shadow-sm mx-4 relative overflow-hidden flex items-center justify-center">
               {certificate.image ? (
-                <img
+                <Image
                   src={certificate.image}
                   alt={certificate.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="420px"
+                  className="object-cover"
                 />
               ) : (
                 <div className="absolute inset-2 border border-[#d6cfbe] p-4 flex flex-col items-center justify-center text-center">
