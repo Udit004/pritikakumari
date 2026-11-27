@@ -15,7 +15,6 @@ import { ResumeSection } from "@/features/resume";
 import { ContactSection } from "@/features/contact";
 import { Footer } from "@/features/home/components/footer";
 import { Header } from "./components/header";
-import { ScrollProgress } from "@/components/animations/ScrollProgress";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -46,9 +45,6 @@ export function HomePage() {
 
   return (
     <main className="relative bg-surface-secondary selection:bg-emerald-500/20 selection:text-emerald-950">
-      {/* ── Top Cinematic Scroll Progress Bar ── */}
-      <ScrollProgress />
-
       {/* ── Persistent Floating HUD Navigation ── */}
       <Header />
 
