@@ -6,17 +6,20 @@ import { Send } from "lucide-react";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { trackEvent } from "@/lib/analytics";
+import type { ContactAnimationStatus } from "./contact-animation";
 
 interface ContactFormProps {
   itemVariants: Variants;
+  onStatusChange?: (status: ContactAnimationStatus) => void;
 }
 
-export function ContactForm({ itemVariants }: ContactFormProps) {
+export function ContactForm({ itemVariants, onStatusChange }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
+    onStatusChange?.("sending");
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -59,8 +62,10 @@ export function ContactForm({ itemVariants }: ContactFormProps) {
             : "Could not send your message right now. Please try again later.",
       });
 
+      onStatusChange?.("success");
       form.reset();
     } catch (error) {
+      onStatusChange?.("idle");
       if (error instanceof Error) {
         return;
       }
