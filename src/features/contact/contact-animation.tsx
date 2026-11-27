@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import type { DotLottie } from "@lottiefiles/dotlottie-react";
 
 export type ContactAnimationStatus = "idle" | "sending" | "success";
 
 type ClipKey = "entrance" | "idle-a" | "idle-b" | "sending" | "success";
+
+const CLIPS: ClipKey[] = ["entrance", "idle-a", "idle-b", "sending", "success"];
 
 const CLIP_SRCS: Record<ClipKey, string> = {
   entrance: "/animations/contactSection/entrance.lottie",
@@ -26,9 +28,9 @@ export function ContactAnimation({
   onSuccessComplete,
 }: ContactAnimationProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const instancesRef = useRef<Partial<Record<ClipKey, DotLottie | null>>>({});
   const [hasEnteredView, setHasEnteredView] = useState(false);
   const [idleClip, setIdleClip] = useState<"entrance" | "idle-a" | "idle-b">("entrance");
-  const [dotLottie, setDotLottie] = useState<DotLottie | null>(null);
 
   const activeClip: ClipKey =
     status === "sending"
@@ -37,12 +39,18 @@ export function ContactAnimation({
         ? "success"
         : idleClip;
 
-  // Preload all .lottie clips so transitions between states are instant.
-  useEffect(() => {
-    Object.values(CLIP_SRCS).forEach((src) => {
-      fetch(src).catch(() => {});
-    });
-  }, []);
+  const refCallbacks = useMemo(
+    () =>
+      Object.fromEntries(
+        CLIPS.map((clip) => [
+          clip,
+          (instance: DotLottie | null) => {
+            instancesRef.current[clip] = instance;
+          },
+        ]),
+      ) as Record<ClipKey, (instance: DotLottie | null) => void>,
+    [],
+  );
 
   // Start the entrance animation once the container scrolls into view.
   useEffect(() => {
@@ -63,9 +71,47 @@ export function ContactAnimation({
     return () => observer.disconnect();
   }, [hasEnteredView]);
 
+  // Play the active clip seamlessly from frame 0 without unmounting/remounting,
+  // and pause inactive clips so all canvases stay pre-loaded and ready.
+  useEffect(() => {
+    if (!hasEnteredView) return;
+
+    let cancelled = false;
+    let loadCleanup: (() => void) | undefined;
+
+    for (const clip of CLIPS) {
+      const instance = instancesRef.current[clip];
+      if (!instance) continue;
+
+      if (clip === activeClip) {
+        const startClip = () => {
+          if (cancelled) return;
+          instance.setFrame(0);
+          instance.play();
+        };
+
+        if (instance.isLoaded) {
+          startClip();
+        } else {
+          instance.addEventListener("load", startClip);
+          loadCleanup = () => instance.removeEventListener("load", startClip);
+        }
+      } else {
+        instance.pause();
+      }
+    }
+
+    return () => {
+      cancelled = true;
+      loadCleanup?.();
+    };
+  }, [hasEnteredView, activeClip]);
+
   // Advance through entrance -> idle-a <-> idle-b, and return from success -> idle-a.
   useEffect(() => {
-    if (!dotLottie) return;
+    if (!hasEnteredView) return;
+    const instance = instancesRef.current[activeClip];
+    if (!instance) return;
 
     const handleComplete = () => {
       if (activeClip === "entrance") {
@@ -80,11 +126,11 @@ export function ContactAnimation({
       }
     };
 
-    dotLottie.addEventListener("complete", handleComplete);
+    instance.addEventListener("complete", handleComplete);
     return () => {
-      dotLottie.removeEventListener("complete", handleComplete);
+      instance.removeEventListener("complete", handleComplete);
     };
-  }, [dotLottie, activeClip, onSuccessComplete]);
+  }, [hasEnteredView, activeClip, onSuccessComplete]);
 
   return (
     <div
@@ -92,16 +138,22 @@ export function ContactAnimation({
       className="relative w-full max-w-lg aspect-square flex items-center justify-center"
       aria-label="Contact message journey animation"
     >
-      {hasEnteredView && (
-        <DotLottieReact
-          key={activeClip}
-          src={CLIP_SRCS[activeClip]}
-          loop={activeClip === "sending"}
-          autoplay
-          dotLottieRefCallback={setDotLottie}
-          className="w-full h-full object-contain"
-        />
-      )}
+      {hasEnteredView &&
+        CLIPS.map((clip) => (
+          <DotLottieReact
+            key={clip}
+            src={CLIP_SRCS[clip]}
+            loop={clip === "sending"}
+            autoplay={clip === "entrance"}
+            speed={clip === "sending" ? 1.35 : 1}
+            dotLottieRefCallback={refCallbacks[clip]}
+            className={`absolute inset-0 w-full h-full object-contain ${
+              activeClip === clip
+                ? "opacity-100 z-10"
+                : "opacity-0 pointer-events-none z-0"
+            }`}
+          />
+        ))}
     </div>
   );
 }

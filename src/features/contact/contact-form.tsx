@@ -13,11 +13,14 @@ interface ContactFormProps {
   onStatusChange?: (status: ContactAnimationStatus) => void;
 }
 
+const MIN_SENDING_ANIMATION_MS = 1800;
+
 export function ContactForm({ itemVariants, onStatusChange }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const sendingStartedAt = Date.now();
     setIsSubmitting(true);
     onStatusChange?.("sending");
 
@@ -61,6 +64,13 @@ export function ContactForm({ itemVariants, onStatusChange }: ContactFormProps) 
             ? error.message
             : "Could not send your message right now. Please try again later.",
       });
+
+      const elapsed = Date.now() - sendingStartedAt;
+      if (elapsed < MIN_SENDING_ANIMATION_MS) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, MIN_SENDING_ANIMATION_MS - elapsed),
+        );
+      }
 
       onStatusChange?.("success");
       form.reset();
