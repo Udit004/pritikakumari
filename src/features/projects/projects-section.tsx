@@ -243,7 +243,7 @@ export function ProjectsSection() {
     <section
       id="projects"
       ref={sectionRef}
-      className="scene-section relative w-full min-h-[100svh] py-16 lg:py-24 overflow-hidden"
+      className="scene-section relative w-full min-h-[100svh] py-16 lg:py-24 overflow-x-clip"
     >
       {/* Background ambient lighting */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">

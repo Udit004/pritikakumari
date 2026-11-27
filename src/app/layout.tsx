@@ -127,7 +127,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${playfair.variable} min-h-screen overflow-x-clip antialiased scroll-smooth`}
+      className={`${inter.variable} ${playfair.variable} min-h-screen overflow-x-clip antialiased`}
     >
       <body className="min-h-screen flex flex-col overflow-x-clip bg-background text-foreground">
         <div id="scroll-sentinel" aria-hidden className="h-px w-full" />

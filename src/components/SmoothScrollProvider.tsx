@@ -1,27 +1,43 @@
 "use client";
 
-import { useEffect } from "react";
+import { createContext, useContext, useEffect, useRef, type RefObject } from "react";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const LenisContext = createContext<RefObject<Lenis | null> | null>(null);
+
+export function useLenis() {
+  return useContext(LenisContext);
+}
+
 export function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
+  const lenisRef = useRef<Lenis | null>(null);
+
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    let resizeTimer: ReturnType<typeof setTimeout> | undefined;
     const handleRefresh = () => {
       ScrollTrigger.sort();
       ScrollTrigger.refresh();
     };
+    const scheduleRefresh = () => {
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(handleRefresh, 150);
+    };
 
     window.addEventListener("load", handleRefresh);
+    document.fonts?.ready.then(handleRefresh);
+
+    const resizeObserver = new ResizeObserver(scheduleRefresh);
+    resizeObserver.observe(document.body);
 
     // Refresh after dynamic sections hydrate
     const t1 = setTimeout(handleRefresh, 300);
     const t2 = setTimeout(handleRefresh, 1000);
-    const t3 = setTimeout(handleRefresh, 2000);
 
     if (prefersReducedMotion) {
       const handleScroll = () => ScrollTrigger.update();
@@ -29,9 +45,10 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       return () => {
         window.removeEventListener("scroll", handleScroll);
         window.removeEventListener("load", handleRefresh);
+        resizeObserver.disconnect();
+        if (resizeTimer) clearTimeout(resizeTimer);
         clearTimeout(t1);
         clearTimeout(t2);
-        clearTimeout(t3);
       };
     }
 
@@ -43,6 +60,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       anchors: true,
     });
 
+    lenisRef.current = lenis;
     lenis.on("scroll", ScrollTrigger.update);
 
     const updateLenis = (time: number) => {
@@ -55,12 +73,14 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     return () => {
       gsap.ticker.remove(updateLenis);
       lenis.destroy();
+      lenisRef.current = null;
       window.removeEventListener("load", handleRefresh);
+      resizeObserver.disconnect();
+      if (resizeTimer) clearTimeout(resizeTimer);
       clearTimeout(t1);
       clearTimeout(t2);
-      clearTimeout(t3);
     };
   }, []);
 
-  return <>{children}</>;
+  return <LenisContext.Provider value={lenisRef}>{children}</LenisContext.Provider>;
 }

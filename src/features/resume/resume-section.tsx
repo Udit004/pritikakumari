@@ -26,7 +26,7 @@ export function ResumeSection() {
   };
 
   return (
-    <section id="resume" className="relative w-full py-20 md:py-28">
+    <section id="resume" className="scene-section relative w-full min-h-[100svh] flex flex-col justify-center py-20 md:py-28">
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div
           className="absolute top-0 left-0 h-72 w-96 rounded-full opacity-20 blur-3xl"
